@@ -1,8 +1,22 @@
-main: main.o
-	gcc -o main.out main.o
+all: main logic_tests
+
+main: main.o Person.o Trip.o
+	g++ -o main.out main.o Person.o Trip.o
+
+logic_tests: logic_tests.o Person.o Trip.o
+	g++ -o logic_tests.out logic_tests.o Person.o Trip.o
 
 main.o: main.o
-	gcc -c -g main.cpp
+	g++ -c -g main.cpp
+
+Trip.o: Trip.o
+	g++ -c -g Trip.cpp
+
+Person.o: Person.o
+	g++ -c -g Person.cpp
+
+logic_tests.o: logic_tests.o
+	g++ -c -g logic_tests.cpp
 
 clean:
-	rm -r main.o main.out
+	rm -r main.o main.out Trip.o Person.o logic_tests.o logic_tests.out
