@@ -1,7 +1,7 @@
 all: main logic_tests
 
-main: main.o Person.o Trip.o
-	g++ -o main.out main.o Person.o Trip.o
+main: main.o Person.o Trip.o Transactions.o Database.o
+	g++ -o main.out main.o Person.o Trip.o Transactions.o Database.o
 
 logic_tests: logic_tests.o Person.o Trip.o
 	g++ -o logic_tests.out logic_tests.o Person.o Trip.o
@@ -17,6 +17,12 @@ Person.o: Person.o
 
 logic_tests.o: logic_tests.o
 	g++ -c -g logic_tests.cpp
+
+Transactions.o: Transactions.o
+	g++ -c -g Transactions.cpp
+
+Database.o: Database.o
+	g++ -c -g Database.cpp
 
 clean:
 	rm -r main.o main.out Trip.o Person.o logic_tests.o logic_tests.out
