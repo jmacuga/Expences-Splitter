@@ -1,24 +1,24 @@
 #pragma once
 
+#include "Trip.h"
 #include <string>
-using namespace std;
+#include <unordered_map>
 
-class Person
-{
-	unsigned int id;
-	string name;
-	bool alcohol;
-	bool nicotine;
-	bool gluten;
-	bool meat;
-	bool dairy;
-	//balance - sum of money to return/receive
-	double balance;
+class Person {
+  unsigned int id;
+  std::string name;
+  std::unordered_map<std::string, bool> atts;
+  // balance - sum of money to return/receive
+  double balance;
+
 public:
-	Person(unsigned int pid, string nm, bool alc = true, bool nict = true,
-		   bool glut = true, bool me = true, bool di = true):
-	id(pid), name(nm), alcohol(alc), nicotine(nict), gluten(glut), meat(me), dairy(di)
-	{balance = 0.0;};
-	string get_name();
-	double get_balance();
+  Person(unsigned int pid, std::string nm);
+  void alc_false() { atts["alcohol"] = false; };
+  void hd_true() { atts["heavy_drinker"] = true; }
+  std::string get_name() const { return name; };
+  double get_balance() const { return balance; };
+  int get_id() const { return id; };
+  bool operator==(const Person &other) const;
+  bool operator!=(const Person &other) const;
+  std::unordered_map<std::string, bool> arg_str() const { return atts; };
 };
