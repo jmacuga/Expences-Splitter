@@ -9,7 +9,9 @@ template <typename T> class Database
     public:
         void save_into_file(std::string path) const;
         void load_from_file(std::string path) const;
-       // T& operator+=(T& elem const);
-        T& operator[](int ind);
+        void operator+=(T elem)
+        {collection.push_back(elem);};
+        T& operator[](int ind)
+        {return collection[ind];};
 
 };
