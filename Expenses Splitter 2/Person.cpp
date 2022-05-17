@@ -12,7 +12,7 @@ Person::Person(unsigned int pid, std::string nm) : id(pid), name(nm)
 }
 
 
-bool Person::operator==(const Person& other) const 
+bool Person::operator==(const Person& other) const
 {
     return (atts == other.arg_str() && balance == other.get_balance()
         && name == other.get_name() && id == other.get_id());
@@ -27,7 +27,7 @@ bool Person::operator!=(const Person& other) const
 void Person::add_to_balace(double amount)
 {
     balance += amount;
-
+}
 std::string Person::file_input() const
 {
     std::string instr;

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Person.h"
+#include <vector>
 
 enum categories { food, alcohol, tabacco, other };
 enum my_excetpions { NegativeNumber};
@@ -15,20 +16,14 @@ public:
         if (m < 0)
             throw NegativeNumber;
     };
-    //virtual void settle() const = 0;
 
-};
-
-class CollectiveTransaction : public Transaction
-{
-private:
-
-public:
-    CollectiveTransaction(double m, Person p, categories c) : Transaction(m, p, c) {};
 };
 
 class SpecificTransaction : public Transaction
 {
-private:
-public:
+    private:
+        std::vector<Person*> recievers;
+    public:
+        SpecificTransaction(double m, Person p, categories c, std::vector<Person*> rec):
+        Transaction(m, p, c), recievers(rec) {}
 };
