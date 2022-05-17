@@ -32,12 +32,12 @@ public:
   void set_dairy(bool bl) {atts["dairy"] = bl;}
   void set_heavy_drinker(bool bl) {atts["heavy_drinker"] = bl;}
 
-  bool get_alcohol() {return atts["alcohol"]; };
-  bool get_nicotine() {return atts["nicotine"]; };
-  bool get_gluten() {return atts["gluten"]; };
-  bool get_meat() {return atts["meat"]; };
-  bool get_dairy() {return atts["dairy"]; };
-  bool get_heavy_drinker() {return atts["heavy_drinker"]; };
+  bool get_alcohol() const {return atts.at("alcohol"); };
+  bool get_nicotine() const {return atts.at("nicotine"); };
+  bool get_gluten() const {return atts.at("gluten"); };
+  bool get_meat() const {return atts.at("meat"); };
+  bool get_dairy() const {return atts.at("dairy"); };
+  bool get_heavy_drinker() const {return atts.at("heavy_drinker"); };
 
   std::unordered_map<std::string, bool> arg_str() const { return atts; };
   std::string file_input() const;
