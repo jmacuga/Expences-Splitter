@@ -32,5 +32,12 @@ public:
   void set_dairy(bool bl) {atts["dairy"] = bl;}
   void set_heavy_drinker(bool bl) {atts["heavy_drinker"] = bl;}
 
+  bool get_alcohol() {return atts["alcohol"]; };
+  bool get_nicotine() {return atts["nicotine"]; };
+  bool get_gluten() {return atts["gluten"]; };
+  bool get_meat() {return atts["meat"]; };
+  bool get_dairy() {return atts["dairy"]; };
+  bool get_heavy_drinker() {return atts["heavy_drinker"]; };
+
   std::unordered_map<std::string, bool> arg_str() const { return atts; };
 };
