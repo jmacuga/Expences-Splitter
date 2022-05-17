@@ -23,7 +23,13 @@ bool Person::operator!=(const Person& other) const
     return !(*this == other);
 }
 
+
 void Person::add_to_balace(double amount)
 {
     balance += amount;
+
+std::string Person::file_input() const
+{
+    std::string instr;
+    return instr;
 }
