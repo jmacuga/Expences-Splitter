@@ -60,7 +60,7 @@ bool test_check_set_att_input_3()
 
 bool test_check_set_att_input_4()
 {
-    if(check_set_att_input("gzdhdzh") == true)
+    if(check_set_att_input("YES") == true)
         return true;
     else
     {
