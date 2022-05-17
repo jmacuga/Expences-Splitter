@@ -1,27 +1,34 @@
+#pragma once
 #include <string>
 #include "Person.h"
 
-
+enum categories { food, alcohol, tabacco, other };
+enum my_excetpions { NegativeNumber};
 class Transaction
 {
-    protected:
+protected:
     double money;
-    std::string category;
+    int category;
     Person payer;
-    public:
-    virtual void settle() const = 0;
+public:
+    Transaction(double m, Person p, categories c) : money(m), category(c), payer(p) {
+        if (m < 0)
+            throw NegativeNumber;
+    };
+    //virtual void settle() const = 0;
 
 };
 
-class CollectiveTransaction: Transaction
+class CollectiveTransaction : public Transaction
 {
-    private:
+private:
 
-    public:
+public:
+    CollectiveTransaction(double m, Person p, categories c) : Transaction(m, p, c) {};
 };
 
-class SpecificTransaction: Transaction
+class SpecificTransaction : public Transaction
 {
-    private:
-    public:
+private:
+public:
 };
