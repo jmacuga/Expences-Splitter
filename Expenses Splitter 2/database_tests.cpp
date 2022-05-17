@@ -18,6 +18,7 @@ int main()
         failed = true;
         std::cout << "Constructor failed" << "\n";
     }
+    Database<Transaction> dbt;
 
     if (!failed)
     {
