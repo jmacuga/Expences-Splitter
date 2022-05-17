@@ -21,4 +21,5 @@ public:
   bool operator==(const Person &other) const;
   bool operator!=(const Person &other) const;
   std::unordered_map<std::string, bool> arg_str() const { return atts; };
+  std::string file_input() const;
 };

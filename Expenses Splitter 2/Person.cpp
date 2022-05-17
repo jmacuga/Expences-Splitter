@@ -22,3 +22,9 @@ bool Person::operator!=(const Person &other) const
 {
     return !(*this == other);
 }
+
+std::string Person::file_input() const
+{
+    std::string instr;
+    return instr;
+}
