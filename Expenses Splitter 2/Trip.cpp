@@ -9,3 +9,8 @@ void Trip::add_person(Person const& p)
 	}
 	people.push_back(p);
 }
+
+void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
+{
+	ptransactions.push_back(p_trans);
+}
