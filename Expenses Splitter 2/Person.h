@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Trip.h"
+//#include "Trip.h"
 #include <string>
 #include <unordered_map>
 
@@ -17,6 +17,7 @@ public:
 	void hd_true() { atts["heavy_drinker"] = true; }
 	std::string get_name() const { return name; };
 	double get_balance() const { return balance; };
+	void add_to_balace(double amount);
 	int get_id() const { return id; };
 	bool operator==(const Person& other) const;
 	bool operator!=(const Person& other) const;
