@@ -1,6 +1,6 @@
-#include "Person.h"
 #include <cmath>
 #include <sstream>
+#include "Person.h"
 
 Person::Person(unsigned int pid, std::string nm) : id(pid), name(nm)
 {
@@ -26,7 +26,7 @@ bool Person::operator!=(const Person& other) const
 }
 
 
-void Person::add_to_balace(double price)
+void Person::add_to_balace(float price)
 {
     balance += price;
 }

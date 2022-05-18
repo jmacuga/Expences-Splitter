@@ -1,6 +1,5 @@
 #pragma once
-
-//#include "Trip.h"
+#include <cmath>
 #include <string>
 #include <map>
 
@@ -9,7 +8,7 @@ class Person {
 	std::string name;
 	std::map<std::string, bool> atts;
 	// balance - sum of money to return/receive
-	double balance;
+	float balance;
 
 public:
 	Person(unsigned int pid, std::string nm);
@@ -17,8 +16,8 @@ public:
 	void hd_true() { atts["heavy_drinker"] = true; }
 	std::string get_name() const { return name; };
 	double get_balance() const { return balance; };
-	void set_balance(double newbal)  { balance == newbal; };
-	void add_to_balace(double amount);
+	void set_balance(float newbal)  { balance = newbal; };
+	void add_to_balace(float amount);
 	int get_id() const { return id; };
 	bool operator==(const Person& other) const;
 	bool operator!=(const Person& other) const;
