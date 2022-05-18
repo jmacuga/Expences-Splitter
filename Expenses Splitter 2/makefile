@@ -1,4 +1,4 @@
-all: main logic_tests database_tests
+all: main logic_tests file_operations_tests
 
 main: main.o Person.o Trip.o Transactions.o
 	g++ -o main.out main.o Person.o Trip.o Transactions.o
@@ -30,3 +30,4 @@ file_operations_tests.o: file_operations_tests.o
 
 clean:
 	rm -r main.o main.out Trip.o Person.o logic_tests.o logic_tests.out Transactions.o
+	rm -r file_operations_tests.o file_operations_tests.out

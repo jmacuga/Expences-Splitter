@@ -2,10 +2,6 @@
 #include <iostream>
 #include <fstream>
 
-Trip::Trip()
-{
-	
-}
 void Trip::add_person(Person const& p)
 {
 	for (Person trip_p : people)
@@ -17,7 +13,7 @@ void Trip::add_person(Person const& p)
 }
 
 void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
-{	
+{
 
 	p_trans->get_payer().add_to_balace(p_trans->get_money());
 	ptransactions.push_back(p_trans);

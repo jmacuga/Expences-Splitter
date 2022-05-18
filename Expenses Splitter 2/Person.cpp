@@ -1,4 +1,6 @@
 #include "Person.h"
+#include <cmath>
+#include <sstream>
 
 Person::Person(unsigned int pid, std::string nm) : id(pid), name(nm)
 {
@@ -31,6 +33,12 @@ void Person::add_to_balace(double price)
 
 std::string Person::file_input() const
 {
-    std::string instr;
-    return instr;
+
+    std::stringstream instr;
+    instr << id << " " << name << '\n';
+    instr << balance << '\n';
+    for (std::pair<const std::string, bool> pa: atts)
+        instr << int(std::get<1>(pa));
+    instr << '\n';
+    return instr.str();
 }

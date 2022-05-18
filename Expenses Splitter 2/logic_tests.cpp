@@ -25,7 +25,7 @@ int main()
     {
         Person Milosz(1, "Milosz");
         Person Janek(2, "Milosz");
-        Trip trip;
+        Trip trip("testtrip");
         double price = 11.5;
         std::shared_ptr<Transaction> trans = std::make_shared<Transaction>(price, Milosz, food);
         assert((trans->get_money() == price));

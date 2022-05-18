@@ -8,8 +8,7 @@ class Trip {
 	std::vector<std::shared_ptr<Transaction>> ptransactions;
 	std::string name;
 public:
-// two Trip constructors, one without path for creating a new trip, second one
-// for loading from file custom path will be ./{trip_name}_data
+// two Trip constructors, one with file handle to file from which should it be recreated
 	Trip(std::string nm): name(nm) {};
 	Trip(std::string nm, std::ifstream &myfile): name(nm) { load_from_file(myfile); };
 	void add_person(Person const&); //adds  person
