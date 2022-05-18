@@ -1,4 +1,6 @@
 #include "Trip.h"
+#include <iostream>
+#include <fstream>
 
 void Trip::add_person(Person const& p)
 {
@@ -17,7 +19,6 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 
 void Trip::save_to_file(std::ofstream &myfile) const
 {
-	if (myfile.is_open())
 
 }
 

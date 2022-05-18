@@ -3,9 +3,11 @@ all: main logic_tests database_tests
 main: main.o Person.o Trip.o Transactions.o
 	g++ -o main.out main.o Person.o Trip.o Transactions.o
 
-logic_tests: logic_tests.o Person.o Trip.o
-	g++ -o logic_tests.out logic_tests.o Person.o Trip.o
+logic_tests: logic_tests.o Person.o Trip.o Transactions.o
+	g++ -o logic_tests.out logic_tests.o Person.o Trip.o Transactions.o
 
+file_operations_tests: file_operations_tests.o Person.o Trip.o Transactions.o
+	g++ -o file_operations_tests.out file_operations_tests.o Person.o Trip.o Transactions.o
 
 main.o: main.o
 	g++ -c -g main.cpp
@@ -21,6 +23,9 @@ logic_tests.o: logic_tests.o
 
 Transactions.o: Transactions.o
 	g++ -c -g Transactions.cpp
+
+file_operations_tests.o: file_operations_tests.o
+	g++ -c -g file_operations_tests.cpp
 
 
 clean:
