@@ -19,17 +19,23 @@ public:
     Person& get_payer() { return payer; };
     int get_category() { return category; };
     double get_money() { return money; };
-
-    //virtual void settle() const = 0;
-
+    virtual std::string file_input() const = 0;
 };
+
+
+class CollectiveTransaction : public Transaction
+{
+public:
+    CollectiveTransaction(double m, Person& p, categories c): Transaction(m, p, c) {};
+    std::string file_input() const;
+};
+
 class SpecificTransaction : public Transaction
 {
 private:
-    std::vector<Person> v_included;
+    std::vector<Person*> v_included;
 public:
-    SpecificTransaction(double m, Person& p, categories c, std::vector<Person> v_incl) : Transaction(m, p, c)
-    {
-        v_included = v_incl;
-    }
+    SpecificTransaction(double m, Person& p, categories c, std::vector<Person*> v_incl) : Transaction(m, p, c)
+    { v_included = v_incl; };
+    std::string file_input() const;
 };
