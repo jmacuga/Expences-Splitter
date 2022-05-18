@@ -4,7 +4,7 @@
 #include "Transactions.h"
 
 class Trip {
-	std::vector<Person> people;
+;	std::vector<Person> people;
 	std::vector<std::shared_ptr<Transaction>> ptransactions;
 	std::string name;
 public:
@@ -18,5 +18,4 @@ public:
 	std::vector< std::shared_ptr<Transaction>> get_ptransactions() {  return ptransactions;  };
 	void save_to_file(std::ofstream &myfile) const;
 	void load_from_file(std::ifstream &myfile);
-
 };
