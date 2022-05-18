@@ -3,7 +3,7 @@
 #include "Person.h"
 #include <vector>
 
-enum categories { food, alcohol, tabacco, other };
+enum categories { food, alcohol, tabacco, meat, other };
 enum my_excetpions { NegativeNumber};
 class Transaction
 {
