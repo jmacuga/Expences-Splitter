@@ -1,0 +1,27 @@
+PEOPLE
+
+1 Miłosz
+0
+111110
+
+2 Piotrek
+0
+111000
+
+3 Julka
+0
+110010
+
+TRANSACTIONS
+
+SPE
+1
+56.98
+4
+23
+
+COL
+1
+40.5
+3
+

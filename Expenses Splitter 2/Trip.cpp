@@ -1,4 +1,5 @@
 #include "Trip.h"
+#include "Transactions.h"
 #include <iostream>
 #include <fstream>
 
@@ -20,6 +21,14 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 
 void Trip::save_to_file(std::ofstream &myfile) const
 {
+	if (!myfile.is_open())
+		throw FileNotOpen;
+	myfile << "PEOPLE\n\n";
+	for (const Person &p: people)
+		myfile << p.file_input() << '\n';
+	myfile << "TRANSACTIONS\n\n";
+	for (const std::shared_ptr<Transaction> &tr: ptransactions)
+		myfile << tr->file_input() << '\n';
 
 }
 
