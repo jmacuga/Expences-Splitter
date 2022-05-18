@@ -6,11 +6,11 @@ Person::Person(unsigned int pid, std::string nm) : id(pid), name(nm)
 {
     balance = 0.0;
     atts["alcohol"] = true;
-    atts["nicotine"] = false;
-    atts["gluten"] = true;
-    atts["meat"] = true;
     atts["dairy"] = true;
+    atts["gluten"] = true;
     atts["heavy_drinker"] = false;
+    atts["meat"] = true;
+    atts["nicotine"] = false;
 }
 
 
