@@ -21,6 +21,7 @@ public:
 	int get_id() const { return id; };
 	bool operator==(const Person& other) const;
 	bool operator!=(const Person& other) const;
+	std::string file_input() const;
 	//Brak sprawdzania wartoœci argumentów w setterach, poniewa¿ bêd¹ one sprawdzane osobnymi funkcjami
 
 	void set_name(std::string new_name);
