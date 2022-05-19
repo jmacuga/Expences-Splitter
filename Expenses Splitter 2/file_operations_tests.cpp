@@ -88,6 +88,17 @@ int main()
         tstr << line << '\n';
     ifile.close();
 
+    // Load_from_fle test
+    Trip trptoload("Test_trip1");
+    ifile.open(".target_file.txt");
+    trptoload.load_from_file(ifile);
+    ifile.close();
+    assert(trptoload.get_people().size() == 3);
+    assert(trptoload.get_people().at(0) == mil);
+    assert(trptoload.get_people().at(1) == pio);
+    assert(trptoload.get_people().at(2) == jul);
+
+
     if (tstr.str() != rstr.str())
     {
         std::cout << "Save to file test failed\n";
