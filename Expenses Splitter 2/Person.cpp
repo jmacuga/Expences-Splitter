@@ -26,9 +26,9 @@ bool Person::operator!=(const Person& other) const
 }
 
 
-void Person::add_to_balace(float price)
+void Person::add_to_balace(float amount)
 {
-    balance += price;
+    balance += amount;
 }
 
 std::string Person::file_input() const

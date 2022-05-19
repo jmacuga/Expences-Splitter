@@ -15,7 +15,7 @@ public:
 	void alc_false() { atts["alcohol"] = false; };
 	void hd_true() { atts["heavy_drinker"] = true; }
 	std::string get_name() const { return name; };
-	double get_balance() const { return balance; };
+	float get_balance() const { return balance; };
 	void set_balance(float newbal)  { balance = newbal; };
 	void add_to_balace(float amount);
 	int get_id() const { return id; };

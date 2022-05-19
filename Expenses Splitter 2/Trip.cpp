@@ -20,11 +20,11 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 	ptransactions.push_back(p_trans);
 	float money = p_trans->get_money();
 	float moneypp = 0;
-	size_t incl_number = p_trans->get_v_included().size();
+	size_t incl_number = p_trans->get_included().size();
 	if (incl_number)
 	{
 		moneypp = money/(incl_number + 1);
-		for (Person* p : p_trans->get_v_included())
+		for (Person* p : p_trans->get_included())
 		{
 			p->add_to_balace(-moneypp);
 		}
