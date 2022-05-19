@@ -4,7 +4,7 @@
 #include <vector>
 
 enum categories { food, alcohol, tabacco, meat, other };
-enum my_excetpions {NegativeNumber, FileNotOpen};
+enum my_excetpions {NegativeNumber, FileNotOpen, WrongFileFormat};
 class Transaction
 {
 protected:

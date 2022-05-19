@@ -35,5 +35,35 @@ void Trip::save_to_file(std::ofstream &myfile) const
 
 void Trip::load_from_file(std::ifstream &myfile)
 {
+	auto pderived = [&myfile]()
+	{
+		std::string line;
+		std::string sid = "";
+		std::string name = "";
+		std::string sbalance = "";
+		getline(myfile, line);
+		bool space_met = false;
+		for(const char &c: line)
+		{
+			if (c == ' ')
+			{
+				space_met = true;
+				continue;
+			}
+			if (!space_met)
+				sid += c;
+			else
+				name += c;
+		}
+		Person per(stoi(sid), name);
+		getline(myfile, line);
+		for(const char &c: line)
+			sbalance += c;
+		per.set_balance(stod(sbalance));
+		return per;
+	};
+
+	if (!myfile.is_open())
+		throw FileNotOpen;
 
 }
