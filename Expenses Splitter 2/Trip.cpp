@@ -23,6 +23,7 @@ void Trip::save_to_file(std::ofstream &myfile) const
 {
 	if (!myfile.is_open())
 		throw FileNotOpen;
+	myfile <<  name << "\n\n";
 	myfile << "PEOPLE\n\n";
 	for (const Person &p: people)
 		myfile << p.file_input() << '\n';

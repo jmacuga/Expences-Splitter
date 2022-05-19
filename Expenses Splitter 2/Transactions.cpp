@@ -26,3 +26,15 @@ std::string SpecificTransaction::file_input() const
     return rets.str();
 }
 
+bool CollectiveTransaction::operator==(const CollectiveTransaction& other) const
+{
+    return (money == other.get_money() &&
+            payer == other.get_payer() &&
+            category == other.get_category());
+}
+
+bool SpecificTransaction::operator==(const SpecificTransaction& other) const
+{
+    return (CollectiveTransaction::operator==(other) && v_included == other.get_included());
+}
+
