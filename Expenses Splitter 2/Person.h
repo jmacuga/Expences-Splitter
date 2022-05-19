@@ -1,15 +1,14 @@
 #pragma once
-
-//#include "Trip.h"
+#include <cmath>
 #include <string>
-#include <unordered_map>
+#include <map>
 
 class Person {
 	unsigned int id;
 	std::string name;
-	std::unordered_map<std::string, bool> atts;
+	std::map<std::string, bool> atts;
 	// balance - sum of money to return/receive
-	double balance;
+	float balance;
 
 public:
 	Person(unsigned int pid, std::string nm);
@@ -17,12 +16,12 @@ public:
 	void hd_true() { atts["heavy_drinker"] = true; }
 	std::string get_name() const { return name; };
 	double get_balance() const { return balance; };
-	void add_to_balace(double amount);
+	void set_balance(float newbal)  { balance = newbal; };
+	void add_to_balace(float amount);
 	int get_id() const { return id; };
 	bool operator==(const Person& other) const;
 	bool operator!=(const Person& other) const;
-	std::string file_input() const;
-	//Brak sprawdzania wartoœci argumentów w setterach, poniewa¿ bêd¹ one sprawdzane osobnymi funkcjami
+	//Brak sprawdzania wartoï¿½ci argumentï¿½w w setterach, poniewaï¿½ bï¿½dï¿½ one sprawdzane osobnymi funkcjami
 
 	void set_name(std::string new_name);
 	void set_id(unsigned int new_id);
@@ -40,5 +39,6 @@ public:
 	bool get_dairy() { return atts["dairy"]; };
 	bool get_heavy_drinker() { return atts["heavy_drinker"]; };
 
-	std::unordered_map<std::string, bool> arg_str() const { return atts; };
+	std::map<std::string, bool> arg_str() const { return atts; };
+    std::string file_input() const;
 };
