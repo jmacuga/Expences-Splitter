@@ -16,6 +16,10 @@ std::string CollectiveTransaction::file_input() const
     return rets.str();
 }
 
+std::vector<Person*> SpecificTransaction::get_v_included() const
+{
+    return v_included;
+}
 std::string SpecificTransaction::file_input() const
 {
     std::stringstream rets;
