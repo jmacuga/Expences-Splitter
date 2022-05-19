@@ -3,8 +3,8 @@
 #include <vector>
 #include "Person.h"
 
-enum categories { food, alcohol, tabacco, other };
-enum my_excetpions { NegativeNumber};
+enum categories { food, alcohol, tabacco, meat, other };
+enum my_excetpions {NegativeNumber, FileNotOpen};
 class Transaction
 {
 protected:
@@ -25,6 +25,8 @@ public:
         return v;
     };
     virtual std::string file_input() const = 0;
+    bool operator==(const Transaction& other) const;
+    bool operator!=(const Transaction& other) const { return !(*this == other); };
 };
 
 
@@ -33,16 +35,17 @@ class CollectiveTransaction : public Transaction
 public:
     CollectiveTransaction(float m, Person& p, categories c): Transaction(m, p, c) {};
     std::string file_input() const;
-    
+    bool operator==(const CollectiveTransaction& other) const;
 };
 
-class SpecificTransaction : public Transaction
+class SpecificTransaction : public CollectiveTransaction
 {
 private:
     std::vector<Person*> v_included;
 public:
-    SpecificTransaction(float m, Person& p, categories c, std::vector<Person*> v_incl) : Transaction(m, p, c)
+    SpecificTransaction(double m, Person& p, categories c, std::vector<Person*> v_incl) : CollectiveTransaction(m, p, c)
     { v_included = v_incl; };
     std::string file_input() const;
-    std::vector<Person*> get_v_included() const;
+    std::vector<Person*> get_included() const { return v_included; };
+    bool operator==(const SpecificTransaction& other) const;
 };
