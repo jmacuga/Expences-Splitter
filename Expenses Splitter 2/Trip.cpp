@@ -9,7 +9,7 @@ void Trip::add_person(Person const& p)
 	for (Person trip_p : people)
 	{
 		if (p == trip_p)
-			return;	
+			return;
 	}
 	people.push_back(p);
 }
@@ -57,13 +57,12 @@ void Trip::save_to_file(std::ofstream &myfile) const
 
 void Trip::load_from_file(std::ifstream &myfile)
 {
-	auto pderived = [&myfile]()
+	auto pderived = [&myfile](std::string fline)
 	{
-		std::string line;
+		std::string line = fline;
 		std::string sid = "";
 		std::string name = "";
 		std::string sbalance = "";
-		getline(myfile, line);
 		bool space_met = false;
 		for(const char &c: line)
 		{
@@ -82,10 +81,28 @@ void Trip::load_from_file(std::ifstream &myfile)
 		for(const char &c: line)
 			sbalance += c;
 		per.set_balance(stod(sbalance));
+		getline(myfile, line);
+		per.atts_setter(line);
+		getline(myfile, line);
+		if (line != "")
+			throw WrongFileFormat;
 		return per;
 	};
 
 	if (!myfile.is_open())
 		throw FileNotOpen;
+	std::string line = "";
+	while (line != "PEOPLE")
+		getline(myfile, line);
+	getline(myfile, line);
+	if (line != "")
+		throw WrongFileFormat;
+	while (true)
+	{
+		getline(myfile, line);
+		if (line == "TRANSACTIONS")
+			break;
+		people.push_back(pderived(line));
+	}
 
 }

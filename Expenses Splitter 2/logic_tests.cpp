@@ -14,10 +14,10 @@ int main()
         Person Milosz(1, "Milosz");
         Trip trip("super trip");
         trip.add_person(Milosz);
-        assert((trip.get_people().size() == 1));
+        assert((trip.get_people() -> size() == 1));
         //test add_person() same person
         trip.add_person(Milosz);
-        assert((trip.get_people().size() == 1));
+        assert((trip.get_people() -> size() == 1));
 
     }
     //test Person::add_to_balance()

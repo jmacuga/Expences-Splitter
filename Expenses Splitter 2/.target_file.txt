@@ -3,15 +3,15 @@ Test_trip
 PEOPLE
 
 1 Miłosz
-0
+37.9867
 111110
 
 2 Piotrek
-0
+-18.9933
 111000
 
 3 Julka
-0
+-18.9933
 110010
 
 TRANSACTIONS
