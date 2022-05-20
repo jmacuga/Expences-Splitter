@@ -31,6 +31,7 @@ public:
 	void set_meat(bool bl) { atts["meat"] = bl; }
 	void set_dairy(bool bl) { atts["dairy"] = bl; }
 	void set_heavy_drinker(bool bl) { atts["heavy_drinker"] = bl; }
+	void atts_setter(std::string att_code);
 
 	bool get_alcohol() { return atts["alcohol"]; };
 	bool get_nicotine() { return atts["nicotine"]; };
