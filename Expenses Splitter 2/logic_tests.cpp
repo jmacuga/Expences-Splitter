@@ -2,11 +2,6 @@
 #include <cassert>
 #include "Trip.h"
 
-float const EPS = 0.00001;
-bool are_equal(float a, float b)
-{
-    return abs(a - b) < EPS;
-};
 int main()
 {
     //test add_person();
@@ -38,12 +33,12 @@ int main()
             trip.add_person(Janek);
             trip.add_person(Jula);
             float price = 11.50;
-            std::shared_ptr<Transaction> trans = std::make_shared<CollectiveTransaction>(price, Milosz, food);
+            std::shared_ptr<Transaction> trans = std::make_shared<CollectiveTransaction>(price, Milosz, Person::Category::food);
             assert((trans->get_money() == price));
             assert((trans->get_payer() == Milosz));
             trip.add_transaction(trans);
             assert((trip.get_ptransactions().size() == 1));
-            assert(are_equal(Milosz.get_balance(), 2 * price / 3));
+            assert((Milosz.get_balance(), 2 * price / 3));
         }
         //test case 2
         {
@@ -55,17 +50,17 @@ int main()
             trip.add_person(Janek);
             trip.add_person(Jula);
             float price = 11.50;
-            std::shared_ptr<Transaction> trans = std::make_shared<CollectiveTransaction>(price, Milosz, food);
+            std::shared_ptr<Transaction> trans = std::make_shared<CollectiveTransaction>(price, Milosz, Person::Category::food);
             trip.add_transaction(trans);
             std::vector<Person*> receivers{ &Milosz, &Jula };
-            std::shared_ptr<Transaction> spectrans = std::make_shared<SpecificTransaction>(30, Janek, alcohol, receivers);
-            assert(are_equal(Milosz.get_balance(),7.66667));
+            std::shared_ptr<Transaction> spectrans = std::make_shared<SpecificTransaction>(30, Janek, Person::Category::alcohol, receivers);
+            assert(Transaction::fl_cmp(Milosz.get_balance(),7.66667));
             trip.add_transaction(spectrans);
             assert((trip.get_ptransactions().size() == 2));
             assert((trip.get_ptransactions()[1]->get_payer() == Janek));
-            assert(are_equal(Janek.get_balance(),20));
-            assert(are_equal(Jula.get_balance(),-10));
-            assert(are_equal(Milosz.get_balance(),-2.33334));
+            assert(Transaction::fl_cmp(Janek.get_balance(),20));
+            assert(Transaction::fl_cmp(Jula.get_balance(),-10));
+            assert(Transaction::fl_cmp(Milosz.get_balance(),-2.33334));
             assert((*spectrans->get_included()[0] == Milosz));
         }
         //test case 3 - split between included people
