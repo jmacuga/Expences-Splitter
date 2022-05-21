@@ -36,13 +36,6 @@ bool Transaction::operator==(const Transaction& other) const
             category == other.get_category());
 }
 
-//bool CollectiveTransaction::operator==(const CollectiveTransaction& other) const
-//{
-//    //TODO porownanie money == float nie zadzaila!
-//    return (money == other.get_money() &&
-//            payer == other.get_payer() &&
-//            category == other.get_category());
-//}
 
 bool SpecificTransaction::operator==(const SpecificTransaction& other) const
 {
