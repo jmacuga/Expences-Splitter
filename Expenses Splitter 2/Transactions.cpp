@@ -9,20 +9,20 @@
     Transaction's category (int connected to a given enum)
     (only SPE) Recievers ID's
 */
-bool db_cmp(const double& fst, const double& scnd)
-{ return abs(fst - scnd) < 10e-8; }
+//bool db_cmp(const double& fst, const double& scnd)
+//{ return abs(fst - scnd) < 10e-8; }
 
 std::string CollectiveTransaction::file_input() const
 {
     std::stringstream rets;
-    rets << "COL\n" << payer.get_id() << "\n" << money << "\n" << category << "\n";
+    rets << "COL\n" << payer.get_id() << "\n" << money << "\n" << Person::Cat_to_str(category) << "\n";
     return rets.str();
 }
 
 std::string SpecificTransaction::file_input() const
 {
     std::stringstream rets;
-    rets << "SPE\n" << payer.get_id() << "\n" << money << "\n" << category << "\n";
+    rets << "SPE\n" << payer.get_id() << "\n" << money << "\n" << Person::Cat_to_str(category) << "\n";
     for (const Person* p: v_included)
         rets << p->get_id();
     rets << "\n";
@@ -31,7 +31,7 @@ std::string SpecificTransaction::file_input() const
 
 bool Transaction::operator==(const Transaction& other) const
 {
-    return (db_cmp(money, other.get_money()) &&
+    return (Transaction::fl_cmp(money, other.get_money()) &&
             payer == other.get_payer() &&
             category == other.get_category());
 }
