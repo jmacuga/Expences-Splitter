@@ -3,15 +3,12 @@ Test_trip
 PEOPLE
 
 1 Miłosz
-37.9867
-111110
+110110
 
 2 Piotrek
--18.9933
 111000
 
 3 Julka
--18.9933
 110010
 
 TRANSACTIONS
@@ -19,7 +16,7 @@ TRANSACTIONS
 SPE
 1
 56.98
-4
+5
 23
 
 COL

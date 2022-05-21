@@ -15,14 +15,14 @@
 std::string CollectiveTransaction::file_input() const
 {
     std::stringstream rets;
-    rets << "COL\n" << payer.get_id() << "\n" << money << "\n" << Person::Cat_to_str(category) << "\n";
+    rets << "COL\n" << payer.get_id() << "\n" << money << "\n" << int(category) << "\n";
     return rets.str();
 }
 
 std::string SpecificTransaction::file_input() const
 {
     std::stringstream rets;
-    rets << "SPE\n" << payer.get_id() << "\n" << money << "\n" << Person::Cat_to_str(category) << "\n";
+    rets << "SPE\n" << payer.get_id() << "\n" << money << "\n" << int(category) << "\n";
     for (const Person* p: v_included)
         rets << p->get_id();
     rets << "\n";

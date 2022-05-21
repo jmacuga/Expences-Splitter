@@ -6,11 +6,12 @@
 Person::Person(unsigned int pid, std::string nm) : id(pid), name(nm)
 {
     balance = 0.0;
-    atts[Category::alcohol] = true;
     atts[Category::food] = true;
+    atts[Category::alcohol] = true;
     atts[Category::nicotine] = false;
     atts[Category::meat] = true;
     atts[Category::gluten] = true;
+    atts[Category::other] = true;
 }
 
 void Person::atts_setter(std::string att_code)
@@ -30,7 +31,7 @@ void Person::atts_setter(std::string att_code)
 
 bool Person::operator==(const Person& other) const
 {
-    return (atts == other.get_atts() && balance == other.get_balance()
+    return (atts == other.get_atts() && Transaction::fl_cmp(balance, other.get_balance())
         && name == other.get_name() && id == other.get_id());
 }
 
@@ -50,7 +51,6 @@ std::string Person::file_input() const
 
     std::stringstream instr;
     instr << id << " " << name << '\n';
-    instr << (round(balance * 10e5) / 1000000.0) << '\n';
     for (std::pair<const Category, bool> pa: atts)
         instr << int(std::get<1>(pa));
     instr << '\n';

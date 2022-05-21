@@ -26,15 +26,10 @@ public:
 
 	void set_name(std::string new_name);
 	void set_id(unsigned int new_id);
-	
-	void set_att_true(Category c)
-	{
-		atts[c] = true; 
-	}
 
-	void set_att_false(Category c)
+	void set_att(Category c, bool bl)
 	{
-		atts[c] = false;
+		atts[c] = bl;
 	}
 
 	//void set_alcohol(bool bl) { atts["alcohol"] = bl; }
@@ -45,7 +40,7 @@ public:
 	//void set_heavy_drinker(bool bl) { atts["heavy_drinker"] = bl; }
 
 	void atts_setter(std::string att_code);
-	
+
 	//bool get_alcohol() { return atts["alcohol"]; };
 	//bool get_nicotine() { return atts["nicotine"]; };
 	//bool get_gluten() { return atts["gluten"]; };

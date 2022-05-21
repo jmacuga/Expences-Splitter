@@ -62,7 +62,6 @@ void Trip::load_from_file(std::ifstream &myfile)
 		std::string line = fline;
 		std::string sid = "";
 		std::string name = "";
-		std::string sbalance = "";
 		bool space_met = false;
 		for(const char &c: line)
 		{
@@ -77,10 +76,6 @@ void Trip::load_from_file(std::ifstream &myfile)
 				name += c;
 		}
 		Person per(stoi(sid), name);
-		getline(myfile, line);
-		for(const char &c: line)
-			sbalance += c;
-		per.set_balance(stod(sbalance));
 		getline(myfile, line);
 		per.atts_setter(line);
 		getline(myfile, line);
