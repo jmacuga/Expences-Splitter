@@ -8,7 +8,7 @@ Person::Person(unsigned int pid, std::string nm) : id(pid), name(nm)
     balance = 0.0;
     atts[Category::alcohol] = true;
     atts[Category::food] = true;
-    atts[Category::nicotine] = false;
+    atts[Category::nicotine] = true;
     atts[Category::meat] = true;
     atts[Category::gluten] = true;
 }
