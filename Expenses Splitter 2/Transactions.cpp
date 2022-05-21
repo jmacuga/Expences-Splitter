@@ -9,6 +9,9 @@
     Transaction's category (int connected to a given enum)
     (only SPE) Recievers ID's
 */
+bool db_cmp(const double& fst, const double& scnd)
+{ return abs(fst - scnd) < 10e-8; }
+
 std::string CollectiveTransaction::file_input() const
 {
     std::stringstream rets;
@@ -16,10 +19,6 @@ std::string CollectiveTransaction::file_input() const
     return rets.str();
 }
 
-std::vector<Person*> SpecificTransaction::get_v_included() const
-{
-    return v_included;
-}
 std::string SpecificTransaction::file_input() const
 {
     std::stringstream rets;
@@ -30,12 +29,20 @@ std::string SpecificTransaction::file_input() const
     return rets.str();
 }
 
-bool CollectiveTransaction::operator==(const CollectiveTransaction& other) const
+bool Transaction::operator==(const Transaction& other) const
 {
-    return (money == other.get_money() &&
+    return (db_cmp(money, other.get_money()) &&
             payer == other.get_payer() &&
             category == other.get_category());
 }
+
+//bool CollectiveTransaction::operator==(const CollectiveTransaction& other) const
+//{
+//    //TODO porownanie money == float nie zadzaila!
+//    return (money == other.get_money() &&
+//            payer == other.get_payer() &&
+//            category == other.get_category());
+//}
 
 bool SpecificTransaction::operator==(const SpecificTransaction& other) const
 {

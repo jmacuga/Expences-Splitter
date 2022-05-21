@@ -1,6 +1,7 @@
 #include <cmath>
 #include <sstream>
 #include "Person.h"
+#include "Transactions.h"
 
 Person::Person(unsigned int pid, std::string nm) : id(pid), name(nm)
 {
@@ -13,6 +14,20 @@ Person::Person(unsigned int pid, std::string nm) : id(pid), name(nm)
     atts["nicotine"] = false;
 }
 
+void Person::atts_setter(std::string att_code)
+{
+    std::string::const_iterator code_iter = att_code.cbegin();
+    std::map<std::string, bool>::iterator at_iter = atts.begin();
+    for (code_iter, at_iter; at_iter != atts.end(); ++code_iter, ++at_iter)
+        if (*(code_iter) == '1')
+            (*at_iter).second = true;
+        else if (*(code_iter) == '0')
+            (*at_iter).second = false;
+        else
+            throw WrongFileFormat;
+    if (at_iter != atts.end() && code_iter != att_code.cend())
+        throw WrongFileFormat;
+}
 
 bool Person::operator==(const Person& other) const
 {
@@ -26,9 +41,9 @@ bool Person::operator!=(const Person& other) const
 }
 
 
-void Person::add_to_balace(float price)
+void Person::add_to_balace(float amount)
 {
-    balance += price;
+    balance += amount;
 }
 
 std::string Person::file_input() const
@@ -36,7 +51,7 @@ std::string Person::file_input() const
 
     std::stringstream instr;
     instr << id << " " << name << '\n';
-    instr << balance << '\n';
+    instr << (round(balance * 10e5) / 1000000.0) << '\n';
     for (std::pair<const std::string, bool> pa: atts)
         instr << int(std::get<1>(pa));
     instr << '\n';

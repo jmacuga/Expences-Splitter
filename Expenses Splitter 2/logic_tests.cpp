@@ -14,10 +14,10 @@ int main()
         Person Milosz(1, "Milosz");
         Trip trip("super trip");
         trip.add_person(Milosz);
-        assert((trip.get_people().size() == 1));
+        assert((trip.get_people() -> size() == 1));
         //test add_person() same person
         trip.add_person(Milosz);
-        assert((trip.get_people().size() == 1));
+        assert((trip.get_people() -> size() == 1));
 
     }
     //test Person::add_to_balance()
@@ -66,7 +66,7 @@ int main()
             assert(are_equal(Janek.get_balance(),20));
             assert(are_equal(Jula.get_balance(),-10));
             assert(are_equal(Milosz.get_balance(),-2.33334));
-            assert((*spectrans->get_v_included()[0] == Milosz));
+            assert((*spectrans->get_included()[0] == Milosz));
         }
         //test case 3 - split between included people
         {
