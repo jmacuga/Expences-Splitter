@@ -25,9 +25,9 @@ bool check_set_att_input(std::string set_attr)
         return false;
 }
 
-bool check_init_action(int output)
+bool check_init_action(int input)
 {
-    if (output == 1 || output == 2)
+    if (input == 1 || input == 2 || input == 3)
         return true;
     else
         return false;
