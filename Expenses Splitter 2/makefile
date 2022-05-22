@@ -1,7 +1,7 @@
 all: main logic_tests ui_checks_tests
 
-main: main.o Person.o Trip.o Transactions.o
-	g++ -o main.out main.o Person.o Trip.o Transactions.o
+main: main.o Person.o Trip.o Transactions.o ui_actions.o
+	g++ -o main.out main.o Person.o Trip.o Transactions.o ui_actions.o
 
 logic_tests: logic_tests.o Person.o Trip.o Transactions.o
 	g++ -o logic_tests.out logic_tests.o Person.o Trip.o Transactions.o
@@ -24,6 +24,12 @@ Trip.o: Trip.o
 Person.o: Person.o
 	g++ -c -g Person.cpp
 
+ui_checks.o: ui_checks.o
+	g++ -c -g ui_checks.cpp
+
+ui_actions.o: ui_actions.o
+	g++ -c -g ui_actions.cpp
+
 logic_tests.o: logic_tests.o
 	g++ -c -g logic_tests.cpp
 
@@ -36,5 +42,6 @@ file_operations_tests.o: file_operations_tests.o
 
 clean:
 	rm -r main.o main.out Trip.o Person.o logic_tests.o logic_tests.out Transactions.o
-	rm -r file_operations_tests.o file_operations_tests.out
+	rm -r ui_actions.o
 	rm -r ui_checks.o ui_checks_tests.o ui_checks_tests.out
+	rm -r file_operations_tests.o file_operations_tests.out

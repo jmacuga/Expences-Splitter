@@ -1,4 +1,5 @@
 #include <string>
+#include "ui_checks.h"
 
 
 // sprawdzanie, czy ktoś nie podaje pustego imienia
@@ -19,6 +20,14 @@ bool check_name(std::string new_name)
 bool check_set_att_input(std::string set_attr)
 {
     if(set_attr == "N" || set_attr == "NO" || set_attr == "Y" || set_attr == "YES")
+        return true;
+    else
+        return false;
+}
+
+bool check_init_action(int output)
+{
+    if (output == 1 || output == 2)
         return true;
     else
         return false;
