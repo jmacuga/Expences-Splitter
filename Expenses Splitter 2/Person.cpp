@@ -11,6 +11,7 @@ Person::Person(unsigned int pid, std::string nm) : id(pid), name(nm)
     atts[Category::nicotine] = false;
     atts[Category::meat] = true;
     atts[Category::gluten] = true;
+    atts[Category::dairy] = true;
     atts[Category::other] = true;
 }
 

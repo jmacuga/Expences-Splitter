@@ -8,9 +8,9 @@
 void launch_app()
 {
     std::cout << "Choose options:\n";
-    std::cout << "1. Add new trip.(Type '1')\n";
-    std::cout << "2. Load trip information from database.(Type '2')\n";
-    std::cout << "3. Exit.(Type '3')\n";
+    std::cout << "1. Add new trip. (Type '1')\n";
+    std::cout << "2. Load trip. (Type '2')\n";
+    std::cout << "3. Exit. (Type '3')\n";
     int input = 0;
     while(!(std::cin >> input)){
         std::cin.clear();
@@ -20,6 +20,7 @@ void launch_app()
     }
     if (check_init_action(input) == true)
         {
+            // TODO można zrobić switch case tutaj
             if(input == 1)
                 add_new_trip();
             else if(input == 2)

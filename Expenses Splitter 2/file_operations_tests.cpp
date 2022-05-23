@@ -12,7 +12,7 @@ int main()
     Person mil(1, "Miłosz");
     mil.set_att(Person::Category::other, false);
     tstr << "1 Miłosz\n";
-    tstr << "110110\n";
+    tstr << "1101110\n";
     rstr << mil.file_input();
     if (tstr.str() != rstr.str())
     {
@@ -49,7 +49,7 @@ int main()
     tsttrip.add_person(jul);
     std::vector<Person*> recievers{&tsttrip.get_people() -> at(1), &tsttrip.get_people() -> at(2)};
     SpecificTransaction st(56.98, tsttrip.get_people() -> at(0), Person::Category::other, recievers);
-    tstr << "SPE\n1\n56.98\n5\n23\n";
+    tstr << "SPE\n1\n56.98\n6\n23\n";
     rstr << st.file_input();
     if (tstr.str() != rstr.str())
     {
@@ -92,9 +92,6 @@ int main()
     std::remove(".test_file.txt");
 
     // Load_from_fle test
-    mil.set_balance(37.9867);
-    pio.set_balance(-18.9933);
-    jul.set_balance(-18.9933);
     Trip trptoload("Test_trip1");
     ifile.open(".target_file.txt");
     trptoload.load_from_file(ifile);
@@ -103,14 +100,10 @@ int main()
     assert(trptoload.get_people() -> at(0) == mil);
     assert(trptoload.get_people() -> at(1) == pio);
     assert(trptoload.get_people() -> at(2) == jul);
+    assert(trptoload.get_trans_size() == 2);
+    assert(trptoload.get_trans_payer(0) == mil);
+    assert(trptoload.get_trans_payer(1) == mil);
 
-
-    if (tstr.str() != rstr.str())
-    {
-        std::cout << "Save to file test failed\n";
-        std::cout << "Target: \n" << tstr.str() << "\nResult: \n" << rstr.str();
-    }
-    std::remove(".test_file.txt");
 
     std::cout << "End of file operation tests.\n";
     return 0;
