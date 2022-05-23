@@ -1,7 +1,7 @@
 #include <iostream>
 #include <limits>
 #include "ui_actions.h"
-#include "ui_checks.cpp"
+#include "ui_checks.h"
 #include "Trip.h"
 
 
