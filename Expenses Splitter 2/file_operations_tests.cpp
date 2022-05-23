@@ -26,7 +26,7 @@ int main()
     rstr.str(std::string());
     Trip tsttrip("Test_trip");
     tsttrip.add_person(mil);
-    CollectiveTransaction ct(40.5, tsttrip.get_people() -> at(0), Person::Category::meat);
+    CollectiveTransaction ct(40.5, 1, Person::Category::meat);
     tstr << "COL\n1\n40.5\n3\n";
     rstr << ct.file_input();
     if (tstr.str() != rstr.str())
@@ -47,8 +47,8 @@ int main()
     // zeruje payer w collective transaction, zabawne
     tsttrip.add_person(pio);
     tsttrip.add_person(jul);
-    std::vector<Person*> recievers{&tsttrip.get_people() -> at(1), &tsttrip.get_people() -> at(2)};
-    SpecificTransaction st(56.98, tsttrip.get_people() -> at(0), Person::Category::other, recievers);
+    std::vector<int> recievers{2, 3};
+    SpecificTransaction st(56.98, 1, Person::Category::other, recievers);
     tstr << "SPE\n1\n56.98\n6\n23\n";
     rstr << st.file_input();
     if (tstr.str() != rstr.str())
@@ -97,13 +97,13 @@ int main()
     trptoload.load_from_file(ifile);
     ifile.close();
     assert(trptoload.get_people() -> size() == 3);
-    assert(trptoload.get_people() -> at(0) == mil);
-    assert(trptoload.get_people() -> at(1) == pio);
-    assert(trptoload.get_people() -> at(2) == jul);
+    assert(trptoload.get_people() -> at(0).get_name() == "Miłosz");
+    assert(trptoload.get_people() -> at(1).get_name() == "Piotrek");
+    assert(trptoload.get_people() -> at(2).get_name() == "Julka");
     assert(trptoload.get_trans_size() == 2);
-    assert(trptoload.get_trans_payer(0) == mil);
-    assert(trptoload.get_trans_payer(1) == mil);
-
+    assert(Transaction::fl_cmp(trptoload.get_people() -> at(0).get_balance(), 77.23));
+    assert(Transaction::fl_cmp(trptoload.get_people() -> at(1).get_balance(), -28.49));
+    assert(Transaction::fl_cmp(trptoload.get_people() -> at(2).get_balance(), -48.74));
 
     std::cout << "End of file operation tests.\n";
     return 0;

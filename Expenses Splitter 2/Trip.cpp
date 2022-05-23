@@ -21,7 +21,7 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 	float money = p_trans->get_money();
 	float moneypp = 0;
 	size_t incl_number = p_trans->get_included().size();
-	std::vector<Person*> included; 
+	std::vector<Person*> included;
 	if(!incl_number)
 	{
 		for (Person& p : people)
@@ -35,14 +35,15 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 	}
 	else
 	{
-		included = p_trans->get_included();
-	}	
+		for (int &idx: p_trans->get_included())
+			included.push_back(&people[idx - 1]);
+	}
 	moneypp = money/(incl_number);
 	for (Person* p : included)
 	{
 		p->add_to_balace(-moneypp);
 	}
-	p_trans->get_payer().add_to_balace(money);
+	people[p_trans->get_payer() - 1].add_to_balace(money);
 }
 
 void Trip::save_to_file(std::ofstream &myfile) const
@@ -56,6 +57,7 @@ void Trip::save_to_file(std::ofstream &myfile) const
 	myfile << "TRANSACTIONS\n\n";
 	for (const std::shared_ptr<Transaction> &tr: ptransactions)
 		myfile << tr->file_input() << '\n';
+	myfile << "&&&";
 
 }
 
@@ -88,6 +90,46 @@ void Trip::load_from_file(std::ifstream &myfile)
 		return per;
 	};
 
+	auto coltderived = [&myfile, this]()
+	{
+		std::string line;
+		double balance;
+		int payer;
+		Person::Category cat;
+		getline(myfile, line);
+		payer = stoi(line);
+		getline(myfile, line);
+		balance = stod(line);
+		getline(myfile, line);
+		cat = Person::Category(stoi(line));
+		getline(myfile, line);
+		return CollectiveTransaction(balance, payer, cat);
+	};
+
+	auto spetderived = [&myfile, this]()
+	{
+		std::string line;
+		double balance;
+		int payer;
+		Person::Category cat;
+		getline(myfile, line);
+		payer = stoi(line);
+		getline(myfile, line);
+		balance = stod(line);
+		getline(myfile, line);
+		cat = Person::Category(stoi(line));
+		getline(myfile, line);
+		std::vector<int> recievers(line.length());
+		size_t idx = 0;
+		for (const char &c: line)
+		{
+			recievers[idx] = (int)c - '0';
+			idx++;
+		}
+		getline(myfile, line);
+		return SpecificTransaction(balance, payer, cat, std::vector<int>(recievers));
+	};
+
 	if (!myfile.is_open())
 		throw FileNotOpen;
 	std::string line = "";
@@ -102,6 +144,23 @@ void Trip::load_from_file(std::ifstream &myfile)
 		if (line == "TRANSACTIONS")
 			break;
 		people.push_back(pderived(line));
+	}
+	getline(myfile, line);
+	getline(myfile, line);
+	while (line != "&&&")
+	{
+		if (line == "COL")
+		{
+			add_transaction(std::make_shared<CollectiveTransaction>(coltderived()));
+			getline(myfile, line);
+		}
+		else if (line == "SPE")
+		{
+			add_transaction(std::make_shared<SpecificTransaction>(spetderived()));
+			getline(myfile, line);
+		}
+		else
+			throw WrongFileFormat;
 	}
 
 }

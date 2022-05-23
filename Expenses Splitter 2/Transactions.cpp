@@ -13,16 +13,16 @@
 std::string CollectiveTransaction::file_input() const
 {
     std::stringstream rets;
-    rets << "COL\n" << payer.get_id() << "\n" << money << "\n" << int(category) << "\n";
+    rets << "COL\n" << payer << "\n" << money << "\n" << int(category) << "\n";
     return rets.str();
 }
 
 std::string SpecificTransaction::file_input() const
 {
     std::stringstream rets;
-    rets << "SPE\n" << payer.get_id() << "\n" << money << "\n" << int(category) << "\n";
-    for (const Person* p: v_included)
-        rets << p->get_id();
+    rets << "SPE\n" << payer << "\n" << money << "\n" << int(category) << "\n";
+    for (const int &id: inid)
+        rets << id;
     rets << "\n";
     return rets.str();
 }
@@ -37,6 +37,6 @@ bool Transaction::operator==(const Transaction& other) const
 
 bool SpecificTransaction::operator==(const SpecificTransaction& other) const
 {
-    return (CollectiveTransaction::operator==(other) && v_included == other.get_included());
+    return (CollectiveTransaction::operator==(other) && inid == other.get_included());
 }
 

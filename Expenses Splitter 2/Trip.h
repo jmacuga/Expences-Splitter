@@ -20,7 +20,7 @@ public:
 
 	// FIXME imo robienie funkcji tylko po to żeby ładnie w testach były to mech sprawa
 	size_t get_trans_size() const { return ptransactions.size(); }
-	Person const get_trans_payer(int trans_id) const { return ptransactions[trans_id]->get_payer(); };
+	//Person const get_trans_payer(int trans_id) const { return ptransactions[trans_id]->get_payer(); };
 	size_t get_people_size() { return people.size(); }
 	float get_person_balance(int id) { return people[id].get_balance(); };
 
