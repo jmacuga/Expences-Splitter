@@ -21,24 +21,28 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 	float money = p_trans->get_money();
 	float moneypp = 0;
 	size_t incl_number = p_trans->get_included().size();
-	if (incl_number)
+	std::vector<Person*> included; 
+	if(!incl_number)
 	{
-		moneypp = money/(incl_number + 1);
-		for (Person* p : p_trans->get_included())
+		for (Person& p : people)
 		{
-			p->add_to_balace(-moneypp);
+			if (p.category_compare(p_trans->get_category()))
+			{
+				incl_number++;
+				included.push_back(&p);
+			}
 		}
 	}
 	else
 	{
-		moneypp = money/people.size();
-		for (Person p : people)
-		{
-			if (p == p_trans->get_payer()) continue;
-			p.add_to_balace(-moneypp);
-		}
+		included = p_trans->get_included();
+	}	
+	moneypp = money/(incl_number);
+	for (Person* p : included)
+	{
+		p->add_to_balace(-moneypp);
 	}
-	p_trans->get_payer().add_to_balace(money - moneypp);
+	p_trans->get_payer().add_to_balace(money);
 }
 
 void Trip::save_to_file(std::ofstream &myfile) const
@@ -47,7 +51,7 @@ void Trip::save_to_file(std::ofstream &myfile) const
 		throw FileNotOpen;
 	myfile <<  name << "\n\n";
 	myfile << "PEOPLE\n\n";
-	for (const Person &p: people)
+	for ( const Person &p : people)
 		myfile << p.file_input() << '\n';
 	myfile << "TRANSACTIONS\n\n";
 	for (const std::shared_ptr<Transaction> &tr: ptransactions)

@@ -9,8 +9,6 @@
     Transaction's category (int connected to a given enum)
     (only SPE) Recievers ID's
 */
-//bool db_cmp(const double& fst, const double& scnd)
-//{ return abs(fst - scnd) < 10e-8; }
 
 std::string CollectiveTransaction::file_input() const
 {
