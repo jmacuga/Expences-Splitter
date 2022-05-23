@@ -26,14 +26,14 @@ public:
 
 	void set_name(std::string new_name);
 	void set_id(unsigned int new_id);
-	
+
 	void set_att(Category c, bool val) { atts[c] = val; }
 
 	void atts_setter(std::string att_code);
 
 	std::map<Category, bool> get_atts() const { return atts; };
     std::string file_input() const;
-	bool category_compare(Category trans_c) const 
+	bool category_compare(Category trans_c) const
 		//checks if person should be included in transaction of category c
 	{
 		std::map<Category, bool>::const_iterator elem = atts.find(trans_c);

@@ -1,0 +1,27 @@
+Test_trip
+
+PEOPLE
+
+1 Miłosz
+1101110
+
+2 Piotrek
+1100111
+
+3 Julka
+1101011
+
+TRANSACTIONS
+
+SPE
+1
+56.98
+6
+23
+
+COL
+1
+40.5
+3
+
+&&&

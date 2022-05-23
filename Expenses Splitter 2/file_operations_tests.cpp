@@ -10,10 +10,9 @@ int main()
     std::stringstream tstr;
     std::stringstream rstr;
     Person mil(1, "Miłosz");
-    mil.set_heavy_drinker(true);
+    mil.set_att(Person::Category::other, false);
     tstr << "1 Miłosz\n";
-    tstr << mil.get_balance() << '\n';
-    tstr << "111110\n";
+    tstr << "1101110\n";
     rstr << mil.file_input();
     if (tstr.str() != rstr.str())
     {
@@ -27,13 +26,13 @@ int main()
     rstr.str(std::string());
     Trip tsttrip("Test_trip");
     tsttrip.add_person(mil);
-    CollectiveTransaction ct(40.5, tsttrip.get_people() -> at(0), meat);
+    CollectiveTransaction ct(40.5, 1, Person::Category::meat);
     tstr << "COL\n1\n40.5\n3\n";
     rstr << ct.file_input();
     if (tstr.str() != rstr.str())
     {
         std::cout << "CollectiveTransaction input test failed\n";
-        std::cout << "Target: \n" << tstr.str() << "\nResult: \n" << rstr.str();
+        std::cout << "Target: \n" << tstr.str() << "\nResult: \n" << rstr.str() << '\n';
     }
 
 
@@ -41,16 +40,16 @@ int main()
     tstr.str(std::string());
     rstr.str(std::string());
     Person pio(2, "Piotrek");
-    pio.set_meat(false);
+    pio.set_att(Person::Category::meat, false);
     Person jul(3, "Julka");
-    jul.set_gluten(false);
+    jul.set_att(Person::Category::gluten, false);
     // FIXME: jak sie dodaje drugą osobę to z jakiegoś powodu się
     // zeruje payer w collective transaction, zabawne
     tsttrip.add_person(pio);
     tsttrip.add_person(jul);
-    std::vector<Person*> recievers{&tsttrip.get_people() -> at(1), &tsttrip.get_people() -> at(2)};
-    SpecificTransaction st(56.98, tsttrip.get_people() -> at(0), other, recievers);
-    tstr << "SPE\n1\n56.98\n4\n23\n";
+    std::vector<int> recievers{2, 3};
+    SpecificTransaction st(56.98, 1, Person::Category::other, recievers);
+    tstr << "SPE\n1\n56.98\n6\n23\n";
     rstr << st.file_input();
     if (tstr.str() != rstr.str())
     {
@@ -85,26 +84,26 @@ int main()
         tstr << line << '\n';
     ifile.close();
 
-    // Load_from_fle test
-    mil.set_balance(37.9867);
-    pio.set_balance(-18.9933);
-    jul.set_balance(-18.9933);
-    Trip trptoload("Test_trip1");
-    ifile.open(".target_file.txt");
-    trptoload.load_from_file(ifile);
-    ifile.close();
-    assert(trptoload.get_people() -> size() == 3);
-    assert(trptoload.get_people() -> at(0) == mil);
-    assert(trptoload.get_people() -> at(1) == pio);
-    assert(trptoload.get_people() -> at(2) == jul);
-
-
     if (tstr.str() != rstr.str())
     {
         std::cout << "Save to file test failed\n";
         std::cout << "Target: \n" << tstr.str() << "\nResult: \n" << rstr.str();
     }
     std::remove(".test_file.txt");
+
+    // Load_from_fle test
+    Trip trptoload("Test_trip1");
+    ifile.open(".target_file.txt");
+    trptoload.load_from_file(ifile);
+    ifile.close();
+    assert(trptoload.get_people() -> size() == 3);
+    assert(trptoload.get_people() -> at(0).get_name() == "Miłosz");
+    assert(trptoload.get_people() -> at(1).get_name() == "Piotrek");
+    assert(trptoload.get_people() -> at(2).get_name() == "Julka");
+    assert(trptoload.get_trans_size() == 2);
+    assert(Transaction::fl_cmp(trptoload.get_people() -> at(0).get_balance(), 77.23));
+    assert(Transaction::fl_cmp(trptoload.get_people() -> at(1).get_balance(), -28.49));
+    assert(Transaction::fl_cmp(trptoload.get_people() -> at(2).get_balance(), -48.74));
 
     std::cout << "End of file operation tests.\n";
     return 0;

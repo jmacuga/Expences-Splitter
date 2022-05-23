@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ui_checks.cpp"
+#include "ui_checks.h"
 
 
 bool test_check_name_1()
