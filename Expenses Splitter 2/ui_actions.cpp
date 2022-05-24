@@ -39,8 +39,15 @@ void launch_app()
 void add_new_trip()
 {
     std::cout << "\nNew trip:\n";
+    std::cout << "\nEnter the name of your trip:\n";
     std::string trip_name;
+    std::cin >> trip_name;
     Trip trip(trip_name);
+    initial_actions(trip);
+}
+
+void initial_actions(Trip &trip)
+{
     std::cout << "Choose options:\n";
     std::cout << "1. Add new participant.(Type '1')\n";
     std::cout << "2. Start adding new transactions.(Type '2')\n";
@@ -55,9 +62,9 @@ void add_new_trip()
     if (check_init_action(input) == true)
         {
             if(input == 1)
-                add_participants();
+                add_participant(trip);
             else if(input == 2)
-                add_transactions();
+                add_transactions(trip);
             else
                 exit(0);
         }
@@ -76,14 +83,23 @@ void load_history()
 }
 
 
-void add_participants()
+void add_participant(Trip &trip_to_init)
 {
-    std::cout << "\nAdd participants:\n";
+    std::cout << "\nAdd participant:\n";
+    std::cout << "\nEnter the name of new participant:\n";
+    std::string name;
+    //FIXME ustawianie unikalnych id
+    unsigned int id = trip_to_init.get_people_size() + 1;
+    std::cin >> name;
+    Person person_to_add(id, name);
+    trip_to_init.add_person(person_to_add);
+    initial_actions(trip_to_init);
+
     //TODO
 }
 
 
-void add_transactions()
+void add_transactions(Trip &trip_to_init)
 {
     std::cout << "\nAdd transactions:\n";
     //TODO
