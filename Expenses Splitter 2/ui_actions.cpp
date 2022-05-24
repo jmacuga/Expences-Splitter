@@ -57,7 +57,6 @@ void initial_actions(Trip &trip)
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Invalid input.  Try again (Type 1, 2 or 3): ";
-
     }
     if (check_init_action(input) == true)
         {
@@ -95,19 +94,51 @@ void add_participant(Trip &trip_to_init)
     trip_to_init.add_person(person_to_add);
     initial_actions(trip_to_init);
 
-    //TODO
 }
 
 
 void add_transactions(Trip &trip_to_init)
 {
     std::cout << "\nAdd transactions:\n";
-    //TODO
+    std::cout << "Choose options:\n";
+    std::cout << "1. Add collective transaction(all participants included).(Type '1')\n";
+    std::cout << "2. Add specific transaction with limited number of participants.(Type '2')\n";
+    int input = 0;
+    while(!(std::cin >> input)){
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input.  Try again (Type 1 or 2): ";
+
+    }
+    if (check_init_action_2_opt(input) == true)
+        {
+            if(input == 1)
+                add_collective_transaction(trip_to_init);
+            else
+                add_specific_transaction(trip_to_init);
+        }
+    else
+        {
+        std::cout << "\nChoose proper option!\n";
+        add_transactions(trip_to_init);
+        }
 }
 
 
 void add_singular_transaction()
 {
     std::cout << "\nAdd singular transactions:\n";
+    //TODO
+}
+
+void add_collective_transaction(Trip &trip_to_init)
+{
+    std::cout << "\nAdd collective transaction:\n";
+    //TODO category enum, searching payer by name (assuming that there are no 2 participants with the same name)
+}
+
+void add_specific_transaction(Trip &trip_to_init)
+{
+    std::cout << "\nAdd specific transaction:\n";
     //TODO
 }

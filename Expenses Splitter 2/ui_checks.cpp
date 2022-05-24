@@ -32,3 +32,12 @@ bool check_init_action(int input)
     else
         return false;
 }
+
+
+bool check_init_action_2_opt(int input)
+{
+    if (input == 1 || input == 2)
+        return true;
+    else
+        return false;
+}
