@@ -1,5 +1,6 @@
 #include <iostream>
 #include "ui_checks.h"
+#include "ui_actions.h"
 
 
 bool test_check_name_1()
@@ -78,6 +79,11 @@ bool test_check_set_att_input_5()
         std::cout << "\nerror in test_check_set_att_input_5\n";
         return false;
     }
+}
+
+bool test_load_history()
+{
+
 }
 
 

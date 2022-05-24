@@ -58,7 +58,7 @@ int main()
     }
 
 
-    // Save_to_file test
+    // Save_to_file test 0
     tstr.str(std::string());
     rstr.str(std::string());
 
@@ -91,7 +91,7 @@ int main()
     }
     std::remove(".test_file.txt");
 
-    // Load_from_fle test
+    // Load_from_fle test 0
     Trip trptoload("Test_trip1");
     ifile.open(".target_file.txt");
     trptoload.load_from_file(ifile);
