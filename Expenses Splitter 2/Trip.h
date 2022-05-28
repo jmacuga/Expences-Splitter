@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include<algorithm>
 #include "Transactions.h"
-
 class Trip {
 private:
 	std::vector<Person> people;
@@ -26,8 +26,10 @@ public:
 
 	void save_to_file(std::ofstream &myfile) const;
 	void load_from_file(std::ifstream &myfile);
-
-
+	std::map<std::pair<int, int>, float> calc_transfers();
+	static void split_money(std::vector<std::pair<int, float>>& first_bufor,
+		std::vector<std::pair<int, float>>& second_bufor,
+		std::map<std::pair<int, int>, float>& result, bool is_first_negative = false);
 	// TODO zaimplementować takie funkcje, przydadzą się w ui
 	std::ostream& print_people(std::ostream &os);
 	std::ostream& print_trans(std::ostream &os);
