@@ -48,17 +48,20 @@ void add_new_trip(Trip& trip)
     std::string trip_name;
     std::cin >> trip_name;
     trip = Trip(trip_name);
-    initial_actions(trip);
+    interface(trip);
 }
 
-void initial_actions(Trip &trip)
+void interface(Trip &trip)
 {
-    std::cout << "Choose options:\n";
+    std::cout << "Choose option:\n";
     // Ja bym nie dał możliwości dawania tu transakcji, to dopiero po stworzeniu tripa
     // i przejsciu do takiego roboczego ekranu
-    std::cout << "1. Add new participant.(Type '1')\n";
-    std::cout << "2. Start adding new transactions.(Type '2')\n";
-    std::cout << "3. Exit.(Type '3')\n";
+    std::cout << "1. Add new participant. (Type '1')\n";
+    std::cout << "2. Start adding new transactions. (Type '2')\n";
+    std::cout << "3. Show people. (Type '3')\n";
+    std::cout << "4. Show transaction history. (Type '4')\n";
+    std::cout << "5. Show settlement. (Type '5')\n";
+    std::cout << "6. Exit. (Type '6')\n";
     int input = 0;
     while(!(std::cin >> input)){
         std::cin.clear();
@@ -74,6 +77,17 @@ void initial_actions(Trip &trip)
                     break;
                 case 2:
                     add_transactions(trip);
+                    break;
+                case 3:
+                    trip.print_people(std::cout);
+                    interface(trip);
+                    break;
+                case 4:
+                    trip.print_trans(std::cout);
+                    interface(trip);
+                    break;
+                case 5:
+                    settle(trip);
                     break;
                 default:
                     exit(0);
@@ -126,7 +140,7 @@ void load_history(Trip &curr_trip)
                 getline(trpfile, line);
         }
     trpfile.close();
-    int i = 0;
+    int i = 0;std::ostream& print_people(std::ostream &os);
     for (const std::pair<std::string, std::string> &pa: tripsvect)
     {
         std::cout << i + 1 << ") " << pa.first << "\n";
@@ -150,8 +164,8 @@ void load_history(Trip &curr_trip)
     curr_trip = Trip(tripsvect.at(input - 1).first, trpfile);
     trpfile.close();
     std::cout << "Trip loaded succesfully!\n";
+    interface(curr_trip);
 }
-
 
 void add_participant(Trip &trip_to_init)
 {
@@ -163,7 +177,7 @@ void add_participant(Trip &trip_to_init)
     std::cin >> name;
     Person person_to_add(id, name);
     trip_to_init.add_person(person_to_add);
-    initial_actions(trip_to_init);
+    interface(trip_to_init);
 
 }
 
@@ -212,4 +226,9 @@ void add_specific_transaction(Trip &trip_to_init)
 {
     std::cout << "\nAdd specific transaction:\n";
     //TODO
+}
+
+void settle(Trip& trip)
+{
+
 }

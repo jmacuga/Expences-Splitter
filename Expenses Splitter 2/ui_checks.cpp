@@ -27,7 +27,7 @@ bool check_set_att_input(std::string set_attr)
 
 bool check_init_action(int input)
 {
-    if (input == 1 || input == 2 || input == 3)
+    if (input == 1 || input == 2 || input == 3 || input == 4 || input == 5 || input == 6)
         return true;
     else
         return false;

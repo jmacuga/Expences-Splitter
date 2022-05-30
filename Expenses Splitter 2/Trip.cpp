@@ -219,3 +219,25 @@ void Trip::split_money(std::vector<std::pair<int, float>>& first_bufor,
 		}
 	}
 }
+
+std::ostream& Trip::print_people(std::ostream &os)
+{
+	os << "People list:\n";
+	for (Person& per: people)
+	{
+		os << per.get_id() << ". " << per.get_name() << '\n';
+		os << "Balance: " << per.get_balance() << '\n';
+	}
+	os << '\n';
+	return os;
+}
+
+std::ostream& Trip::print_trans(std::ostream &os)
+{
+	os << "Transactions history:\n";
+	for (std::shared_ptr<Transaction>& trans: ptransactions)
+	{
+		trans -> print(os, *this);
+	}
+	os << '\n';
+}

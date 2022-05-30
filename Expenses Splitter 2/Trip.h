@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include<algorithm>
+#include <algorithm>
 #include "Transactions.h"
+
 class Trip {
 private:
 	std::vector<Person> people;
@@ -33,4 +34,6 @@ public:
 	// TODO zaimplementować takie funkcje, przydadzą się w ui
 	std::ostream& print_people(std::ostream &os);
 	std::ostream& print_trans(std::ostream &os);
+	friend std::ostream& Transaction::print(std::ostream &os, Trip const& trip) const;
+	friend std::ostream& SpecificTransaction::print(std::ostream &os, Trip const& trip) const;
 };
