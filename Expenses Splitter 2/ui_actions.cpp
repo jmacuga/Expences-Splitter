@@ -1,11 +1,11 @@
 #include <iostream>
 #include <limits>
+#include <fstream>
 #include "ui_actions.h"
 #include "ui_checks.h"
 #include "Trip.h"
 
-
-void launch_app()
+void launch_app(Trip& trip)
 {
     std::cout << "Choose options:\n";
     std::cout << "1. Add new trip. (Type '1')\n";
@@ -20,38 +20,49 @@ void launch_app()
     }
     if (check_init_action(input) == true)
         {
-            // TODO można zrobić switch case tutaj
-            if(input == 1)
-                add_new_trip();
-            else if(input == 2)
-                load_history();
-            else
-                exit(0);
+            switch (input)
+            {
+                case 1:
+                    add_new_trip(trip);
+                    break;
+                case 2:
+                    load_history(trip);
+                    break;
+                default:
+                    exit(0);
+                    break;
+            }
         }
     else
         {
         std::cout << "\nChoose proper option!\n";
-        launch_app();
+        launch_app(trip);
         }
 }
 
 
-void add_new_trip()
+void add_new_trip(Trip& trip)
 {
     std::cout << "\nNew trip:\n";
     std::cout << "\nEnter the name of your trip:\n";
     std::string trip_name;
     std::cin >> trip_name;
-    Trip trip(trip_name);
-    initial_actions(trip);
+    trip = Trip(trip_name);
+    interface(trip);
 }
 
-void initial_actions(Trip &trip)
+
+void interface(Trip &trip)
 {
-    std::cout << "Choose options:\n";
-    std::cout << "1. Add new participant.(Type '1')\n";
-    std::cout << "2. Start adding new transactions.(Type '2')\n";
-    std::cout << "3. Exit.(Type '3')\n";
+    std::cout << "Choose option:\n";
+    // Ja bym nie dał możliwości dawania tu transakcji, to dopiero po stworzeniu tripa
+    // i przejsciu do takiego roboczego ekranu
+    std::cout << "1. Add new participant. (Type '1')\n";
+    std::cout << "2. Start adding new transactions. (Type '2')\n";
+    std::cout << "3. Show people. (Type '3')\n";
+    std::cout << "4. Show transaction history. (Type '4')\n";
+    std::cout << "5. Show settlement. (Type '5')\n";
+    std::cout << "6. Exit. (Type '6')\n";
     int input = 0;
     while(!(std::cin >> input)){
         std::cin.clear();
@@ -60,27 +71,102 @@ void initial_actions(Trip &trip)
     }
     if (check_init_action(input) == true)
         {
-            if(input == 1)
-                add_participant(trip);
-            else if(input == 2)
-                add_transactions(trip);
-            else
-                exit(0);
+            switch (input)
+            {
+                case 1:
+                    add_participant(trip);
+                    break;
+                case 2:
+                    add_transactions(trip);
+                    break;
+                case 3:
+                    trip.print_people(std::cout);
+                    interface(trip);
+                    break;
+                case 4:
+                    trip.print_trans(std::cout);
+                    interface(trip);
+                    break;
+                case 5:
+                    settle(trip);
+                    break;
+                default:
+                    exit(0);
+                    break;
+            }
         }
     else
         {
         std::cout << "\nChoose proper option!\n";
-        add_new_trip();
+        add_new_trip(trip);
         }
 }
 
 
-void load_history()
+void load_history(Trip &curr_trip)
 {
-    std::cout << "\nLoad history:\n";
-    //TODO
+    std::cout << "\nChoose trip:\n";
+    std::ifstream trpfile;
+    std::string line;
+    std::pair<std::string, std::string> trip_inf;
+    std::vector<std::pair<std::string, std::string>> tripsvect;
+    trpfile.open("./.trips.txt");
+    getline(trpfile, line);
+    // Shows info if there are no trips saved
+    if (line == "")
+    {
+        std::cout << "No trips found :(\n\n";
+        launch_app(curr_trip);
+    }
+    else
+    // Loading info about existing trips into vector
+        while (line != "")
+        {
+            bool amp = false;
+            for (const char &c: line)
+                if (!amp)
+                {
+                    if (c == '&')
+                    {
+                        amp = true;
+                        continue;
+                    }
+                    trip_inf.first += c;
+                }
+                else
+                    trip_inf.second += c;
+                tripsvect.push_back(trip_inf);
+                trip_inf.first = std::string();
+                trip_inf.second = std::string();
+                getline(trpfile, line);
+        }
+    trpfile.close();
+    int i = 0;std::ostream& print_people(std::ostream &os);
+    for (const std::pair<std::string, std::string> &pa: tripsvect)
+    {
+        std::cout << i + 1 << ") " << pa.first << "\n";
+        i += 1;
+    }
+    int input = 0;
+    while (true)
+    {
+        try
+        {std::cin >> input;}
+        catch (...)
+        {std::cin.clear();
+         std::cout << "Input incorrect\n";
+         continue;}
+        if (input < 0 || input > i)
+        {std::cout << "Input incorrect\n";
+         continue;}
+        break;
+    }
+    trpfile.open(tripsvect.at(input - 1).second);
+    curr_trip = Trip(tripsvect.at(input - 1).first, trpfile);
+    trpfile.close();
+    std::cout << "Trip loaded succesfully!\n";
+    interface(curr_trip);
 }
-
 
 void add_participant(Trip &trip_to_init)
 {
@@ -92,7 +178,7 @@ void add_participant(Trip &trip_to_init)
     std::cin >> name;
     Person person_to_add(id, name);
     trip_to_init.add_person(person_to_add);
-    initial_actions(trip_to_init);
+    interface(trip_to_init);
 
 }
 
@@ -141,4 +227,9 @@ void add_specific_transaction(Trip &trip_to_init)
 {
     std::cout << "\nAdd specific transaction:\n";
     //TODO
+}
+
+void settle(Trip& trip)
+{
+    std::cout << "Settle";
 }

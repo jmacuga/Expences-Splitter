@@ -1,4 +1,5 @@
 #include "Transactions.h"
+#include "Trip.h"
 #include "sstream"
 
 /*
@@ -38,4 +39,3 @@ bool SpecificTransaction::operator==(const SpecificTransaction& other) const
 {
     return (CollectiveTransaction::operator==(other) && inid == other.get_included());
 }
-

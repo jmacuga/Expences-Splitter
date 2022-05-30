@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include<algorithm>
+#include <algorithm>
 #include "Transactions.h"
+
 class Trip {
 private:
 	std::vector<Person> people;

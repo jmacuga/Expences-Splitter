@@ -9,8 +9,8 @@ logic_tests: logic_tests.o Person.o Trip.o Transactions.o
 file_operations_tests: file_operations_tests.o Person.o Trip.o Transactions.o
 	g++ -o file_operations_tests.out file_operations_tests.o Person.o Trip.o Transactions.o
 
-ui_checks_tests: ui_checks_tests.o ui_checks.o
-	g++ -o ui_checks_tests.out ui_checks_tests.o ui_checks.o
+ui_checks_tests: ui_checks_tests.o ui_checks.o ui_actions.o Person.o Trip.o Transactions.o
+	g++ -o ui_checks_tests.out ui_checks_tests.o ui_checks.o ui_actions.o Person.o Trip.o Transactions.o
 
 ui_checks_tests.o: ui_checks_tests.o
 	g++ -c -g ui_checks_tests.cpp

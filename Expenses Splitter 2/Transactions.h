@@ -29,7 +29,7 @@ public:
         return v;
     };
     virtual std::string file_input() const = 0;
-    bool operator==(const Transaction& other) const ;
+    bool operator==(const Transaction& other) const;
     bool operator!=(const Transaction& other) const { return !(*this == other); };
 };
 
