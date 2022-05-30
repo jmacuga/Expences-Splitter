@@ -24,6 +24,7 @@ public:
 	//Person const get_trans_payer(int trans_id) const { return ptransactions[trans_id]->get_payer(); };
 	size_t get_people_size() { return people.size(); }
 	float get_person_balance(int id) { return people[id].get_balance(); };
+	std::string get_name() { return name; };
 
 	void save_to_file(std::ofstream &myfile) const;
 	void load_from_file(std::ifstream &myfile);

@@ -1,3 +1,5 @@
+#include <cstdio>
+#include <ios>
 #include <iostream>
 #include <limits>
 #include <fstream>
@@ -48,6 +50,7 @@ void add_new_trip(Trip& trip)
     std::string trip_name;
     std::cin >> trip_name;
     trip = Trip(trip_name);
+    std::cin.clear();
     interface(trip);
 }
 
@@ -67,7 +70,7 @@ void interface(Trip &trip)
     while(!(std::cin >> input)){
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Invalid input.  Try again (Type 1, 2 or 3): ";
+        std::cout << "Invalid input.  Try again (Type 1 - 6): ";
     }
     if (check_init_action(input) == true)
         {
@@ -91,7 +94,7 @@ void interface(Trip &trip)
                     settle(trip);
                     break;
                 default:
-                    exit(0);
+                    exit_app(trip);
                     break;
             }
         }
@@ -102,6 +105,33 @@ void interface(Trip &trip)
         }
 }
 
+void exit_app(Trip& trip)
+{
+    std::string saveline = trip.get_name() + "&./." + trip.get_name() + ".txt";
+    std::ifstream trips;
+    std::ofstream otrips;
+    std::string line;
+    bool file_new = true;
+    trips.open("./trips.txt");
+    getline(trips, line);
+    while (line != "")
+    {
+        if (line == saveline)
+            file_new = false;
+        getline(trips, line);
+    }
+    trips.close();
+    if (file_new)
+    {
+        otrips.open("./.trips.txt", std::ios::app);
+        otrips << saveline << '\n';
+        otrips.close();
+    }
+    otrips.open("./." + trip.get_name() + ".txt", std::ios::trunc);
+    trip.save_to_file(otrips);
+    otrips.close();
+    exit(0);
+}
 
 void load_history(Trip &curr_trip)
 {
