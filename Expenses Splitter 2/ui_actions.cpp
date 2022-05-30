@@ -5,8 +5,7 @@
 #include "ui_checks.h"
 #include "Trip.h"
 
-
-void launch_app()
+void launch_app(Trip& trip)
 {
     std::cout << "Choose options:\n";
     std::cout << "1. Add new trip. (Type '1')\n";
@@ -24,10 +23,10 @@ void launch_app()
             switch (input)
             {
                 case 1:
-                    add_new_trip();
+                    add_new_trip(trip);
                     break;
                 case 2:
-                    load_history();
+                    load_history(trip);
                     break;
                 default:
                     exit(0);
@@ -37,18 +36,18 @@ void launch_app()
     else
         {
         std::cout << "\nChoose proper option!\n";
-        launch_app();
+        launch_app(trip);
         }
 }
 
 
-void add_new_trip()
+void add_new_trip(Trip& trip)
 {
     std::cout << "\nNew trip:\n";
     std::cout << "\nEnter the name of your trip:\n";
     std::string trip_name;
     std::cin >> trip_name;
-    Trip trip(trip_name);
+    trip = Trip(trip_name);
     initial_actions(trip);
 }
 
@@ -71,10 +70,10 @@ void initial_actions(Trip &trip)
             switch (input)
             {
                 case 1:
-                    add_participants();
+                    add_participant(trip);
                     break;
                 case 2:
-                    add_transactions();
+                    add_transactions(trip);
                     break;
                 default:
                     exit(0);
@@ -84,12 +83,12 @@ void initial_actions(Trip &trip)
     else
         {
         std::cout << "\nChoose proper option!\n";
-        add_new_trip();
+        add_new_trip(trip);
         }
 }
 
 
-void load_history()
+void load_history(Trip &curr_trip)
 {
     std::cout << "\nChoose trip:\n";
     std::ifstream trpfile;
@@ -102,7 +101,7 @@ void load_history()
     if (line == "")
     {
         std::cout << "No trips found :(\n\n";
-        launch_app();
+        launch_app(curr_trip);
     }
     else
     // Loading info about existing trips into vector
@@ -133,7 +132,24 @@ void load_history()
         std::cout << i + 1 << ") " << pa.first << "\n";
         i += 1;
     }
-
+    int input = 0;
+    while (true)
+    {
+        try
+        {std::cin >> input;}
+        catch (...)
+        {std::cin.clear();
+         std::cout << "Input incorrect\n";
+         continue;}
+        if (input < 0 || input > i)
+        {std::cout << "Input incorrect\n";
+         continue;}
+        break;
+    }
+    trpfile.open(tripsvect.at(input - 1).second);
+    curr_trip = Trip(tripsvect.at(input - 1).first, trpfile);
+    trpfile.close();
+    std::cout << "Trip loaded succesfully!\n";
 }
 
 

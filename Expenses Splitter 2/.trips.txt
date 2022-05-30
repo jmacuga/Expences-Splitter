@@ -1,2 +1,2 @@
-gowno&kupa
+gowno&./.target_file.txt
 debil&debil
