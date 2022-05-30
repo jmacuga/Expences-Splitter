@@ -30,10 +30,9 @@ std::string SpecificTransaction::file_input() const
 bool Transaction::operator==(const Transaction& other) const
 {
     return (Transaction::fl_cmp(money, other.get_money()) &&
-            payer == other.get_payer() &&
-            category == other.get_category());
+        payer == other.get_payer() &&
+        category == other.get_category());
 }
-
 
 bool SpecificTransaction::operator==(const SpecificTransaction& other) const
 {

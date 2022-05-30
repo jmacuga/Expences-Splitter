@@ -38,6 +38,11 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 		for (int &idx: p_trans->get_included())
 			included.push_back(&people[idx - 1]);
 	}
+	//in case if noone has certain category as true
+	if (!incl_number)
+	{
+		return;
+	}
 	moneypp = money/(incl_number);
 	for (Person* p : included)
 	{
@@ -162,5 +167,55 @@ void Trip::load_from_file(std::ifstream &myfile)
 		else
 			throw WrongFileFormat;
 	}
+}
 
+std::map<std::pair<int, int>, float> Trip::calc_transfers()
+{
+	std::map<std::pair<int, int>, float> result;
+	//lambda to compare pair by balance
+	auto greater_pair = [](std::pair<int, float> const& p1, std::pair<int, float> const& p2)
+	{return abs(p2.second) > abs(p1.second); };
+	//bufors of balances wich we will be zero at the end of func
+	std::vector<std::pair<int, float>> pos_bufor;
+	std::vector<std::pair<int, float>> neg_bufor;
+	for (Person p : people)
+	{
+		if (!p.get_balance())
+			continue;
+		auto pers_p = std::make_pair(p.get_id(), p.get_balance());
+		if (pers_p.second > 0)
+			pos_bufor.push_back(pers_p);
+		else
+			neg_bufor.push_back(pers_p);
+	}
+	std::sort(pos_bufor.begin(), pos_bufor.end(), greater_pair);
+	std::sort(neg_bufor.begin(), neg_bufor.end(), greater_pair);
+	split_money(pos_bufor, neg_bufor, result);
+	split_money(neg_bufor, pos_bufor, result, true);
+	return result;
+}
+void Trip::split_money(std::vector<std::pair<int, float>>& first_bufor,
+	std::vector<std::pair<int, float>>& second_bufor,
+	std::map<std::pair<int, int>, float>& result, bool is_first_negative)
+{
+	for (auto fit = first_bufor.begin();
+		fit != first_bufor.end(); fit++)
+	{
+		if (!fit->second)
+			continue;
+		for (auto sit = second_bufor.begin(); sit != second_bufor.end(); sit++)
+		{
+			if (abs(sit->second) && abs(sit->second) <= abs(fit->second))
+			{
+				if (is_first_negative)
+				{
+					result.insert({ {fit->first, sit->first}, abs(sit->second) });
+				}
+				else
+					result.insert({ {sit->first, fit->first}, abs(sit->second) });
+				fit->second += sit->second;
+				sit->second = 0;
+			}
+		}
+	}
 }
