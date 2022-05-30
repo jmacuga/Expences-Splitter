@@ -2,7 +2,7 @@
 #include <cassert>
 #include "Trip.h"
 using namespace std;
-template<typename T> 
+template<typename T>
 void compare_to_test(T actual, T expected, int test_n)
 {
     if (actual != expected)
@@ -12,7 +12,7 @@ void compare_to_test(T actual, T expected, int test_n)
     }
 }
 
-template<> 
+template<>
 void compare_to_test(float actual, float expected, int test_n)
 {
     if (!Transaction::fl_cmp(actual, expected))
@@ -164,7 +164,7 @@ int main()
             int sum = 0;
             compare_to_test<float>(transfers1.find({ 3, 1 })->second, 10.0f, 29 );
             compare_to_test<float>(transfers1.find({ 3, 1 })->second, 10.0f, 30 );
-            
+
             std::vector<int> receivers{2, 3 };
             std::shared_ptr<Transaction> spectrans = std::make_shared<SpecificTransaction>(30.0f, 2, Person::Category::alcohol, receivers);
             trip.add_transaction(spectrans);
@@ -195,7 +195,7 @@ int main()
             compare_to_test<float>(transfers.find({ 3, 1 })->second, 30.0f, 34);
             compare_to_test<float>(transfers.find({ 4, 1 })->second, 50.0f, 35);
         }
-        //transfers test 3 
+        //transfers test 3
         {
             Trip trip("testtrip");
             Person Milosz(1, "Milosz");

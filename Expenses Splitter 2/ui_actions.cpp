@@ -51,6 +51,7 @@ void add_new_trip(Trip& trip)
     interface(trip);
 }
 
+
 void interface(Trip &trip)
 {
     std::cout << "Choose option:\n";
@@ -230,5 +231,5 @@ void add_specific_transaction(Trip &trip_to_init)
 
 void settle(Trip& trip)
 {
-
+    std::cout << "Settle";
 }

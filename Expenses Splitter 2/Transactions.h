@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include "Person.h"
-#include "Trip.h"
 
 enum my_excetpions {NegativeNumber, FileNotOpen, WrongFileFormat};
 class Transaction
@@ -30,7 +29,6 @@ public:
         return v;
     };
     virtual std::string file_input() const = 0;
-    virtual std::ostream& print(std::ostream &os, Trip const& trip) const;
     bool operator==(const Transaction& other) const;
     bool operator!=(const Transaction& other) const { return !(*this == other); };
 };
@@ -41,8 +39,6 @@ class CollectiveTransaction : public Transaction
 public:
     CollectiveTransaction(float m, int p, Person::Category c): Transaction(m, p, c) {};
     std::string file_input() const;
-    std::ostream& print(std::ostream &os, Trip const& trip) const;
-
 };
 
 class SpecificTransaction : public CollectiveTransaction
@@ -53,7 +49,6 @@ public:
     SpecificTransaction(float m, int p, Person::Category c, std::vector<int> incl_ids) : CollectiveTransaction(m, p, c)
     { inid = incl_ids; };
     std::string file_input() const;
-    std::ostream& print(std::ostream &os, Trip const& trip) const;
     std::vector<int> get_included() const { return inid; };
     bool operator==(const SpecificTransaction& other) const;
 };

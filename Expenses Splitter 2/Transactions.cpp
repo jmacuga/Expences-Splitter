@@ -39,33 +39,3 @@ bool SpecificTransaction::operator==(const SpecificTransaction& other) const
 {
     return (CollectiveTransaction::operator==(other) && inid == other.get_included());
 }
-
-std::ostream& Transaction::print(std::ostream &os, Trip const& trip) const
-{
-    os << "Date:" << '\n';
-    os << "Paid: " << trip.people.at(payer - 1).get_name() << '\n';
-    os << "Amount: " << money << '\n';
-    os << "Category: " << '\n';
-    return os;
-}
-
-std::ostream& CollectiveTransaction::print(std::ostream &os, Trip const& trip) const
-{
-    os << "Type: Collective\n";
-    Transaction::print(os, trip);
-    return os;
-}
-
-std::ostream& SpecificTransaction::print(std::ostream &os, Trip const& trip) const
-{
-    os << "Type: Specific\n";
-    Transaction::print(os, trip);
-    os << "For: ";
-    for (int id: inid)
-    {
-        os << trip.people.at(id - 1).get_name() << ", ";
-    }
-    os.seekp(-2, std::ios_base::end);
-    os << " \n";
-    return os;
-}

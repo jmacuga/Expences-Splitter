@@ -1,6 +1,7 @@
 #include "Trip.h"
 #include "Transactions.h"
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include<typeinfo>
 
@@ -234,10 +235,39 @@ std::ostream& Trip::print_people(std::ostream &os)
 
 std::ostream& Trip::print_trans(std::ostream &os)
 {
-	os << "Transactions history:\n";
+	os << "Transactions history:\n\n";
+	std::stringstream trstr;
+	std::string line = "";
 	for (std::shared_ptr<Transaction>& trans: ptransactions)
 	{
-		trans -> print(os, *this);
+		trstr << trans -> file_input();
+		getline(trstr, line);
+		if (line == "COL")
+			os << "Type: Collective\n";
+		else if (line == "SPE")
+			os << "Type: Specific\n";
+		getline(trstr, line);
+		os << "Paid: " << people.at(stoi(line) - 1).get_name() << '\n';
+		getline(trstr, line);
+		os << "Amount: " << line << '\n';
+		getline(trstr, line);
+		os << "Category: to implement" << '\n';
+		getline(trstr, line);
+		if (line != "")
+		{
+			os << "For: ";
+			int i = 1;
+			for (char const& c: line)
+			{
+				os << people.at((int)c - '0' - 1).get_name();
+				if (i < line.length())
+					os << ", ";
+				i++;
+			}
+			os << "\n\n";
+		}
+		else
+			os << "\n";
 	}
-	os << '\n';
+	return os;
 }
