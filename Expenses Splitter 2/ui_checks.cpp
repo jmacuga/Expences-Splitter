@@ -41,3 +41,10 @@ bool check_init_action_2_opt(int input)
     else
         return false;
 }
+
+bool check_answer_atts(std::string input)
+{
+    if (input == "Y" || input == "N")
+        return true;
+    else false;
+}
