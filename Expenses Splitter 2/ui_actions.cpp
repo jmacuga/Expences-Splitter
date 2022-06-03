@@ -221,8 +221,8 @@ void set_attributes(Trip &trip_to_init, Person &person_to_add)
         change_att(rip &trip_to_init, Person &person_to_add, int input);
     else
         {
-        std::cout << "\nChoose proper option!\n";
-        set_attributes(Trip &trip_to_init, Person &person_to_add);
+            std::cout << "\nChoose proper option!\n";
+            set_attributes(Trip &trip_to_init, Person &person_to_add);
         }
 }
 
