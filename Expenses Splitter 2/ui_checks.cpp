@@ -48,3 +48,12 @@ bool check_answer_atts(std::string input)
         return true;
     else false;
 }
+
+
+bool check_atts_input(int input)
+{
+    if (input == 1 || input == 2 || input == 3 || input == 4 || input == 5 || input == 6 || input == 7)
+        return true;
+    else
+        return false;
+}
