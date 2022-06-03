@@ -79,4 +79,12 @@ std::string Person::Cat_to_str(Category c)
     default:
         return "NOT_A_CATEGORY";
     }
-}
+}   
+
+bool Person::category_compare(Category trans_c) const
+{
+    std::map<Category, bool>::const_iterator elem = atts.find(trans_c);
+    if (elem == atts.end())
+        return false;
+    return elem->second;
+};

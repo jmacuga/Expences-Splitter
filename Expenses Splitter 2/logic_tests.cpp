@@ -57,9 +57,8 @@ int main()
             std::shared_ptr<Transaction> trans = std::make_shared<CollectiveTransaction>(price, 1, Person::Category::food);
             compare_to_test<size_t>(Transaction::fl_cmp(trans->get_money(), price), true, 4);
             trip.add_transaction(trans);
-            compare_to_test<size_t>(trip.get_trans_size(), 1, 6);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(0), 2 * price / 3), true, 7);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(2), -price / 3), true, 8);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(0).get_balance(), 2 * price / 3), true, 7);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(2).get_balance(), -price / 3), true, 8);
         }
         //test case 2 - add collective and specific transactions wi default person categories
         {
@@ -75,12 +74,11 @@ int main()
             trip.add_transaction(trans);
             std::vector<int> receivers{1, 2, 3};
             std::shared_ptr<Transaction> spectrans = std::make_shared<SpecificTransaction>(30.0f, 2, Person::Category::alcohol, receivers);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(0),7.66667f),true,9);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(0).get_balance(),7.66667f),true,9);
             trip.add_transaction(spectrans);
-            assert((trip.get_trans_size() == 2));
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(1), 16.166667f), true, 11);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(2), -13.833333f), true, 12);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(0), -2.33333f), true, 13);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(1).get_balance(), 16.166667f), true, 11);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(2).get_balance(), -13.833333f), true, 12);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(0).get_balance(), -2.33333f), true, 13);
         }
         //test case 3 - make transaction with negative price
         {
@@ -125,9 +123,9 @@ int main()
             trip.add_transaction(trans);
             compare_to_test<bool>(Julia.category_compare(Person::Category::alcohol), true, 18);
             compare_to_test<bool>(Julia.category_compare(Person::Category::food), false, 19);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(0), 4.20000f), true, 21);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(1), -4.20000f), true, 22);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(2), 0.0f), true, 20);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(0).get_balance(), 4.20000f), true, 21);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(1).get_balance(), -4.20000f), true, 22);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(2).get_balance(), 0.0f), true, 20);
             Julia.set_att(Person::Category::food, true);
             compare_to_test<bool>(Julia.category_compare(Person::Category::food), true, 23);
         }
@@ -142,11 +140,11 @@ int main()
             float price = 12.0f;
             std::shared_ptr<Transaction> trans = std::make_shared<CollectiveTransaction>(price, 1, Person::Category::food);
             trip.add_transaction(trans);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(0), 6), true, 24);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(1), -6), true, 25);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(0).get_balance(), 6), true, 24);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(1).get_balance(), -6), true, 25);
             trip.add_person(Julia);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(0), 6), true, 27);
-            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person_balance(1), -6), true, 28);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(0).get_balance(), 6), true, 27);
+            compare_to_test<bool>(Transaction::fl_cmp(trip.get_person(1).get_balance(), -6), true, 28);
             std::map<std::pair<int, int>, float> transfers = trip.calc_transfers();
         }
         //transfers test1
@@ -183,7 +181,7 @@ int main()
             trip.add_person(Janek);
             trip.add_person(Jula);
             trip.add_person(Mati);
-            trip.get_people() -> at(3).set_att(Person::Category::nicotine, true);
+            trip.get_person(3).set_att(Person::Category::nicotine, true);
             std::shared_ptr<Transaction> trans1 = std::make_shared<CollectiveTransaction>(40.0f, 1, Person::Category::food);
             std::shared_ptr<Transaction> trans2 = std::make_shared<CollectiveTransaction>(20.0f, 2, Person::Category::nicotine);
             std::shared_ptr<Transaction> trans3 = std::make_shared<CollectiveTransaction>(80.0f, 1, Person::Category::alcohol);
@@ -206,7 +204,7 @@ int main()
             trip.add_person(Janek);
             trip.add_person(Jula);
             trip.add_person(Mati);
-            trip.get_people()->at(3).set_att(Person::Category::nicotine, true);
+            trip.get_person(3).set_att(Person::Category::nicotine, true);
             std::shared_ptr<Transaction> trans1 = std::make_shared<CollectiveTransaction>(40.0f, 1, Person::Category::food);
             std::shared_ptr<Transaction> trans2 = std::make_shared<CollectiveTransaction>(40.0f, 2, Person::Category::nicotine);
             std::shared_ptr<Transaction> trans3 = std::make_shared<CollectiveTransaction>(80.0f, 1, Person::Category::alcohol);
@@ -233,8 +231,8 @@ int main()
             trip.add_person(Mati);
             trip.add_person(Krzychu);
             trip.add_person(Mikolaj);
-            trip.get_people()->at(3).set_att(Person::Category::nicotine, true);
-            trip.get_people()->at(4).set_att(Person::Category::nicotine, true);
+            trip.get_person(3).set_att(Person::Category::nicotine, true);
+            trip.get_person(4).set_att(Person::Category::nicotine, true);
             std::shared_ptr<Transaction> trans1 = std::make_shared<CollectiveTransaction>(55.0f, 1, Person::Category::food);
             std::shared_ptr<Transaction> trans2 = std::make_shared<CollectiveTransaction>(40.0f, 2, Person::Category::nicotine);
             std::shared_ptr<Transaction> trans3 = std::make_shared<CollectiveTransaction>(30.0f, 3, Person::Category::food);
@@ -249,6 +247,27 @@ int main()
             compare_to_test<float>(transfers.find({ 5, 2 })->second, 8.333f, 41);
             compare_to_test<float>(transfers.find({ 5, 4 })->second, 18.333f, 42);
             compare_to_test<float>(transfers.find({ 6, 4 })->second, 30.833f, 43);
+        }
+        {
+            Trip trip("200_osob_w_kawalerce");
+            Person Milosz(1, "Milosz");
+            Person Janek(2, "Janek");
+            Person Jula(3, "Julka");
+            Person Mati(4, "Mati");
+            Person Krzychu(5, "Mati");
+            Person Mikolaj(6, "Mati");
+            trip.add_person(Milosz);
+            trip.add_person(Janek);
+            trip.add_person(Jula);
+            trip.add_person(Mati);
+            trip.add_person(Krzychu);
+            trip.add_person(Mikolaj);
+            Person p1 = trip.get_person(0);
+            Person p2 = trip.get_person(4);
+            Person p3 = trip.get_person(5);
+            compare_to_test<int>(p1.get_id(), 1, 44);
+            compare_to_test<int>(p2.get_id(), 5, 45);
+            compare_to_test<int>(p3.get_id(), 6, 46);
         }
     }
     std::cout << "\nEnd of logic tests\n";
