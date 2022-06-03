@@ -39,7 +39,7 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 		for (int &idx: p_trans->get_included())
 			included.push_back(&people[idx - 1]);
 	}
-	//in case if noone has certain category as true
+	//in case if no one has certain category as true
 	if (!incl_number)
 	{
 		return;
@@ -181,12 +181,12 @@ std::map<std::pair<int, int>, float> Trip::calc_transfers()
 	std::vector<std::pair<int, float>> neg_bufor;
 	for (Person p : people)
 	{
-		if (!p.get_balance())
+		if (!p.get_balance())	
 			continue;
 		auto pers_p = std::make_pair(p.get_id(), p.get_balance());
 		if (pers_p.second > 0)
 			pos_bufor.push_back(pers_p);
-		else
+		else 
 			neg_bufor.push_back(pers_p);
 	}
 	std::sort(pos_bufor.begin(), pos_bufor.end(), greater_pair);
@@ -195,23 +195,22 @@ std::map<std::pair<int, int>, float> Trip::calc_transfers()
 	split_money(neg_bufor, pos_bufor, result, true);
 	return result;
 }
+
+//helper func to calc_transfers()
 void Trip::split_money(std::vector<std::pair<int, float>>& first_bufor,
 	std::vector<std::pair<int, float>>& second_bufor,
 	std::map<std::pair<int, int>, float>& result, bool is_first_negative)
 {
-	for (auto fit = first_bufor.begin();
-		fit != first_bufor.end(); fit++)
+	for (auto fit = first_bufor.begin(); fit != first_bufor.end(); fit++)
 	{
-		if (!fit->second)
+		if (!fit->second)	
 			continue;
 		for (auto sit = second_bufor.begin(); sit != second_bufor.end(); sit++)
 		{
 			if (abs(sit->second) && abs(sit->second) <= abs(fit->second))
 			{
 				if (is_first_negative)
-				{
 					result.insert({ {fit->first, sit->first}, abs(sit->second) });
-				}
 				else
 					result.insert({ {sit->first, fit->first}, abs(sit->second) });
 				fit->second += sit->second;

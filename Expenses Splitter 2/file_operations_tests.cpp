@@ -96,14 +96,14 @@ int main()
     ifile.open(".target_file.txt");
     trptoload.load_from_file(ifile);
     ifile.close();
-    assert(trptoload.get_people() -> size() == 3);
-    assert(trptoload.get_people() -> at(0).get_name() == "Miłosz");
-    assert(trptoload.get_people() -> at(1).get_name() == "Piotrek");
-    assert(trptoload.get_people() -> at(2).get_name() == "Julka");
+    //assert(trptoload.get_people() -> size() == 3);
+    assert(trptoload.get_person(0).get_name() == "Miłosz");
+    assert(trptoload.get_person(1).get_name() == "Piotrek");
+    assert(trptoload.get_person(2).get_name() == "Julka");
     assert(trptoload.get_trans_size() == 2);
-    assert(Transaction::fl_cmp(trptoload.get_people() -> at(0).get_balance(), 77.23));
-    assert(Transaction::fl_cmp(trptoload.get_people() -> at(1).get_balance(), -28.49));
-    assert(Transaction::fl_cmp(trptoload.get_people() -> at(2).get_balance(), -48.74));
+    assert(Transaction::fl_cmp(trptoload.get_person(0).get_balance(), 77.23));
+    assert(Transaction::fl_cmp(trptoload.get_person(1).get_balance(), -28.49));
+    assert(Transaction::fl_cmp(trptoload.get_person(2).get_balance(), -48.74));
 
     std::cout << "End of file operation tests.\n";
     return 0;
