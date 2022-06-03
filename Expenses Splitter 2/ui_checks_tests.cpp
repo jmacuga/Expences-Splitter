@@ -83,7 +83,7 @@ bool test_check_set_att_input_5()
 
 bool test_load_history()
 {
-
+    return true;
 }
 
 
@@ -104,6 +104,7 @@ int main()
         std::cout << "\nAll tests passed.\n";
 
     std::cout << "\nEnd of tests.\n";
-
+    Trip trip("200 osob w kawalerce");
+    launch_app(trip);
     return 0;
 }

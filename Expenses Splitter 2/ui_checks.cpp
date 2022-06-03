@@ -1,4 +1,5 @@
 #include <string>
+#include <cctype>
 #include "ui_checks.h"
 
 
@@ -19,6 +20,7 @@ bool check_name(std::string new_name)
 //sprwadzania zadziałają
 bool check_set_att_input(std::string set_attr)
 {
+    for (auto& c : set_attr) c = toupper(c);
     if(set_attr == "N" || set_attr == "NO" || set_attr == "Y" || set_attr == "YES")
         return true;
     else
@@ -44,6 +46,7 @@ bool check_init_action_2_opt(int input)
 
 bool check_answer_atts(std::string input)
 {
+    for (auto& c : input) c = toupper(c);
     if (input == "Y" || input == "N")
         return true;
     else false;
