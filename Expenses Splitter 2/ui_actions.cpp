@@ -178,8 +178,39 @@ void add_participant(Trip &trip_to_init)
     std::cin >> name;
     Person person_to_add(id, name);
     trip_to_init.add_person(person_to_add);
+    std::cout << "Do you want to change participant's attributes?\n";
+    std::cout << "Preset is false for nicotine and true for everything else ";
+    std::cout << "(food, alcohol, meat, gluten, dairy, other) [Y/N]\n";
+    set_atts_action(trip_to_init, person_to_add);
+
     interface(trip_to_init);
 
+}
+
+
+void set_atts_action(Trip &trip_to_init, Person &person_to_add)
+{
+    std::string answer;
+    std::cin >> answer;
+        if(check_answer_atts(answer) == true)
+            set_attributes(trip_to_init, person_to_add);
+        else
+            {
+                std::cout << "Wrong input. Answer has to be either 'Y' or 'N'\n";
+                set_atts_action(trip_to_init, person_to_add);
+            }
+}
+
+void set_attributes(Trip &trip_to_init, Person &person_to_add)
+{
+    std::cout << "What attribute do you want to change? Type number as an input\n";
+    std::cout << "1-food\n";
+    std::cout << "2-alcohol\n";
+    std::cout << "3-nicotine\n";
+    std::cout << "4-meat\n";
+    std::cout << "5-gluten\n";
+    std::cout << "6-dairy\n";
+    std::cout << "7-other\n";
 }
 
 
