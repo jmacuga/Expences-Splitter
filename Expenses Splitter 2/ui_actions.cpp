@@ -265,6 +265,23 @@ void add_collective_transaction(Trip &trip_to_init)
 {
     std::cout << "\nAdd collective transaction:\n";
     //TODO category enum, searching payer by name (assuming that there are no 2 participants with the same name)
+    int category;
+    while(!(std::cin >> category)){
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input.  Try again (Type a number from 1 to 7): ";
+    }
+    if(check_atts_input(category) == true)
+        {
+            change_att(rip &trip_to_init, Person &person_to_add, int category);
+            //TODO
+        }
+    else
+        {
+            std::cout << "\nChoose proper option!\n";
+            add_collective_transaction(trip_to_init);
+        }
+
 }
 
 void add_specific_transaction(Trip &trip_to_init)
