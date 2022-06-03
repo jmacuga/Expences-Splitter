@@ -182,7 +182,6 @@ void add_participant(Trip &trip_to_init)
     std::cout << "Preset is false for nicotine and true for everything else ";
     std::cout << "(food, alcohol, meat, gluten, dairy, other) [Y/N]\n";
     set_atts_action(trip_to_init, person_to_add);
-
     interface(trip_to_init);
 
 }
@@ -193,7 +192,7 @@ void set_atts_action(Trip &trip_to_init, Person &person_to_add)
     std::string answer;
     std::cin >> answer;
         if(check_answer_atts(answer) == true)
-            set_attributes(trip_to_init, person_to_add);
+            set_attributes(trip_to_init, person_to_add.get_id());
         else
             {
                 std::cout << "Wrong input. Answer has to be either 'Y' or 'N'\n";
@@ -201,7 +200,7 @@ void set_atts_action(Trip &trip_to_init, Person &person_to_add)
             }
 }
 
-void set_attributes(Trip &trip_to_init, Person &person_to_add)
+void set_attributes(Trip &trip_to_init, int person_id)
 {
     std::cout << "What attribute do you want to change? Type number as an input\n";
     std::cout << "1-food\n";
@@ -211,8 +210,15 @@ void set_attributes(Trip &trip_to_init, Person &person_to_add)
     std::cout << "5-gluten\n";
     std::cout << "6-dairy\n";
     std::cout << "7-other\n";
+    int input = 0;
+    while (!(std::cin >> input)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input.  Try again (Type nuber from 1 to 6): ";
+    }
+    Person::Category category = static_cast<Person::Category>(input);
+    trip_to_init.get_person(person_id - 1).set_att(category);
 }
-
 
 void add_transactions(Trip &trip_to_init)
 {
