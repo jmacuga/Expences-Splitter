@@ -28,7 +28,7 @@ bool test_check_name_2()
 
 bool test_check_set_att_input_1()
 {
-    if(check_set_att_input("N") == true)
+    if(check_yes_no_input("N") == true)
         return true;
     else
     {
@@ -39,7 +39,7 @@ bool test_check_set_att_input_1()
 
 bool test_check_set_att_input_2()
 {
-    if(check_set_att_input("Y") == true)
+    if(check_yes_no_input("Y") == true)
         return true;
     else
     {
@@ -50,7 +50,7 @@ bool test_check_set_att_input_2()
 
 bool test_check_set_att_input_3()
 {
-    if(check_set_att_input("NO") == true)
+    if(check_yes_no_input("NO") == true)
         return true;
     else
     {
@@ -61,7 +61,7 @@ bool test_check_set_att_input_3()
 
 bool test_check_set_att_input_4()
 {
-    if(check_set_att_input("YES") == true)
+    if(check_yes_no_input("YES") == true)
         return true;
     else
     {
@@ -72,7 +72,7 @@ bool test_check_set_att_input_4()
 
 bool test_check_set_att_input_5()
 {
-    if(check_set_att_input("si") == false)
+    if(check_yes_no_input("si") == false)
         return true;
     else
     {
@@ -86,6 +86,11 @@ bool test_load_history()
     return true;
 }
 
+bool test_value_bool()
+{
+    return !is_positive("NO");
+}
+
 
 int main()
 {
@@ -97,6 +102,7 @@ int main()
     flag = flag && test_check_set_att_input_3();
     flag = flag && test_check_set_att_input_4();
     flag = flag && test_check_set_att_input_5();
+    flag = flag && test_value_bool();
 
     if(flag == false)
         std::cout << "\nErrors in tests.\n";
