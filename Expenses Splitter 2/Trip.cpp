@@ -8,47 +8,41 @@
 void Trip::add_person(Person const& p)
 {
 	for (Person trip_p : people)
-	{
-		if (p == trip_p)
+		if (p == trip_p) 
 			return;
-	}
 	people.push_back(p);
 }
 //adds transaction to p_trans, changes payer balance and other people balances
 void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 {
-	if (p_trans == nullptr)		return;
+	if (p_trans == nullptr)	
+		return;
 	ptransactions.push_back(p_trans);
 	float money = p_trans->get_money();
 	float moneypp = 0;
 	size_t incl_number = p_trans->get_included().size();
 	std::vector<Person*> included;
-	if(!incl_number)
+	if (!incl_number)
 	{
 		for (Person& p : people)
-		{
 			if (p.category_compare(p_trans->get_category()))
 			{
 				incl_number++;
 				included.push_back(&p);
 			}
-		}
-	}
+	} 
 	else
 	{
 		for (int &idx: p_trans->get_included())
 			included.push_back(&people[idx - 1]);
 	}
+		
 	//in case if no one has certain category as true
-	if (!incl_number)
-	{
+	if (!incl_number) 
 		return;
-	}
 	moneypp = money/(incl_number);
 	for (Person* p : included)
-	{
 		p->add_to_balace(-moneypp);
-	}
 	people[p_trans->get_payer() - 1].add_to_balace(money);
 }
 
@@ -174,7 +168,8 @@ std::map<std::pair<int, int>, float> Trip::calc_transfers()
 {
 	std::map<std::pair<int, int>, float> result;
 	//lambda to compare pair by balance
-	auto greater_pair = [](std::pair<int, float> const& p1, std::pair<int, float> const& p2)
+	auto greater_pair = [](std::pair<int, float> const& p1, 
+		std::pair<int, float> const& p2)
 	{return abs(p2.second) > abs(p1.second); };
 	//bufors of balances wich we will be zero at the end of func
 	std::vector<std::pair<int, float>> pos_bufor;
