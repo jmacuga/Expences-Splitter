@@ -20,7 +20,7 @@ void launch_app(Trip& trip)
         std::cout << "Invalid input.  Try again (Type 1, 2 or 3): ";
 
     }
-    if (check_init_action(input) == true)
+    if (check_init_action(input, 2))
         {
             switch (input)
             {
@@ -72,7 +72,7 @@ void interface(Trip &trip)
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Invalid input.  Try again (Type 1 - 6): ";
     }
-    if (check_init_action(input) == true)
+    if (check_init_action(input, 5))
         {
             switch (input)
             {
@@ -208,10 +208,57 @@ void add_participant(Trip &trip_to_init)
     std::cin >> name;
     Person person_to_add(id, name);
     trip_to_init.add_person(person_to_add);
+    std::cout << "Do you want to change participant's attributes?\n";
+    std::cout << "Preset is false for nicotine and true for everything else ";
+    std::cout << "(food, alcohol, meat, gluten, dairy, other) [Y/N]\n";
+    set_atts_action(trip_to_init, id);
     interface(trip_to_init);
 
 }
 
+
+void set_atts_action(Trip &trip_to_init, int id)
+{
+    std::string answer;
+    std::cin >> answer;
+    if (check_yes_no_input(answer))
+    {
+        if (is_positive(answer))
+            set_attributes(trip_to_init, id);
+        else
+            interface(trip_to_init);
+    }
+    else
+        {
+            std::cout << "Wrong input. Answer has to be either 'Y' or 'N'\n";
+            set_atts_action(trip_to_init, id);
+        }
+}
+
+void set_attributes(Trip &trip_to_init, int person_id)
+{
+    std::cout << "What attribute do you want to change? Type number as an input\n";
+    std::cout << trip_to_init.get_person(person_id - 1).print_atts();
+    int input = 0;
+    while (!(std::cin >> input)) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "Invalid input.  Try again (Type nuber from 1 to 7): ";
+    }
+    Person::Category category = static_cast<Person::Category>(input - 1);
+    trip_to_init.get_person(person_id - 1).set_att(category);
+    std::cout << "AFTER CHANGE:\n" << trip_to_init.get_person(person_id - 1).print_atts();
+    std::cout << "Do you want to change anything else? [Y/N] \n";
+    std::string answer;
+    std::cin >> answer;
+    if (check_yes_no_input(answer))
+        {
+         if (is_positive(answer))
+             set_attributes(trip_to_init, person_id);
+       }
+    else
+        interface(trip_to_init);
+}
 
 void add_transactions(Trip &trip_to_init)
 {
@@ -224,9 +271,8 @@ void add_transactions(Trip &trip_to_init)
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Invalid input.  Try again (Type 1 or 2): ";
-
     }
-    if (check_init_action_2_opt(input) == true)
+    if (check_init_action(input, 2))
         {
             if(input == 1)
                 add_collective_transaction(trip_to_init);

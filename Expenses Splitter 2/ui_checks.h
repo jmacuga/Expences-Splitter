@@ -2,6 +2,6 @@
 #include <string>
 
 bool check_name(std::string new_name);
-bool check_set_att_input(std::string set_attr);
-bool check_init_action(int input);
-bool check_init_action_2_opt(int input);
+bool check_yes_no_input(std::string input);
+bool check_init_action(int input, int range);
+bool is_positive(std::string input);

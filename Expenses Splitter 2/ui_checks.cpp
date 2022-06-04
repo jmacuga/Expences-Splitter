@@ -1,4 +1,5 @@
 #include <string>
+#include <cctype>
 #include "ui_checks.h"
 
 
@@ -17,27 +18,25 @@ bool check_name(std::string new_name)
 // Z tym ze gdy uzytkownik wpisuje to dobrze sformatować tekst
 // tak aby były np. zawsze duże litery, wtedy poniższe
 //sprwadzania zadziałają
-bool check_set_att_input(std::string set_attr)
+bool check_yes_no_input(std::string input)
 {
-    if(set_attr == "N" || set_attr == "NO" || set_attr == "Y" || set_attr == "YES")
+    if(input == "N" || input == "NO" || input == "Y" || input == "YES")
         return true;
     else
         return false;
 }
 
-bool check_init_action(int input)
+//check if the number typed is in given range
+bool check_init_action(int input, int range )
 {
-    if (input == 1 || input == 2 || input == 3 || input == 4 || input == 5 || input == 6)
+    if (input >= 1  && input <= range)
         return true;
     else
         return false;
 }
 
-
-bool check_init_action_2_opt(int input)
+//argument should be valid yes or no input
+bool is_positive(std::string input)
 {
-    if (input == 1 || input == 2)
-        return true;
-    else
-        return false;
+    return (input == "Y" || input == "YES");
 }
