@@ -33,4 +33,5 @@ public:
 
 	//checks if person should be included in transaction of category c
 	bool category_compare(Category trans_c) const;
+	std::string print_atts();
 };
