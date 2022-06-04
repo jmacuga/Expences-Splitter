@@ -49,7 +49,6 @@ void Person::add_to_balace(float amount)
 
 std::string Person::file_input() const
 {
-
     std::stringstream instr;
     instr << id << " " << name << '\n';
     for (std::pair<const Category, bool> pa: atts)
@@ -67,11 +66,17 @@ std::string Person::Cat_to_str(Category c)
     case Category::nicotine:
         return "nicotine";
         break;
+    case Category::alcohol:
+        return "alcohol";
+        break;
     case Category::meat:
         return "meat";
         break;
     case Category::gluten:
         return "gluten";
+        break;
+    case Category::dairy:
+        return "dairy";
         break;
     case Category::other:
         return "other";
@@ -88,3 +93,16 @@ bool Person::category_compare(Category trans_c) const
         return false;
     return elem->second;
 };
+
+std::string Person::print_atts()
+{
+    std::string out;
+    out = "Current attributes:\n";
+    int i = 1;
+    for (auto c : atts)
+    {
+        out += std::to_string(i) + ". " + Cat_to_str(c.first) + " [" + (c.second ? "YES" : "NO") + "]\n";
+        i++;
+    };
+    return out;
+}

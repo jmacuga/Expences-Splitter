@@ -208,21 +208,16 @@ void set_atts_action(Trip &trip_to_init, int id)
 void set_attributes(Trip &trip_to_init, int person_id)
 {
     std::cout << "What attribute do you want to change? Type number as an input\n";
-    std::cout << "1-food\n";
-    std::cout << "2-alcohol\n";
-    std::cout << "3-nicotine\n";
-    std::cout << "4-meat\n";
-    std::cout << "5-gluten\n";
-    std::cout << "6-dairy\n";
-    std::cout << "7-other\n";
+    std::cout << trip_to_init.get_person(person_id - 1).print_atts();
     int input = 0;
     while (!(std::cin >> input)) {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Invalid input.  Try again (Type nuber from 1 to 6): ";
+        std::cout << "Invalid input.  Try again (Type nuber from 1 to 7): ";
     }
-    Person::Category category = static_cast<Person::Category>(input);
+    Person::Category category = static_cast<Person::Category>(input - 1);
     trip_to_init.get_person(person_id - 1).set_att(category);
+    std::cout << "AFTER CHANGE:\n" << trip_to_init.get_person(person_id - 1).print_atts();
     std::cout << "Do you want to change anything else? [Y/N] \n";
     std::string answer;
     std::cin >> answer;
