@@ -39,7 +39,7 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 		
 	//in case if no one has certain category as true
 	if (!incl_number) 
-		return;
+		throw WrongCategory;
 	moneypp = money/(incl_number);
 	for (Person* p : included)
 		p->add_to_balace(-moneypp);

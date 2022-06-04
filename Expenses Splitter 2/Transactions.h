@@ -3,7 +3,7 @@
 #include <vector>
 #include "Person.h"
 
-enum my_excetpions {NegativeNumber, FileNotOpen, WrongFileFormat};
+enum my_excetpions {NegativeNumber, FileNotOpen, WrongFileFormat, WrongCategory};
 class Transaction
 {
 public:
