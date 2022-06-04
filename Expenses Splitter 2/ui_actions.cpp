@@ -20,7 +20,7 @@ void launch_app(Trip& trip)
         std::cout << "Invalid input.  Try again (Type 1, 2 or 3): ";
 
     }
-    if (check_init_action(input, 2))
+    if (check_init_action(input, 3))
         {
             switch (input)
             {
@@ -58,8 +58,6 @@ void add_new_trip(Trip& trip)
 void interface(Trip &trip)
 {
     std::cout << "Choose option:\n";
-    // Ja bym nie dał możliwości dawania tu transakcji, to dopiero po stworzeniu tripa
-    // i przejsciu do takiego roboczego ekranu
     std::cout << "1. Add new participant. (Type '1')\n";
     std::cout << "2. Start adding new transactions. (Type '2')\n";
     std::cout << "3. Show people. (Type '3')\n";
@@ -72,7 +70,7 @@ void interface(Trip &trip)
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Invalid input.  Try again (Type 1 - 6): ";
     }
-    if (check_init_action(input, 5))
+    if (check_init_action(input, 6))
         {
             switch (input)
             {
@@ -307,5 +305,19 @@ void add_specific_transaction(Trip &trip_to_init)
 
 void settle(Trip& trip)
 {
-    std::cout << "Settle";
+    std::cout << "Settlement Transfers:\n\n";
+    std::map<std::pair<int, int>, float> trans_map = trip.calc_transfers();
+    if (trans_map.size() == 0)
+    {
+        std::cout << "Everybody even!\n\n";
+        interface(trip);
+    }
+    for (const std::pair<std::pair<int, int>, float>& pa: trans_map)
+    {
+        std::cout << "[" << trip.get_person(pa.first.first - 1).get_name() << " -> ";
+        std::cout << trip.get_person(pa.first.second - 1).get_name() << "]: ";
+        std::cout << pa.second << '\n';
+    }
+    std::cout << '\n';
+    interface(trip);
 }

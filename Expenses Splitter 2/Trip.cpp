@@ -181,12 +181,12 @@ std::map<std::pair<int, int>, float> Trip::calc_transfers()
 	std::vector<std::pair<int, float>> neg_bufor;
 	for (Person p : people)
 	{
-		if (!p.get_balance())	
+		if (!p.get_balance())
 			continue;
 		auto pers_p = std::make_pair(p.get_id(), p.get_balance());
 		if (pers_p.second > 0)
 			pos_bufor.push_back(pers_p);
-		else 
+		else
 			neg_bufor.push_back(pers_p);
 	}
 	std::sort(pos_bufor.begin(), pos_bufor.end(), greater_pair);
@@ -203,7 +203,7 @@ void Trip::split_money(std::vector<std::pair<int, float>>& first_bufor,
 {
 	for (auto fit = first_bufor.begin(); fit != first_bufor.end(); fit++)
 	{
-		if (!fit->second)	
+		if (!fit->second)
 			continue;
 		for (auto sit = second_bufor.begin(); sit != second_bufor.end(); sit++)
 		{
@@ -250,7 +250,7 @@ std::ostream& Trip::print_trans(std::ostream &os)
 		getline(trstr, line);
 		os << "Amount: " << line << '\n';
 		getline(trstr, line);
-		os << "Category: to implement" << '\n';
+		os << "Category: " << Person::Cat_to_str(trans->get_category()) << '\n';
 		getline(trstr, line);
 		if (line != "")
 		{
