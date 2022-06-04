@@ -3,6 +3,9 @@
 #include <iostream>
 #include <limits>
 #include <fstream>
+#include <memory>
+#include "Person.h"
+#include "Transactions.h"
 #include "ui_actions.h"
 #include "ui_checks.h"
 #include "Trip.h"
@@ -307,17 +310,55 @@ void settle(Trip& trip)
 {
     std::cout << "Settlement Transfers:\n\n";
     std::map<std::pair<int, int>, float> trans_map = trip.calc_transfers();
+    std::pair<int, std::pair<int,int>> *ids = new std::pair<int, std::pair<int,int>>[trans_map.size()];
     if (trans_map.size() == 0)
     {
         std::cout << "Everybody even!\n\n";
         interface(trip);
     }
+    int i = 0;
     for (const std::pair<std::pair<int, int>, float>& pa: trans_map)
     {
+        std::pair<int, std::pair<int,int>> id;
+        std::cout << i + 1 << ". ";
         std::cout << "[" << trip.get_person(pa.first.first - 1).get_name() << " -> ";
         std::cout << trip.get_person(pa.first.second - 1).get_name() << "]: ";
         std::cout << pa.second << '\n';
+        id.first = i;
+        id.second = pa.first;
+        *(ids + i) = id;
+        i++;
     }
     std::cout << '\n';
+    std::cout << "Would you like to settle any debt? [Y or N]\n";
+    std::string answer;
+    std::cin >> answer;
+    if (check_yes_no_input(answer))
+         if (is_positive(answer))
+            {
+                std::cout << "Which debt do you want to settle? [insert debt number or 0 to exit]\n";
+                int input = 0;
+                while(!(std::cin >> input)){
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "Invalid input, try again! ";
+                }
+                if (input == 0)
+                {
+                    delete [] ids;
+                    return interface(trip);
+                }
+                if (check_init_action(input, i + 1))
+                    {
+                        SpecificTransaction trans(trans_map[ids[input - 1].second], ids[input - 1].second.first,
+                                                Person::Category::other, {ids[input - 1].second.second});
+                        std::shared_ptr<SpecificTransaction> tptr = std::make_shared<SpecificTransaction>(trans);
+                        trip.add_transaction(tptr);
+                        std::cout << "Settled!\n";
+                    }
+                else
+                    std::cout << "\nChoose proper option!\n";
+            };
+    delete [] ids;
     interface(trip);
 }
