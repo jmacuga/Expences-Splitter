@@ -18,15 +18,15 @@ protected:
     int payer;
     std::time_t time;
 public:
-    Transaction(float m, int p, Person::Category c) : money(m), category(c), payer(p) {
+    Transaction(float m, int p, Person::Category c, std::time_t t = std::time(0)):
+                money(m), category(c), payer(p), time(t) {
         if (m < 0)
             throw NegativeNumber;
-        time = std::time(0);
     };
     int get_payer() const { return payer; };
     Person::Category get_category() const { return category; };
     float get_money() const { return money; };
-    std::time_t get_time() const { return time; };
+    const std::time_t* get_time() const { return &time; };
     virtual std::vector<int> get_included() const {
         //default virtual function returns empty vector
         std::vector<int> v;
@@ -41,7 +41,8 @@ public:
 class CollectiveTransaction : public Transaction
 {
 public:
-    CollectiveTransaction(float m, int p, Person::Category c): Transaction(m, p, c) {};
+    CollectiveTransaction(float m, int p, Person::Category c, std::time_t t = std::time(0)):
+                          Transaction(m, p, c, t) {};
     std::string file_input() const;
 };
 
@@ -50,7 +51,8 @@ class SpecificTransaction : public CollectiveTransaction
 private:
     std::vector<int> inid;
 public:
-    SpecificTransaction(float m, int p, Person::Category c, std::vector<int> incl_ids) : CollectiveTransaction(m, p, c)
+    SpecificTransaction(float m, int p, Person::Category c, std::vector<int> incl_ids, std::time_t t = std::time(0)):
+                        CollectiveTransaction(m, p, c, t)
     { inid = incl_ids; };
     std::string file_input() const;
     std::vector<int> get_included() const { return inid; };

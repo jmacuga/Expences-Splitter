@@ -27,8 +27,8 @@ int main()
     rstr.str(std::string());
     Trip tsttrip("Test_trip");
     tsttrip.add_person(mil);
-    CollectiveTransaction ct(40.5, 1, Person::Category::meat);
-    tstr << "COL\n1\n40.5\n3\n";
+    CollectiveTransaction ct(40.5, 1, Person::Category::meat, 150);
+    tstr << "COL\n150\n1\n40.5\n3\n";
     rstr << ct.file_input();
     if (tstr.str() != rstr.str())
     {
@@ -46,9 +46,8 @@ int main()
     jul.set_att(Person::Category::gluten, false);
     tsttrip.add_person(pio);
     tsttrip.add_person(jul);
-    std::vector<int> recievers{2, 3};
-    SpecificTransaction st(56.98, 1, Person::Category::other, recievers);
-    tstr << "SPE\n1\n56.98\n6\n23\n";
+    SpecificTransaction st(56.98, 1, Person::Category::other, {2, 3}, 150);
+    tstr << "SPE\n150\n1\n56.98\n6\n23\n";
     rstr << st.file_input();
     if (tstr.str() != rstr.str())
     {
@@ -97,8 +96,8 @@ int main()
     Trip tsttrip1("Test_trip1");
     Person piotr(1, "Piotrek");
     Person wojtek(2, "Wojtek");
-    SpecificTransaction st0(56.98, 1, Person::Category::other, {1, 2});
-    CollectiveTransaction ct0(56.98, 1, Person::Category::other);
+    SpecificTransaction st0(56.98, 1, Person::Category::other, {1, 2}, 150);
+    CollectiveTransaction ct0(56.98, 1, Person::Category::other, 150);
     Person wiktoria(3, "Wiktoria");
     tsttrip1.add_person(piotr);
     tsttrip1.add_person(wojtek);
