@@ -16,4 +16,5 @@ void exit_app(Trip& trip);
 void set_atts_action(Trip& trip_to_init, int person_id);
 void set_attributes(Trip& trip_to_init, int person_id);
 bool test_load_history();
-int numerical_input(std::string message, int min, int max);
+template<typename T>
+T numerical_input(std::string message, T min, T max);
