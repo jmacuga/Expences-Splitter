@@ -301,7 +301,7 @@ void set_attributes(Trip &trip_to_init, int person_id)
 
 void add_transactions(Trip &trip)
 {
-    system("CLS");
+    system("clear");
     if (!trip.get_people_size())
     {
         std::cout << "\nAdd people before adding transactions";
