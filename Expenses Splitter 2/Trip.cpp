@@ -11,6 +11,7 @@ void Trip::add_person(Person const& p)
 		if (p == trip_p)
 			return;
 	people.push_back(p);
+	app_seq.push_back(true);
 }
 //adds transaction to p_trans, changes payer balance and other people balances
 void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
@@ -18,6 +19,7 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 	if (p_trans == nullptr)
 		return;
 	ptransactions.push_back(p_trans);
+	app_seq.push_back(false);
 	float money = p_trans->get_money();
 	float moneypp = 0;
 	size_t incl_number = p_trans->get_included().size();
@@ -50,24 +52,34 @@ void Trip::save_to_file(std::ofstream &myfile) const
 	if (!myfile.is_open())
 		throw FileNotOpen;
 	myfile <<  name << "\n\n";
-	myfile << "PEOPLE\n\n";
-	for ( const Person &p : people)
-		myfile << p.file_input() << '\n';
-	myfile << "TRANSACTIONS\n\n";
-	for (const std::shared_ptr<Transaction> &tr: ptransactions)
-		myfile << tr->file_input() << '\n';
-	myfile << "&&&";
+	std::vector<Person>::const_iterator piterator = people.cbegin();
+	std::vector<std::shared_ptr<Transaction>>::const_iterator titerator = ptransactions.cbegin();
+	for (const bool &b: app_seq)
+	{
+		if (b)
+		{
+			myfile << (*piterator).file_input() << '\n';
+			piterator++;
+		}
+		else
+		{
+			myfile << (*titerator)->file_input() << '\n';
+			titerator++;
+		}
 
+	}
+	myfile << "&&&";
 }
 
 void Trip::load_from_file(std::ifstream &myfile)
 {
-	auto pderived = [&myfile](std::string fline)
+	auto pderived = [&myfile]()
 	{
-		std::string line = fline;
+		std::string line ;
 		std::string sid = "";
 		std::string name = "";
 		bool space_met = false;
+		getline(myfile, line);
 		for(const char &c: line)
 		{
 			if (c == ' ')
@@ -132,19 +144,10 @@ void Trip::load_from_file(std::ifstream &myfile)
 	if (!myfile.is_open())
 		throw FileNotOpen;
 	std::string line = "";
-	while (line != "PEOPLE")
-		getline(myfile, line);
+	getline(myfile, line);
 	getline(myfile, line);
 	if (line != "")
 		throw WrongFileFormat;
-	while (true)
-	{
-		getline(myfile, line);
-		if (line == "TRANSACTIONS")
-			break;
-		people.push_back(pderived(line));
-	}
-	getline(myfile, line);
 	getline(myfile, line);
 	while (line != "&&&")
 	{
@@ -156,6 +159,11 @@ void Trip::load_from_file(std::ifstream &myfile)
 		else if (line == "SPE")
 		{
 			add_transaction(std::make_shared<SpecificTransaction>(spetderived()));
+			getline(myfile, line);
+		}
+		else if (line == "PER")
+		{
+			add_person(pderived());
 			getline(myfile, line);
 		}
 		else
