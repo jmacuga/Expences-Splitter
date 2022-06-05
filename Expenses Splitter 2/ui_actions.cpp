@@ -210,7 +210,7 @@ void add_participant(Trip &trip_to_init)
     interface(trip_to_init);
 }
 
-void show_people(Trip& const trip)
+void show_people(Trip& trip)
 {
     trip.print_people(std::cout);
     std::cout << "Press Enter to continue...";
