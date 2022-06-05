@@ -36,7 +36,6 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 		for (int &idx: p_trans->get_included())
 			included.push_back(&people[idx - 1]);
 	}
-
 	//in case if no one has certain category as true
 	if (!incl_number)
 		throw WrongCategory;
