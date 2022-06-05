@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include "ui_checks.h"
 #include "ui_actions.h"
