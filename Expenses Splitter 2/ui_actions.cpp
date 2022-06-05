@@ -187,29 +187,6 @@ void set_atts_action(Trip &trip_to_init, int id)
 template<typename T>
 T numerical_input(std::string message, T min, T max)
 {
-<<<<<<< HEAD
-    std::cout << "What attribute do you want to change? Type number as an input\n";
-    std::cout << "1-food\n";
-    std::cout << "2-alcohol\n";
-    std::cout << "3-nicotine\n";
-    std::cout << "4-meat\n";
-    std::cout << "5-gluten\n";
-    std::cout << "6-dairy\n";
-    std::cout << "7-other\n";
-    int input = 0;
-    while(!(std::cin >> input)){
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Invalid input.  Try again (Type a number from 1 to 7): ";
-    }
-    if(check_atts_input(input) == true)
-        change_att(rip &trip_to_init, Person &person_to_add, int input);
-    else
-        {
-            std::cout << "\nChoose proper option!\n";
-            set_attributes(Trip &trip_to_init, Person &person_to_add);
-        }
-=======
     std::string input;
     T input_val = 0;
     while (true)
@@ -225,7 +202,6 @@ T numerical_input(std::string message, T min, T max)
         std::cout << message;
     }
     return input_val;
->>>>>>> d7b17119b6e361b028f6b0b4abae470c7e0f4a22
 }
 
 template<>
@@ -307,26 +283,6 @@ void add_collective_transaction(Trip& trip)
 
     system("CLS");
     std::cout << "\nAdd collective transaction:\n";
-<<<<<<< HEAD
-    //TODO category enum, searching payer by name (assuming that there are no 2 participants with the same name)
-    int category;
-    while(!(std::cin >> category)){
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Invalid input.  Try again (Type a number from 1 to 7): ";
-    }
-    if(check_atts_input(category) == true)
-        {
-            change_att(rip &trip_to_init, Person &person_to_add, int category);
-            //TODO
-        }
-    else
-        {
-            std::cout << "\nChoose proper option!\n";
-            add_collective_transaction(trip_to_init);
-        }
-
-=======
     std::cout << "Select payer id: \n ";
     trip.print_people(std::cout);
     int size = trip.get_people_size();
@@ -352,7 +308,6 @@ void add_collective_transaction(Trip& trip)
         std::cin.get();
         add_collective_transaction(trip);
     }
->>>>>>> d7b17119b6e361b028f6b0b4abae470c7e0f4a22
 }
 
 void add_specific_transaction(Trip &trip_to_init)
