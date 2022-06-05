@@ -29,3 +29,4 @@ bool is_positive(std::string input)
     for (auto c : input) c = toupper(c);
     return (input == "Y" || input == "YES");
 }
+
