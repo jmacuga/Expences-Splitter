@@ -1,17 +1,16 @@
 Test_trip
 
-PEOPLE
-
+PER
 1 Miłosz
 1101110
 
+PER
 2 Piotrek
 1100111
 
+PER
 3 Julka
 1101011
-
-TRANSACTIONS
 
 SPE
 1

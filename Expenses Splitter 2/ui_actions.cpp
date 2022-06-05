@@ -26,7 +26,6 @@ void launch_app(Trip& trip)
             break;
         case 2:
             load_history(trip);
-            break;
         default:
             exit(0);
             break;
