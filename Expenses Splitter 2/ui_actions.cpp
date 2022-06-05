@@ -362,13 +362,12 @@ void add_collective_transaction(Trip& trip)
         std::shared_ptr<Transaction> transaction = std::make_shared<CollectiveTransaction>(money, payer_id, category);
         trip.add_transaction(transaction);
         std::cout << "\nTransaction added\n";
+        press_to_continue();
     }
     catch (my_excetpions)
     {
         std::cout << "\nNone of the people is included in that category, please try again";
-        std::cout << "\nPress Enter to continue...";
-        std::cin.ignore(10, '\n');
-        std::cin.get();
+        press_to_continue();
         add_collective_transaction(trip);
     }
 }
@@ -394,13 +393,16 @@ void add_specific_transaction(Trip &trip)
     {
         std::cout << "Add a participant in current transaction (type one's ID)\n";
         int person_id = numerical_input(message, 1, size);
-        while(std::find(included_ids.begin(), included_ids.end(), person_id) != included_ids.end())
+        int person_id_cast = person_id;
+        while(std::find(included_ids.begin(), included_ids.end(), person_id_cast) != included_ids.end())
         {
             std::cout << "This person has already been included (Type ID of another person)\n";
-            std::cin.ignore(10, '\n');
+            std::cin.clear();
             int person_id = numerical_input(message, 1, size);
+            person_id_cast = person_id;
+            std::cin.clear();
         }
-        included_ids.push_back(person_id);
+        included_ids.push_back(person_id_cast);
         std::cout << "Do you want to add another person? [Y/N]\n";
         std::string input;
         std::cin >> input;
@@ -416,13 +418,12 @@ void add_specific_transaction(Trip &trip)
         std::shared_ptr<Transaction> transaction = std::make_shared<SpecificTransaction>(money, payer_id, category, included_ids);
         trip.add_transaction(transaction);
         std::cout << "\nTransaction added\n";
+        press_to_continue();
     }
     catch (my_excetpions)
     {
         std::cout << "\nNone of the people is included in that category, please try again";
-        std::cout << "\nPress Enter to continue...";
-        std::cin.ignore(10, '\n');
-        std::cin.get();
+        press_to_continue();
         add_specific_transaction(trip);
     }
 
@@ -489,4 +490,12 @@ void settle(Trip& trip)
             };
     delete [] ids;
     interface(trip);
+}
+
+
+void press_to_continue()
+{
+    std::cout << "\nPress Enter to continue...";
+    std::cin.ignore(10, '\n');
+    std::cin.get();
 }
