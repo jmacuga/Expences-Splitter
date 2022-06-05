@@ -50,6 +50,7 @@ void Person::add_to_balace(float amount)
 std::string Person::file_input() const
 {
     std::stringstream instr;
+    instr <<"PER\n";
     instr << id << " " << name << '\n';
     for (std::pair<const Category, bool> pa: atts)
         instr << int(std::get<1>(pa));

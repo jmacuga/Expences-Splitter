@@ -9,6 +9,5 @@ int main()
 {
     std::cout << "\nNazwa Aplikacji\n";
     launch_app(current_trip);
-
     return 0;
 }

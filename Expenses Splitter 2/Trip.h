@@ -9,6 +9,7 @@ private:
 	std::vector<Person> people;
 	std::vector<std::shared_ptr<Transaction>> ptransactions;
 	std::string name;
+	std::vector<bool> app_seq;
 public:
 // two Trip constructors, one with file handle to file from which should it be recreated
 	Trip(std::string nm): name(nm) {};
