@@ -170,7 +170,7 @@ std::map<std::pair<int, int>, float> Trip::calc_transfers()
 	//lambda to compare pair by balance
 	auto greater_pair = [](std::pair<int, float> const& p1,
 		std::pair<int, float> const& p2)
-	{return abs(p2.second) > abs(p1.second); };
+	{return std::abs(p2.second) > std::abs(p1.second); };
 	//bufors of balances wich we will be zero at the end of func
 	std::vector<std::pair<int, float>> pos_bufor;
 	std::vector<std::pair<int, float>> neg_bufor;
@@ -202,12 +202,12 @@ void Trip::split_money(std::vector<std::pair<int, float>>& first_bufor,
 			continue;
 		for (auto sit = second_bufor.begin(); sit != second_bufor.end(); sit++)
 		{
-			if (abs(sit->second) && abs(sit->second) <= abs(fit->second))
+			if (std::abs(sit->second) && std::abs(sit->second) <= std::abs(fit->second))
 			{
 				if (is_first_negative)
-					result.insert({ {fit->first, sit->first}, abs(sit->second) });
+					result.insert({ {fit->first, sit->first}, std::abs(sit->second) });
 				else
-					result.insert({ {sit->first, fit->first}, abs(sit->second) });
+					result.insert({ {sit->first, fit->first}, std::abs(sit->second) });
 				fit->second += sit->second;
 				sit->second = 0;
 			}
