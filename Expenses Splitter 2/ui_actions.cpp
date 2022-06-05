@@ -31,26 +31,6 @@ void launch_app(Trip& trip)
             exit(0);
             break;
     }
-    if (check_init_action(input, 3))
-        {
-            switch (input)
-            {
-                case 1:
-                    add_new_trip(trip);
-                    break;
-                case 2:
-                    load_history(trip);
-                    break;
-                default:
-                    exit(0);
-                    break;
-            }
-        }
-    else
-        {
-        std::cout << "\nChoose proper option!\n";
-        launch_app(trip);
-        }
 }
 
 
@@ -220,20 +200,10 @@ void show_people(Trip& const trip)
 
 void set_atts_action(Trip &trip_to_init, int id)
 {
-    std::string answer;
-    std::cin >> answer;
-    if (check_yes_no_input(answer))
-    {
-        if (is_positive(answer))
-            set_attributes(trip_to_init, id);
-        else
-            interface(trip_to_init);
-    }
+    if (is_input_positive())
+        set_attributes(trip_to_init, id);
     else
-    {
-        std::cout << "Wrong input. Answer has to be either 'Y' or 'N'\n";
-        set_atts_action(trip_to_init, id);
-    }
+        interface(trip_to_init);
 }
 
 template<typename T>
@@ -287,12 +257,7 @@ void set_attributes(Trip &trip_to_init, int person_id)
     system("CLS");
     std::cout << "AFTER CHANGE:\n" << trip_to_init.get_person(person_id - 1).print_atts();
     std::cout << "Do you want to change anything else? [Y/N] \n";
-    std::string answer;
-    while (!check_yes_no_input(answer))
-    {
-        std::cin >> answer;
-    }
-    if (is_positive(answer))
+    if(is_input_positive())
         set_attributes(trip_to_init, person_id);
     else
         interface(trip_to_init);
@@ -403,40 +368,24 @@ void settle(Trip& trip)
     }
     std::cout << '\n';
     std::cout << "Would you like to settle any debt? [Y or N]\n";
-    std::string answer;
-    std::cin >> answer;
-    while (!check_yes_no_input(answer))
+    if (is_input_positive())
     {
-        std::cout << "Wrong input, type Y or N\n";
-        answer = std::string();
-        std::cin >> answer;
+        std::cout << "Which debt do you want to settle? [insert debt number or 0 to exit]\n";
+        int input = numerical_input("Invalid input, try again! ", 0, i + 1);
+        if (input == 0)
+        {
+            delete [] ids;
+            return interface(trip);
+        }
+        else
+        {
+            SpecificTransaction trans(trans_map[ids[input - 1].second], ids[input - 1].second.first,
+                                    Person::Category::other, {ids[input - 1].second.second});
+            std::shared_ptr<Transaction> tptr = std::make_shared<SpecificTransaction>(trans);
+            trip.add_transaction(tptr);
+            std::cout << "Settled!\n";
+        }
     }
-    if (check_yes_no_input(answer))
-         if (is_positive(answer))
-            {
-                std::cout << "Which debt do you want to settle? [insert debt number or 0 to exit]\n";
-                int input = 0;
-                while(!(std::cin >> input)){
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout << "Invalid input, try again! ";
-                }
-                if (input == 0)
-                {
-                    delete [] ids;
-                    return interface(trip);
-                }
-                if (check_init_action(input, i + 1))
-                    {
-                        SpecificTransaction trans(trans_map[ids[input - 1].second], ids[input - 1].second.first,
-                                                Person::Category::other, {ids[input - 1].second.second});
-                        std::shared_ptr<Transaction> tptr = std::make_shared<SpecificTransaction>(trans);
-                        trip.add_transaction(tptr);
-                        std::cout << "Settled!\n";
-                    }
-                else
-                    std::cout << "\nChoose proper option!\n";
-            };
     delete [] ids;
     interface(trip);
 }
