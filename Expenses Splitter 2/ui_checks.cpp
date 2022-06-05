@@ -13,7 +13,7 @@ bool check_name(std::string new_name)
 // typu: "Yes", "No", "n" etc
 bool check_yes_no_input(std::string input)
 {
-    for (auto c : input) c = toupper(c);
+    for (auto& c : input) c = toupper(c);
     return(input == "N" || input == "NO" || input == "Y" || input == "YES");
 }
 
@@ -26,6 +26,6 @@ bool check_init_action(int input, int range )
 //argument should be valid yes or no input
 bool is_positive(std::string input)
 {
-    for (auto c : input) c = toupper(c);
+    for (auto& c : input) c = toupper(c);
     return (input == "Y" || input == "YES");
 }

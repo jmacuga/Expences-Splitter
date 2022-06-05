@@ -59,7 +59,8 @@ void add_new_trip(Trip& trip)
     std::cout << "\nNew trip:\n";
     std::cout << "\nEnter the name of your trip:\n";
     std::string trip_name;
-    std::cin >> trip_name;
+    std::cin.ignore();
+    std::getline(std::cin, trip_name);
     trip = Trip(trip_name);
     std::cin.clear();
     interface(trip);
@@ -297,18 +298,28 @@ void set_attributes(Trip &trip_to_init, int person_id)
         interface(trip_to_init);
 }
 
-void add_transactions(Trip &trip_to_init)
+void add_transactions(Trip &trip)
 {
     system("CLS");
+    if (!trip.get_people_size())
+    {
+        std::cout << "\nAdd people before adding transactions";
+        std::cout << "\nPress Enter to continue...";
+        std::cin.ignore(10, '\n');
+        std::cin.get();
+        interface(trip);
+        return;
+    }
     std::cout << "\nAdd transactions:\n";
     std::cout << "Choose options:\n";
     std::cout << "1. Add collective transaction(all participants included).(Type '1')\n";
     std::cout << "2. Add specific transaction with limited number of participants.(Type '2')\n";
     int input = numerical_input("Invalid input.  Try again (Type 1 or 2): ", 1, 2);
     if(input == 1)
-        add_collective_transaction(trip_to_init);
+        add_collective_transaction(trip);
     else
-        add_specific_transaction(trip_to_init);
+        add_specific_transaction(trip);
+    interface(trip);
 }
 
 
