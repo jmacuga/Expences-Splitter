@@ -70,7 +70,7 @@ void interface(Trip &trip)
             show_people(trip);
             break;
         case 4:
-            trip.print_trans(std::cout);
+            show_trans(trip);
             interface(trip);
             break;
         case 5:
@@ -196,6 +196,23 @@ void show_people(Trip& trip)
     trip.print_people(std::cout);
     press_to_continue();
     interface(trip);
+}
+
+void show_trans(Trip& trip)
+{
+    trip.print_trans(std::cout);
+    std::cout << "Press Enter to continue...";
+    std::cin.ignore(10, '\n');
+    std::cin.get();
+    interface(trip);
+}
+
+void set_atts_action(Trip &trip_to_init, int id)
+{
+    if (is_input_positive())
+        set_attributes(trip_to_init, id);
+    else
+        interface(trip_to_init);
 }
 
 template<typename T>

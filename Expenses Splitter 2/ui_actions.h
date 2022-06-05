@@ -5,6 +5,7 @@ void launch_app(Trip& Trip);
 void add_new_trip(Trip& trip);
 void interface(Trip &trip);
 void show_people(Trip& trip);
+void show_trans(Trip& trip);
 void load_history(Trip &curr_trip);
 void add_participant(Trip &trip_to_init);
 void add_transactions_menu(Trip& trip);
