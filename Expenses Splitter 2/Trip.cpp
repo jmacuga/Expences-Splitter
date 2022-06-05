@@ -148,7 +148,7 @@ void Trip::load_from_file(std::ifstream &myfile)
 	getline(myfile, line);
 	if (line != "")
 		throw WrongFileFormat;
-
+	getline(myfile, line);
 	while (line != "&&&")
 	{
 		if (line == "COL")

@@ -147,12 +147,12 @@ int main()
     ifile.open(".target_file1.txt");
     trptoload1.load_from_file(ifile);
     ifile.close();
-    assert(trptoload.get_person(0).get_name() == "Piotrek");
-    assert(trptoload.get_person(1).get_name() == "Wojtek");
-    assert(trptoload.get_person(2).get_name() == "Wiktoria");
-    assert(Transaction::fl_cmp(trptoload.get_person(0).get_balance(), 56.98));
-    assert(Transaction::fl_cmp(trptoload.get_person(1).get_balance(), -56.98));
-    assert(Transaction::fl_cmp(trptoload.get_person(2).get_balance(), 0));
+    assert(trptoload1.get_person(0).get_name() == "Piotrek");
+    assert(trptoload1.get_person(1).get_name() == "Wojtek");
+    assert(trptoload1.get_person(2).get_name() == "Wiktoria");
+    assert(Transaction::fl_cmp(trptoload1.get_person(0).get_balance(), 56.98));
+    assert(Transaction::fl_cmp(trptoload1.get_person(1).get_balance(), -56.98));
+    assert(Transaction::fl_cmp(trptoload1.get_person(2).get_balance(), 0));
 
     std::cout << "End of file operation tests.\n";
     return 0;
