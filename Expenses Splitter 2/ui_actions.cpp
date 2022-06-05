@@ -6,6 +6,7 @@
 #include <memory>
 #include "Person.h"
 #include "Transactions.h"
+#include <string>
 #include "ui_actions.h"
 #include "ui_checks.h"
 #include "Trip.h"
@@ -21,7 +22,6 @@ void launch_app(Trip& trip)
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Invalid input.  Try again (Type 1, 2 or 3): ";
-
     }
     if (check_init_action(input, 3))
         {
@@ -67,43 +67,31 @@ void interface(Trip &trip)
     std::cout << "4. Show transaction history. (Type '4')\n";
     std::cout << "5. Show settlement. (Type '5')\n";
     std::cout << "6. Exit. (Type '6')\n";
-    int input = 0;
-    while(!(std::cin >> input)){
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Invalid input.  Try again (Type 1 - 6): ";
+
+    int input = numerical_input("Invalid input.  Try again (Type number from 1 to 6): ", 1, 6);
+    switch (input)
+    {
+        case 1:
+            add_participant(trip);
+            break;
+        case 2:
+            add_transactions(trip);
+            break;
+        case 3:
+            trip.print_people(std::cout);
+            interface(trip);
+            break;
+        case 4:
+            trip.print_trans(std::cout);
+            interface(trip);
+            break;
+        case 5:
+            settle(trip);
+            break;
+        default:
+            exit(0);
+            break;
     }
-    if (check_init_action(input, 6))
-        {
-            switch (input)
-            {
-                case 1:
-                    add_participant(trip);
-                    break;
-                case 2:
-                    add_transactions(trip);
-                    break;
-                case 3:
-                    trip.print_people(std::cout);
-                    interface(trip);
-                    break;
-                case 4:
-                    trip.print_trans(std::cout);
-                    interface(trip);
-                    break;
-                case 5:
-                    settle(trip);
-                    break;
-                default:
-                    exit_app(trip);
-                    break;
-            }
-        }
-    else
-        {
-        std::cout << "\nChoose proper option!\n";
-        add_new_trip(trip);
-        }
 }
 
 void exit_app(Trip& trip)
@@ -174,10 +162,7 @@ void load_history(Trip &curr_trip)
     trpfile.close();
     int i = 0;std::ostream& print_people(std::ostream &os);
     for (const std::pair<std::string, std::string> &pa: tripsvect)
-    {
-        std::cout << i + 1 << ") " << pa.first << "\n";
-        i += 1;
-    }
+        std::cout << i++ + 1 << ") " << pa.first << "\n";
     int input = 0;
     while (true)
     {
@@ -230,33 +215,48 @@ void set_atts_action(Trip &trip_to_init, int id)
             interface(trip_to_init);
     }
     else
+    {
+        std::cout << "Wrong input. Answer has to be either 'Y' or 'N'\n";
+        set_atts_action(trip_to_init, id);
+    }
+}
+
+int numerical_input(std::string message, int min, int max)
+{
+    std::string input;
+    int input_int = 0;
+    while (true)
+    {
+        try
         {
-            std::cout << "Wrong input. Answer has to be either 'Y' or 'N'\n";
-            set_atts_action(trip_to_init, id);
+            std::cin >> input;
+            input_int = std::stoi(input);
+            if (input_int >= min && input_int <= max)
+                break;
         }
+        catch(...) {}
+        std::cout << message;
+    }
+    return input_int;
 }
 
 void set_attributes(Trip &trip_to_init, int person_id)
 {
     std::cout << "What attribute do you want to change? Type number as an input\n";
     std::cout << trip_to_init.get_person(person_id - 1).print_atts();
-    int input = 0;
-    while (!(std::cin >> input)) {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Invalid input.  Try again (Type nuber from 1 to 7): ";
-    }
+    int input = numerical_input("Invalid input.  Try again (Type nuber from 1 to 7): ", 1, 7);
     Person::Category category = static_cast<Person::Category>(input - 1);
     trip_to_init.get_person(person_id - 1).set_att(category);
+
     std::cout << "AFTER CHANGE:\n" << trip_to_init.get_person(person_id - 1).print_atts();
     std::cout << "Do you want to change anything else? [Y/N] \n";
     std::string answer;
-    std::cin >> answer;
-    if (check_yes_no_input(answer))
-        {
-         if (is_positive(answer))
-             set_attributes(trip_to_init, person_id);
-       }
+    while (!check_yes_no_input(answer))
+    {
+        std::cin >> answer;
+    }
+    if (is_positive(answer))
+        set_attributes(trip_to_init, person_id);
     else
         interface(trip_to_init);
 }
@@ -267,24 +267,11 @@ void add_transactions(Trip &trip_to_init)
     std::cout << "Choose options:\n";
     std::cout << "1. Add collective transaction(all participants included).(Type '1')\n";
     std::cout << "2. Add specific transaction with limited number of participants.(Type '2')\n";
-    int input = 0;
-    while(!(std::cin >> input)){
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "Invalid input.  Try again (Type 1 or 2): ";
-    }
-    if (check_init_action(input, 2))
-        {
-            if(input == 1)
-                add_collective_transaction(trip_to_init);
-            else
-                add_specific_transaction(trip_to_init);
-        }
+    int input = numerical_input("Invalid input.  Try again (Type 1 or 2): ", 1, 2);
+    if(input == 1)
+        add_collective_transaction(trip_to_init);
     else
-        {
-        std::cout << "\nChoose proper option!\n";
-        add_transactions(trip_to_init);
-        }
+        add_specific_transaction(trip_to_init);
 }
 
 
@@ -294,10 +281,20 @@ void add_singular_transaction()
     //TODO
 }
 
-void add_collective_transaction(Trip &trip_to_init)
+void add_collective_transaction(Trip &trip)
 {
     std::cout << "\nAdd collective transaction:\n";
-    //TODO category enum, searching payer by name (assuming that there are no 2 participants with the same name)
+    std::cout << "Select payer id: \n ";
+    trip.print_people(std::cout);
+    int size = trip.get_people_size();
+    std::string message = "Invalid input.  Try again (Type number from 1 to " + std::to_string(size) + "): ";
+    int input = numerical_input(message, 1, size);
+    std::cout << "\nType the category:";
+    //TODO print categories
+    int category_number = numerical_input("Invalid input.  Try again (Type number from 1 to 7): " , 1, 7);
+    Person::Category category = static_cast<Person::Category>(input - 1);
+    std::cout << "\nPlease enter payed amount\n";
+    //TODO category enum, searching payer by id (assuming that there are no 2 participants with the same name)
 }
 
 void add_specific_transaction(Trip &trip_to_init)
