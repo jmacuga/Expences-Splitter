@@ -24,7 +24,8 @@ public:
 	bool operator!=(const Person& other) const;
 	//Brak sprawdzania warto�ci argument�w w setterach, poniewa� b�d� one sprawdzane osobnymi funkcjami
 
-	void set_att(Category c, bool val) { atts[c] = val; }
+	void set_att(Category c, bool val ) { atts[c] = val; }
+	void set_att(Category c) { atts[c] = !atts[c]; }
 	std::map<Category, bool> get_atts() const { return atts; };
 
 	void atts_setter(std::string att_code);
@@ -32,4 +33,5 @@ public:
 
 	//checks if person should be included in transaction of category c
 	bool category_compare(Category trans_c) const;
+	std::string print_atts();
 };

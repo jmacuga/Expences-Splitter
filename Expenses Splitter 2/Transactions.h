@@ -1,9 +1,10 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <ctime>
 #include "Person.h"
 
-enum my_excetpions {NegativeNumber, FileNotOpen, WrongFileFormat};
+enum my_excetpions {NegativeNumber, FileNotOpen, WrongFileFormat, WrongCategory};
 class Transaction
 {
 public:
@@ -15,14 +16,17 @@ protected:
     float money;
     Person::Category category;
     int payer;
+    std::time_t time;
 public:
     Transaction(float m, int p, Person::Category c) : money(m), category(c), payer(p) {
         if (m < 0)
             throw NegativeNumber;
+        time = std::time(0);
     };
     int get_payer() const { return payer; };
     Person::Category get_category() const { return category; };
     float get_money() const { return money; };
+    std::time_t get_time() const { return time; }; 
     virtual std::vector<int> get_included() const {
         //default virtual function returns empty vector
         std::vector<int> v;

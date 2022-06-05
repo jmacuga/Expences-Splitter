@@ -1,49 +1,32 @@
 #include <string>
+#include <cctype>
 #include "ui_checks.h"
-
 
 // sprawdzanie, czy ktoś nie podaje pustego imienia
 bool check_name(std::string new_name)
 {
-    if(new_name.empty())
-        return false;
-    return true;
+    return(!new_name.empty());
 }
-
 
 // jeśli dane do ustawiania atrybutów alcohol, meat etc
 // będą stringami, to sprawdzam, czy przyjmują, żadane wartości
 // typu: "Yes", "No", "n" etc
-// Z tym ze gdy uzytkownik wpisuje to dobrze sformatować tekst
-// tak aby były np. zawsze duże litery, wtedy poniższe
-//sprwadzania zadziałają
-bool check_set_att_input(std::string set_attr)
+bool check_yes_no_input(std::string input)
 {
-    if(set_attr == "N" || set_attr == "NO" || set_attr == "Y" || set_attr == "YES")
-        return true;
-    else
-        return false;
+    for (auto c : input) c = toupper(c);
+    return(input == "N" || input == "NO" || input == "Y" || input == "YES");
 }
 
-bool check_init_action(int input)
+//check if the number typed is in given range
+bool check_init_action(int input, int range )
 {
-    if (input == 1 || input == 2 || input == 3 || input == 4 || input == 5 || input == 6)
-        return true;
-    else
-        return false;
+    return (input >= 1 && input <= range);
 }
 
-
-bool check_init_action_2_opt(int input)
+//argument should be valid yes or no input
+bool is_positive(std::string input)
 {
-    if (input == 1 || input == 2)
-        return true;
-    else
-        return false;
-}
-
-bool check_answer_atts(std::string input)
-{
+<<<<<<< HEAD
     if (input == "Y" || input == "N")
         return true;
     else false;
@@ -56,4 +39,8 @@ bool check_atts_input(int input)
         return true;
     else
         return false;
+=======
+    for (auto c : input) c = toupper(c);
+    return (input == "Y" || input == "YES");
+>>>>>>> d7b17119b6e361b028f6b0b4abae470c7e0f4a22
 }
