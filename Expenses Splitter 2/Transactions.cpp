@@ -8,7 +8,7 @@
     Payer's ID
     Transaction's amount
     Transaction's category (int connected to a given enum)
-    (only SPE) Recievers ID's
+    (only SPE) Recievers ID's   
 */
 
 std::string CollectiveTransaction::file_input() const
