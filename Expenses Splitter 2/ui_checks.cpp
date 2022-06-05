@@ -26,17 +26,17 @@ bool is_positive(std::string input)
     return (input == "Y" || input == "YES");
 }
 
-//checks if input is valid and returns bool value of yes/no answer
+//checks if input is valid and returns 
 bool is_input_positive()
 {
     std::string input;  
-    std::cin >> input;
-    for (auto& c : input) c = toupper(c);
-    while (!(input == "N" || input == "NO" || input == "Y" || input == "YES"))
+    while (true)
     {
-        std::cout << "Invalid input. (enter Y or N): ";
         std::cin >> input;
         for (auto& c : input) c = toupper(c);
+        if (input == "N" || input == "NO" || input == "Y" || input == "YES")
+            break;
+        std::cout << "Invalid input. (enter Y or N): ";
     }
     return (input == "Y" || input == "YES") ;
 }   
