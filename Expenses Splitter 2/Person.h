@@ -22,7 +22,7 @@ public:
 	int get_id() const { return id; };
 	bool operator==(const Person& other) const;
 	bool operator!=(const Person& other) const;
-	//Brak sprawdzania warto�ci argument�w w setterach, poniewa� b�d� one sprawdzane osobnymi funkcjami
+
 
 	void set_att(Category c, bool val ) { atts[c] = val; }
 	void set_att(Category c) { atts[c] = !atts[c]; }
