@@ -3,7 +3,8 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include<typeinfo>
+#include <typeinfo>
+#include <ctime>
 
 void Trip::add_person(Person const& p)
 {
@@ -106,7 +107,10 @@ void Trip::load_from_file(std::ifstream &myfile)
 		std::string line;
 		double balance;
 		int payer;
+		time_t time;
 		Person::Category cat;
+		getline(myfile, line);
+		time = stol(line);
 		getline(myfile, line);
 		payer = stoi(line);
 		getline(myfile, line);
@@ -114,7 +118,7 @@ void Trip::load_from_file(std::ifstream &myfile)
 		getline(myfile, line);
 		cat = Person::Category(stoi(line));
 		getline(myfile, line);
-		return CollectiveTransaction(balance, payer, cat);
+		return CollectiveTransaction(balance, payer, cat, time);
 	};
 
 	auto spetderived = [&myfile, this]()
@@ -122,7 +126,10 @@ void Trip::load_from_file(std::ifstream &myfile)
 		std::string line;
 		double balance;
 		int payer;
+		time_t time;
 		Person::Category cat;
+		getline(myfile, line);
+		time = stol(line);
 		getline(myfile, line);
 		payer = stoi(line);
 		getline(myfile, line);
@@ -138,7 +145,7 @@ void Trip::load_from_file(std::ifstream &myfile)
 			idx++;
 		}
 		getline(myfile, line);
-		return SpecificTransaction(balance, payer, cat, std::vector<int>(recievers));
+		return SpecificTransaction(balance, payer, cat, std::vector<int>(recievers), time);
 	};
 
 	if (!myfile.is_open())
@@ -250,6 +257,8 @@ std::ostream& Trip::print_trans(std::ostream &os)
 			os << "Type: Collective\n";
 		else if (line == "SPE")
 			os << "Type: Specific\n";
+		char *dt = ctime(trans->get_time());
+		os << "Date: " << dt;
 		getline(trstr, line);
 		os << "Paid: " << people.at(stoi(line) - 1).get_name() << '\n';
 		getline(trstr, line);

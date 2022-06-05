@@ -90,7 +90,7 @@ void interface(Trip &trip)
             show_people(trip);
             break;
         case 4:
-            trip.print_trans(std::cout);
+            show_trans(trip);
             interface(trip);
             break;
         case 5:
@@ -212,6 +212,15 @@ void add_participant(Trip &trip_to_init)
 void show_people(Trip& trip)
 {
     trip.print_people(std::cout);
+    std::cout << "Press Enter to continue...";
+    std::cin.ignore(10, '\n');
+    std::cin.get();
+    interface(trip);
+}
+
+void show_trans(Trip& trip)
+{
+    trip.print_trans(std::cout);
     std::cout << "Press Enter to continue...";
     std::cin.ignore(10, '\n');
     std::cin.get();
