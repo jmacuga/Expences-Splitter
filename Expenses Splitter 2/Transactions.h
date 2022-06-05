@@ -10,7 +10,7 @@ class Transaction
 public:
     static bool fl_cmp(const float& fst, const float& scnd)
     {
-        return abs(fst - scnd) < 10e-4;
+        return std::abs(fst - scnd) < 10e-4;
     };
 protected:
     float money;

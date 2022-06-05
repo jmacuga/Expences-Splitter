@@ -15,6 +15,12 @@ ui_checks_tests: ui_checks_tests.o ui_checks.o ui_actions.o Person.o Trip.o Tran
 ui_checks_tests.o: ui_checks_tests.o
 	g++ -c -g ui_checks_tests.cpp
 
+ui_checks.o: ui_checks.o
+	g++ -c -g ui_checks.cpp
+
+ui_actions.o: ui_actions.o
+	g++ -c -g ui_actions.cpp
+
 main.o: main.o
 	g++ -c -g main.cpp
 

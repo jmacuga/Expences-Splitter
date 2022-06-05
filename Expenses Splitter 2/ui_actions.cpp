@@ -1,6 +1,11 @@
+#include <cstdio>
+#include <ios>
 #include <iostream>
 #include <limits>
 #include <fstream>
+#include <memory>
+#include "Person.h"
+#include "Transactions.h"
 #include <string>
 #include "ui_actions.h"
 #include "ui_checks.h"
@@ -26,6 +31,26 @@ void launch_app(Trip& trip)
             exit(0);
             break;
     }
+    if (check_init_action(input, 3))
+        {
+            switch (input)
+            {
+                case 1:
+                    add_new_trip(trip);
+                    break;
+                case 2:
+                    load_history(trip);
+                    break;
+                default:
+                    exit(0);
+                    break;
+            }
+        }
+    else
+        {
+        std::cout << "\nChoose proper option!\n";
+        launch_app(trip);
+        }
 }
 
 
@@ -34,8 +59,10 @@ void add_new_trip(Trip& trip)
     std::cout << "\nNew trip:\n";
     std::cout << "\nEnter the name of your trip:\n";
     std::string trip_name;
-    std::cin >> trip_name;
+    std::cin.ignore();
+    std::getline(std::cin, trip_name);
     trip = Trip(trip_name);
+    std::cin.clear();
     interface(trip);
 }
 
@@ -44,8 +71,6 @@ void interface(Trip &trip)
 {
     system("clear");
     std::cout << "Choose option:\n";
-    // Ja bym nie dał możliwości dawania tu transakcji, to dopiero po stworzeniu tripa
-    // i przejsciu do takiego roboczego ekranu
     std::cout << "1. Add new participant. (Type '1')\n";
     std::cout << "2. Start adding new transactions. (Type '2')\n";
     std::cout << "3. Show people. (Type '3')\n";
@@ -73,11 +98,39 @@ void interface(Trip &trip)
             settle(trip);
             break;
         default:
-            exit(0);
+            exit_app(trip);
             break;
     }
 }
 
+void exit_app(Trip& trip)
+{
+    std::string saveline = trip.get_name() + "&./." + trip.get_name() + ".txt";
+    std::ifstream trips;
+    std::ofstream otrips;
+    std::string line;
+    bool file_new = true;
+    trips.open("./.trips.txt");
+    getline(trips, line);
+    getline(trips, line);
+    while (line != "")
+    {
+        if (line == saveline)
+            file_new = false;
+        getline(trips, line);
+    }
+    trips.close();
+    if (file_new)
+    {
+        otrips.open("./.trips.txt", std::ios::app);
+        otrips << saveline << '\n';
+        otrips.close();
+    }
+    otrips.open("./." + trip.get_name() + ".txt", std::ios::trunc);
+    trip.save_to_file(otrips);
+    otrips.close();
+    exit(0);
+}
 
 void load_history(Trip &curr_trip)
 {
@@ -246,18 +299,28 @@ void set_attributes(Trip &trip_to_init, int person_id)
         interface(trip_to_init);
 }
 
-void add_transactions(Trip &trip_to_init)
+void add_transactions(Trip &trip)
 {
-    system("clear");
+    system("CLS");
+    if (!trip.get_people_size())
+    {
+        std::cout << "\nAdd people before adding transactions";
+        std::cout << "\nPress Enter to continue...";
+        std::cin.ignore(10, '\n');
+        std::cin.get();
+        interface(trip);
+        return;
+    }
     std::cout << "\nAdd transactions:\n";
     std::cout << "Choose options:\n";
     std::cout << "1. Add collective transaction(all participants included).(Type '1')\n";
     std::cout << "2. Add specific transaction with limited number of participants.(Type '2')\n";
     int input = numerical_input("Invalid input.  Try again (Type 1 or 2): ", 1, 2);
     if(input == 1)
-        add_collective_transaction(trip_to_init);
+        add_collective_transaction(trip);
     else
-        add_specific_transaction(trip_to_init);
+        add_specific_transaction(trip);
+    interface(trip);
 }
 
 
@@ -367,5 +430,63 @@ void add_specific_transaction(Trip &trip)
 
 void settle(Trip& trip)
 {
-    std::cout << "Settle";
+    std::cout << "Settlement Transfers:\n\n";
+    std::map<std::pair<int, int>, float> trans_map = trip.calc_transfers();
+    std::pair<int, std::pair<int,int>> *ids = new std::pair<int, std::pair<int,int>>[trans_map.size()];
+    if (trans_map.size() == 0)
+    {
+        std::cout << "Everybody even!\n\n";
+        interface(trip);
+    }
+    int i = 0;
+    for (const std::pair<std::pair<int, int>, float>& pa: trans_map)
+    {
+        std::pair<int, std::pair<int,int>> id;
+        std::cout << i + 1 << ". ";
+        std::cout << "[" << trip.get_person(pa.first.first - 1).get_name() << " -> ";
+        std::cout << trip.get_person(pa.first.second - 1).get_name() << "]: ";
+        std::cout << pa.second << '\n';
+        id.first = i;
+        id.second = pa.first;
+        *(ids + i) = id;
+        i++;
+    }
+    std::cout << '\n';
+    std::cout << "Would you like to settle any debt? [Y or N]\n";
+    std::string answer;
+    std::cin >> answer;
+    while (!check_yes_no_input(answer))
+    {
+        std::cout << "Wrong input, type Y or N\n";
+        answer = std::string();
+        std::cin >> answer;
+    }
+    if (check_yes_no_input(answer))
+         if (is_positive(answer))
+            {
+                std::cout << "Which debt do you want to settle? [insert debt number or 0 to exit]\n";
+                int input = 0;
+                while(!(std::cin >> input)){
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "Invalid input, try again! ";
+                }
+                if (input == 0)
+                {
+                    delete [] ids;
+                    return interface(trip);
+                }
+                if (check_init_action(input, i + 1))
+                    {
+                        SpecificTransaction trans(trans_map[ids[input - 1].second], ids[input - 1].second.first,
+                                                Person::Category::other, {ids[input - 1].second.second});
+                        std::shared_ptr<Transaction> tptr = std::make_shared<SpecificTransaction>(trans);
+                        trip.add_transaction(tptr);
+                        std::cout << "Settled!\n";
+                    }
+                else
+                    std::cout << "\nChoose proper option!\n";
+            };
+    delete [] ids;
+    interface(trip);
 }
