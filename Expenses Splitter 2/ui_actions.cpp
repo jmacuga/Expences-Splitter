@@ -89,7 +89,7 @@ void interface(Trip &trip)
             settle(trip);
             break;
         default:
-            exit(0);
+            exit_app(trip);
             break;
     }
 }
@@ -101,7 +101,8 @@ void exit_app(Trip& trip)
     std::ofstream otrips;
     std::string line;
     bool file_new = true;
-    trips.open("./trips.txt");
+    trips.open("./.trips.txt");
+    getline(trips, line);
     getline(trips, line);
     while (line != "")
     {
