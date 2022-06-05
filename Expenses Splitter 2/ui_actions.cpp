@@ -352,7 +352,7 @@ void settle(Trip& trip)
                     {
                         SpecificTransaction trans(trans_map[ids[input - 1].second], ids[input - 1].second.first,
                                                 Person::Category::other, {ids[input - 1].second.second});
-                        std::shared_ptr<SpecificTransaction> tptr = std::make_shared<SpecificTransaction>(trans);
+                        std::shared_ptr<Transaction> tptr = std::make_shared<SpecificTransaction>(trans);
                         trip.add_transaction(tptr);
                         std::cout << "Settled!\n";
                     }
