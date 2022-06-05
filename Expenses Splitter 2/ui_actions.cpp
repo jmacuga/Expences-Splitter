@@ -198,7 +198,7 @@ void add_participant(Trip &trip_to_init)
     std::cout << "\nAdd participant:\n";
     std::cout << "\nEnter the name of new participant:\n";
     std::string name;
-    //FIXME ustawianie unikalnych id
+    //unique IDs
     unsigned int id = trip_to_init.get_people_size() + 1;
     std::cin >> name;
     Person person_to_add(id, name);
@@ -323,12 +323,6 @@ void add_transactions(Trip &trip)
 }
 
 
-void add_singular_transaction()
-{
-    std::cout << "\nAdd singular transactions:\n";
-    //TODO
-}
-
 std::string print_categories()
 {
     std::string output;
@@ -386,7 +380,7 @@ void add_specific_transaction(Trip &trip)
     Person::Category category = static_cast<Person::Category>(category_number - 1);
     std::cout << "\nPlease enter payed amount\n";
     float money = numerical_input("Invalid input.  Try again (Type the amount): ", 0, 99999);
-    std::vector<int> included_ids;
+    std::vector<int> included_ids;  // vector of included participants
     bool flag = true;
     while(flag == true)
     {
@@ -395,6 +389,7 @@ void add_specific_transaction(Trip &trip)
         int person_id_cast = person_id;
         while(std::find(included_ids.begin(), included_ids.end(), person_id_cast) != included_ids.end())
         {
+            // Checking whether certain ID has already been added
             std::cout << "This person has already been included (Type ID of another person)\n";
             std::cin.clear();
             int person_id = numerical_input(message, 1, size);

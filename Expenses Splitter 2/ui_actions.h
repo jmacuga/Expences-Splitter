@@ -8,7 +8,6 @@ void show_people(Trip& trip);
 void load_history(Trip &curr_trip);
 void add_participant(Trip &trip_to_init);
 void add_transactions(Trip &trip_to_init);
-void add_singular_transaction();
 void settle(Trip& trip);
 void add_collective_transaction(Trip &trip_to_init);
 void add_specific_transaction(Trip &trip_to_init);
