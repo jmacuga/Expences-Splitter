@@ -4,9 +4,9 @@
 #include <limits>
 #include <fstream>
 #include <memory>
+#include <string>
 #include "Person.h"
 #include "Transactions.h"
-#include <string>
 #include "ui_actions.h"
 #include "ui_checks.h"
 #include "Trip.h"
@@ -185,8 +185,10 @@ void add_participant(Trip &trip_to_init)
     trip_to_init.add_person(person_to_add);
     std::cout << "Do you want to change participant's attributes? [Y/N]\n";
     std::cout << trip_to_init.get_person(id - 1).print_atts();
-    set_atts_action(trip_to_init, id);
-    interface(trip_to_init);
+    if (is_input_positive())
+        set_attributes(trip_to_init, id);
+    else
+        interface(trip_to_init);
 }
 
 void show_people(Trip& trip)
@@ -196,14 +198,6 @@ void show_people(Trip& trip)
     std::cin.ignore(10, '\n');
     std::cin.get();
     interface(trip);
-}
-
-void set_atts_action(Trip &trip_to_init, int id)
-{
-    if (is_input_positive())
-        set_attributes(trip_to_init, id);
-    else
-        interface(trip_to_init);
 }
 
 template<typename T>
@@ -220,7 +214,7 @@ T numerical_input(std::string message, T min, T max)
             if (input_val >= min && input_val <= max)
                 break;
         }
-        catch(...) {}
+        catch (...) {}
         std::cout << message;
     }
     return input_val;
@@ -245,6 +239,7 @@ float numerical_input(std::string message, float min, float max)
     }
     return input_val;
 }
+
 
 void set_attributes(Trip &trip_to_init, int person_id)
 {
@@ -301,7 +296,6 @@ std::string print_categories()
 
 void add_collective_transaction(Trip& trip)
 {
-
     system("clear");
     std::cout << "\nAdd collective transaction:\n";
     std::cout << "Select payer id: \n ";
@@ -314,7 +308,7 @@ void add_collective_transaction(Trip& trip)
     int category_number = numerical_input("Invalid input.  Try again (Type number from 1 to 7): ", 1, 7);
     Person::Category category = static_cast<Person::Category>(category_number - 1);
     std::cout << "\nPlease enter payed amount\n";
-    float money = numerical_input("Invalid input.  Try again (Type the amount): ", 0, 99999);
+    float money = numerical_input<float>("Invalid input.  Try again (Type the amount): ", 0, 99999);
     try
     {
         std::shared_ptr<Transaction> transaction = std::make_shared<CollectiveTransaction>(money, payer_id, category);
@@ -347,12 +341,12 @@ void add_specific_transaction(Trip &trip)
     float money = numerical_input("Invalid input.  Try again (Type the amount): ", 0, 99999);
     std::vector<int> included_ids;  // vector of included participants
     bool flag = true;
-    while(flag == true)
+    while (flag == true)
     {
         std::cout << "Add a participant in current transaction (type one's ID)\n";
         int person_id = numerical_input(message, 1, size);
         int person_id_cast = person_id;
-        while(std::find(included_ids.begin(), included_ids.end(), person_id_cast) != included_ids.end())
+        while (std::find(included_ids.begin(), included_ids.end(), person_id_cast) != included_ids.end())
         {
             // Checking whether certain ID has already been added
             std::cout << "This person has already been included (Type ID of another person)\n";
@@ -363,29 +357,12 @@ void add_specific_transaction(Trip &trip)
         }
         included_ids.push_back(person_id_cast);
         std::cout << "Do you want to add another person? [Y/N]\n";
-        std::string input;
-        std::cin >> input;
-        while (!check_yes_no_input(input))
-            {
-                std::cin >> input;
-            }
-        if (!is_positive(input))
-            flag = false;
+        flag = is_input_positive();
     }
-    try
-    {
-        std::shared_ptr<Transaction> transaction = std::make_shared<SpecificTransaction>(money, payer_id, category, included_ids);
-        trip.add_transaction(transaction);
-        std::cout << "\nTransaction added\n";
-        press_to_continue();
-    }
-    catch (my_excetpions)
-    {
-        std::cout << "\nNone of the people is included in that category, please try again";
-        press_to_continue();
-        add_specific_transaction(trip);
-    }
-
+    std::shared_ptr<Transaction> transaction = std::make_shared<SpecificTransaction>(money, payer_id, category, included_ids);
+    trip.add_transaction(transaction);
+    std::cout << "\nTransaction added\n";
+    press_to_continue();
 }
 
 void settle(Trip& trip)
