@@ -330,6 +330,12 @@ void settle(Trip& trip)
     std::cout << "Would you like to settle any debt? [Y or N]\n";
     std::string answer;
     std::cin >> answer;
+    while (!check_yes_no_input(answer))
+    {
+        std::cout << "Wrong input, type Y or N\n";
+        answer = std::string();
+        std::cin >> answer;
+    }
     if (check_yes_no_input(answer))
          if (is_positive(answer))
             {

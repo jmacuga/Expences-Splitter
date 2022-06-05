@@ -21,10 +21,13 @@ std::string CollectiveTransaction::file_input() const
 std::string SpecificTransaction::file_input() const
 {
     std::stringstream rets;
+    std::string tst = "";
     rets << "SPE\n" << payer << "\n" << money << "\n" << int(category) << "\n";
+    tst = rets.str();
     for (const int &id: inid)
         rets << id;
     rets << "\n";
+    tst = rets.str();
     return rets.str();
 }
 

@@ -8,14 +8,14 @@
 void Trip::add_person(Person const& p)
 {
 	for (Person trip_p : people)
-		if (p == trip_p) 
+		if (p == trip_p)
 			return;
 	people.push_back(p);
 }
 //adds transaction to p_trans, changes payer balance and other people balances
 void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 {
-	if (p_trans == nullptr)	
+	if (p_trans == nullptr)
 		return;
 	ptransactions.push_back(p_trans);
 	float money = p_trans->get_money();
@@ -30,15 +30,15 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 				incl_number++;
 				included.push_back(&p);
 			}
-	} 
+	}
 	else
 	{
 		for (int &idx: p_trans->get_included())
 			included.push_back(&people[idx - 1]);
 	}
-		
+
 	//in case if no one has certain category as true
-	if (!incl_number) 
+	if (!incl_number)
 		throw WrongCategory;
 	moneypp = money/(incl_number);
 	for (Person* p : included)
@@ -168,7 +168,7 @@ std::map<std::pair<int, int>, float> Trip::calc_transfers()
 {
 	std::map<std::pair<int, int>, float> result;
 	//lambda to compare pair by balance
-	auto greater_pair = [](std::pair<int, float> const& p1, 
+	auto greater_pair = [](std::pair<int, float> const& p1,
 		std::pair<int, float> const& p2)
 	{return abs(p2.second) > abs(p1.second); };
 	//bufors of balances wich we will be zero at the end of func
@@ -232,8 +232,11 @@ std::ostream& Trip::print_trans(std::ostream &os)
 	os << "Transactions history:\n\n";
 	std::stringstream trstr;
 	std::string line = "";
+	std::string tst = std::string();
 	for (std::shared_ptr<Transaction>& trans: ptransactions)
 	{
+		std::stringstream trstr;
+		trstr.str(std::string());
 		trstr << trans -> file_input();
 		getline(trstr, line);
 		if (line == "COL")
