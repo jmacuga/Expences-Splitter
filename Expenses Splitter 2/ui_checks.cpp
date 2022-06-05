@@ -1,5 +1,6 @@
 #include <string>
 #include <cctype>
+#include <iostream>
 #include "ui_checks.h"
 
 // sprawdzanie, czy ktoś nie podaje pustego imienia
@@ -17,11 +18,6 @@ bool check_yes_no_input(std::string input)
     return(input == "N" || input == "NO" || input == "Y" || input == "YES");
 }
 
-//check if the number typed is in given range
-bool check_init_action(int input, int range )
-{
-    return (input >= 1 && input <= range);
-}
 
 //argument should be valid yes or no input
 bool is_positive(std::string input)
@@ -30,3 +26,17 @@ bool is_positive(std::string input)
     return (input == "Y" || input == "YES");
 }
 
+//checks if input is valid and returns 
+bool is_input_positive()
+{
+    std::string input;  
+    while (true)
+    {
+        std::cin >> input;
+        for (auto& c : input) c = toupper(c);
+        if (input == "N" || input == "NO" || input == "Y" || input == "YES")
+            break;
+        std::cout << "Invalid input. (enter Y or N): ";
+    }
+    return (input == "Y" || input == "YES") ;
+}   
