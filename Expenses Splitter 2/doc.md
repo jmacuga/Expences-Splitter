@@ -34,13 +34,12 @@ ui_checks.h
 ## importowanie plików:
 file_operations_tests.cpp: Trip.h
 logic_tests.cpp: Trip.h
-main.cpp: Person.h, Trip.h, ui_actions.h
-Person.cpp: Person.h, Transactions.h
-Transactions.cpp: Transactions.h, Trip.h
-Trip.cpp: Trip.h, Transactions.h
-ui_actions.cpp: Person.h, Transactions.h, ui_actions.h, ui_checks.h, Trip.h
-ui_checks_tests.cpp: ui_checks.h, ui_actions.h
-ui_checks.cpp: ui_checks.h
+main.cpp: ui_actions.h
+Person.cpp: Transactions.h
+Transactions.cpp: Trip.h
+Trip.cpp: Trip.h
+ui_actions.cpp: ui_actions.h
+
 
 
 # Testy
