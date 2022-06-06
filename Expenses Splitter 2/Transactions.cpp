@@ -3,6 +3,7 @@
 
 std::string CollectiveTransaction::file_input() const
 {
+    // returns string containing essential information about object
     std::stringstream rets;
     rets << "COL\n" << time << "\n" << payer << "\n" << money;
     rets << "\n" << int(category) << "\n";
@@ -11,6 +12,7 @@ std::string CollectiveTransaction::file_input() const
 
 std::string SpecificTransaction::file_input() const
 {
+    // returns string containing essential information about object
     std::stringstream rets;
     std::string tst = "";
     rets << "SPE\n" << time << "\n" << payer << "\n" << money;

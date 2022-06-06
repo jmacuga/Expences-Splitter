@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdio>
 #include <ios>
 #include <iostream>
@@ -81,6 +82,7 @@ void interface(Trip &trip)
 //exit and save trip to file
 void exit_app(Trip& trip)
 {
+    // creates input to event choice file
     std::string saveline = trip.get_name() + "&./." + trip.get_name() + ".txt";
     std::ifstream trips;
     std::ofstream otrips;
@@ -89,6 +91,7 @@ void exit_app(Trip& trip)
     trips.open("./.trips.txt");
     getline(trips, line);
     getline(trips, line);
+    // checks if the trip already exists
     while (line != "")
     {
         if (line == saveline)
@@ -96,12 +99,14 @@ void exit_app(Trip& trip)
         getline(trips, line);
     }
     trips.close();
+    // appends a path if the trip is new
     if (file_new)
     {
         otrips.open("./.trips.txt", std::ios::app);
         otrips << saveline << '\n';
         otrips.close();
     }
+    // saves trip info to an unique file
     otrips.open("./." + trip.get_name() + ".txt", std::ios::trunc);
     trip.save_to_file(otrips);
     otrips.close();
@@ -146,24 +151,14 @@ void load_history(Trip &curr_trip)
                 getline(trpfile, line);
         }
     trpfile.close();
-    int i = 0;std::ostream& print_people(std::ostream &os);
+    int i = 0;
+    // shows trip to choose
     for (const std::pair<std::string, std::string> &pa: tripsvect)
         std::cout << i++ + 1 << ") " << pa.first << "\n";
     int input = 0;
-    while (true)
-    {
-        try
-        {std::cin >> input;}
-        catch (...)
-        {std::cin.clear();
-         std::cout << "Input incorrect\n";
-         continue;}
-        if (input < 0 || input > i)
-        {std::cout << "Input incorrect\n";
-         continue;}
-        break;
-    }
+    input = numerical_input("Invalid input.", 1, i);
     trpfile.open(tripsvect.at(input - 1).second);
+    // loading chosen trip
     curr_trip = Trip(tripsvect.at(input - 1).first, trpfile);
     trpfile.close();
     std::cout << "Trip loaded succesfully!\n";
@@ -321,7 +316,7 @@ void add_transaction(Trip& trip , bool is_specific)
         std::cout << "\nTransaction added\n";
         press_to_continue();
     }
-    else 
+    else
     {
         try
         {
@@ -360,7 +355,7 @@ std::vector<int> get_included(std::string message, int size)
         }
         included_ids.push_back(person_id_cast);
         if (included_ids.size() != size)
-        { 
+        {
             std::cout << "Do you want to add another person? [Y/N]\n";
             flag = is_input_positive();
         }
@@ -377,14 +372,18 @@ std::vector<int> get_included(std::string message, int size)
 void settle(Trip& trip)
 {
     std::cout << "Settlement Transfers:\n\n";
+    // calculating wanted settlements
     std::map<std::pair<int, int>, float> trans_map = trip.calc_transfers();
     std::pair<int, std::pair<int,int>> *ids = new std::pair<int, std::pair<int,int>>[trans_map.size()];
+    // nothing to settle case
     if (trans_map.size() == 0)
     {
         std::cout << "Everybody even!\n\n";
+        press_to_continue();
         interface(trip);
     }
     int i = 0;
+    // printing settlement transactions
     for (const std::pair<std::pair<int, int>, float>& pa: trans_map)
     {
         std::pair<int, std::pair<int,int>> id;
@@ -399,6 +398,7 @@ void settle(Trip& trip)
         i++;
     }
     std::cout << '\n';
+    // option to immidiately settle
     std::cout << "Would you like to settle any debt? [Y or N]\n";
     if (is_input_positive())
     {
