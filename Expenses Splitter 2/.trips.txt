@@ -1,2 +1,0 @@
-tsttrp&./.target_file.txt
-tsttrp&./.tsttrp.txt
