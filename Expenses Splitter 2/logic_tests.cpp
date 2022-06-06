@@ -302,11 +302,11 @@ int main() {
       trip.add_transaction(trans3);
       trip.add_transaction(trans4);
       std::map<std::pair<int, int>, float> transfers = trip.calc_transfers();
-      compare_to_test<float>(transfers.find({3, 2})->second, 0.83f, 39);
-      compare_to_test<float>(transfers.find({5, 1})->second, 24.17f, 40);
-      compare_to_test<float>(transfers.find({5, 2})->second, 8.34f, 41);
-      compare_to_test<float>(transfers.find({5, 4})->second, 18.34f, 42);
-      compare_to_test<float>(transfers.find({6, 4})->second, 30.83f, 43);
+      compare_to_test<float>(transfers.find({3, 2})->second, 0.833333f, 39);
+      compare_to_test<float>(transfers.find({5, 1})->second, 24.1666666f, 40);
+      compare_to_test<float>(transfers.find({5, 2})->second, 8.33333302f, 41);
+      compare_to_test<float>(transfers.find({5, 4})->second, 18.3333321f, 42);
+      compare_to_test<float>(transfers.find({6, 4})->second, 30.8333321f, 43);
     }
   }
   std::cout << "\nEnd of logic tests\n";
