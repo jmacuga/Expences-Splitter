@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdio>
 #include <ios>
 #include <iostream>
@@ -84,6 +85,7 @@ void interface(Trip &trip)
 
 void exit_app(Trip& trip)
 {
+    // creates input to event choice file
     std::string saveline = trip.get_name() + "&./." + trip.get_name() + ".txt";
     std::ifstream trips;
     std::ofstream otrips;
@@ -92,6 +94,7 @@ void exit_app(Trip& trip)
     trips.open("./.trips.txt");
     getline(trips, line);
     getline(trips, line);
+    // checks if the trip already exists
     while (line != "")
     {
         if (line == saveline)
@@ -99,12 +102,14 @@ void exit_app(Trip& trip)
         getline(trips, line);
     }
     trips.close();
+    // appends a path if the trip is new
     if (file_new)
     {
         otrips.open("./.trips.txt", std::ios::app);
         otrips << saveline << '\n';
         otrips.close();
     }
+    // saves trip info to an unique file
     otrips.open("./." + trip.get_name() + ".txt", std::ios::trunc);
     trip.save_to_file(otrips);
     otrips.close();
@@ -149,24 +154,14 @@ void load_history(Trip &curr_trip)
                 getline(trpfile, line);
         }
     trpfile.close();
-    int i = 0;std::ostream& print_people(std::ostream &os);
+    int i = 0;
+    // shows trip to choose
     for (const std::pair<std::string, std::string> &pa: tripsvect)
         std::cout << i++ + 1 << ") " << pa.first << "\n";
     int input = 0;
-    while (true)
-    {
-        try
-        {std::cin >> input;}
-        catch (...)
-        {std::cin.clear();
-         std::cout << "Input incorrect\n";
-         continue;}
-        if (input < 0 || input > i)
-        {std::cout << "Input incorrect\n";
-         continue;}
-        break;
-    }
+    input = numerical_input("Invalid input.", 1, i);
     trpfile.open(tripsvect.at(input - 1).second);
+    // loading chosen trip
     curr_trip = Trip(tripsvect.at(input - 1).first, trpfile);
     trpfile.close();
     std::cout << "Trip loaded succesfully!\n";
@@ -323,7 +318,8 @@ void add_collective_transaction(Trip& trip)
     int category_number = numerical_input("Invalid input.  Try again (Type number from 1 to 7): ", 1, 7);
     Person::Category category = static_cast<Person::Category>(category_number - 1);
     std::cout << "\nPlease enter payed amount\n";
-    float money = numerical_input("Invalid input.  Try again (Type the amount): ", 0, 99999);
+    float money = numerical_input<float>("Invalid input.  Try again (Type the amount): ", 0, std::numeric_limits<float>::max());
+    money = std::floor(money * 100) / 100.0;
     try
     {
         std::shared_ptr<Transaction> transaction = std::make_shared<CollectiveTransaction>(money, payer_id, category);
@@ -353,7 +349,8 @@ void add_specific_transaction(Trip &trip)
     int category_number = numerical_input("Invalid input.  Try again (Type number from 1 to 7): ", 1, 7);
     Person::Category category = static_cast<Person::Category>(category_number - 1);
     std::cout << "\nPlease enter payed amount\n";
-    float money = numerical_input("Invalid input.  Try again (Type the amount): ", 0, 99999);
+    float money = numerical_input<float>("Invalid input.  Try again (Type the amount): ", 0, std::numeric_limits<float>::max());
+    money = std::floor(money * 100) / 100.0;
     std::vector<int> included_ids;  // vector of included participants
     bool flag = true;
     while(flag == true)
@@ -400,14 +397,18 @@ void add_specific_transaction(Trip &trip)
 void settle(Trip& trip)
 {
     std::cout << "Settlement Transfers:\n\n";
+    // calculating wanted settlements
     std::map<std::pair<int, int>, float> trans_map = trip.calc_transfers();
     std::pair<int, std::pair<int,int>> *ids = new std::pair<int, std::pair<int,int>>[trans_map.size()];
+    // nothing to settle case
     if (trans_map.size() == 0)
     {
         std::cout << "Everybody even!\n\n";
+        press_to_continue();
         interface(trip);
     }
     int i = 0;
+    // printing settlement transactions
     for (const std::pair<std::pair<int, int>, float>& pa: trans_map)
     {
         std::pair<int, std::pair<int,int>> id;
@@ -421,6 +422,7 @@ void settle(Trip& trip)
         i++;
     }
     std::cout << '\n';
+    // option to immidiately settle
     std::cout << "Would you like to settle any debt? [Y or N]\n";
     if (is_input_positive())
     {

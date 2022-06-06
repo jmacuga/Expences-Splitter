@@ -74,6 +74,7 @@ void Trip::save_to_file(std::ofstream &myfile) const
 
 void Trip::load_from_file(std::ifstream &myfile)
 {
+	// lambda reading person info
 	auto pderived = [&myfile]()
 	{
 		std::string line ;
@@ -102,6 +103,7 @@ void Trip::load_from_file(std::ifstream &myfile)
 		return per;
 	};
 
+	// lambda reading collective transaction info
 	auto coltderived = [&myfile, this]()
 	{
 		std::string line;
@@ -121,6 +123,7 @@ void Trip::load_from_file(std::ifstream &myfile)
 		return CollectiveTransaction(balance, payer, cat, time);
 	};
 
+	// lambda reading specific transaction info
 	auto spetderived = [&myfile, this]()
 	{
 		std::string line;
@@ -150,12 +153,14 @@ void Trip::load_from_file(std::ifstream &myfile)
 
 	if (!myfile.is_open())
 		throw FileNotOpen;
+	// reading initial lines
 	std::string line = "";
 	getline(myfile, line);
 	getline(myfile, line);
 	if (line != "")
 		throw WrongFileFormat;
 	getline(myfile, line);
+	// reading objects info
 	while (line != "&&&")
 	{
 		if (line == "COL")
@@ -231,11 +236,12 @@ void Trip::split_money(std::vector<std::pair<int, float>>& first_bufor,
 
 std::ostream& Trip::print_people(std::ostream &os)
 {
+	//prints people with basic information
 	os << "People list:\n";
 	for (Person& per: people)
 	{
 		os << per.get_id() << ". " << per.get_name() << '\n';
-		os << "Balance: " << per.get_balance() << '\n';
+		os << "Balance: " << round(per.get_balance() * 100) / 100.0 << '\n';
 	}
 	os << '\n';
 	return os;
@@ -243,6 +249,8 @@ std::ostream& Trip::print_people(std::ostream &os)
 
 std::ostream& Trip::print_trans(std::ostream &os)
 {
+	// prints transactions with basic information
+	// using file input
 	os << "Transactions history:\n\n";
 	std::stringstream trstr;
 	std::string line = "";
@@ -259,6 +267,7 @@ std::ostream& Trip::print_trans(std::ostream &os)
 			os << "Type: Specific\n";
 		char *dt = ctime(trans->get_time());
 		os << "Date: " << dt;
+		getline(trstr, line);
 		getline(trstr, line);
 		os << "Paid: " << people.at(stoi(line) - 1).get_name() << '\n';
 		getline(trstr, line);
