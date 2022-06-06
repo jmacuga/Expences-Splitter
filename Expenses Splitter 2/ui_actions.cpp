@@ -313,7 +313,7 @@ void add_transaction(Trip& trip , bool is_specific)
     int category_number = numerical_input("Invalid input.  Try again (Type number from 1 to 7): ", 1, 7);
     Person::Category category = static_cast<Person::Category>(category_number - 1);
     std::cout << "\nPlease enter payed amount\n";
-    float money = numerical_input("Invalid input.  Try again (Type the amount): ", 0, 99999);
+    float money = numerical_input("Invalid input.  Try again (Type a positive amount greater than 0.01): ", 0.01f, 9999999.0f);
     if (is_specific)
     {
         std::vector<int> included_ids = get_included(message, size);  // vector of included participants
