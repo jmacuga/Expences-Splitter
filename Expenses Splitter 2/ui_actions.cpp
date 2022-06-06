@@ -5,10 +5,7 @@
 #include <fstream>
 #include <memory>
 #include <string>
-#include "Person.h"
-#include "Transactions.h"
 #include "ui_actions.h"
-#include "Trip.h"
 
 void launch_app(Trip& trip)
 {
@@ -200,7 +197,7 @@ void show_people(Trip& trip)
 
 void show_trans(Trip& trip)
 {
-    //trip.print_trans(std::cout);
+    trip.print_trans(std::cout);
     press_to_continue();
     interface(trip);
 }
@@ -394,7 +391,8 @@ void settle(Trip& trip)
         std::cout << i + 1 << ". ";
         std::cout << "[" << trip.get_person(pa.first.first - 1).get_name() << " -> ";
         std::cout << trip.get_person(pa.first.second - 1).get_name() << "]: ";
-        std::cout << pa.second << '\n';
+        float rounded_money = round(pa.second * 100.0f) / 100.0f;
+        std::cout << rounded_money << '\n';
         id.first = i;
         id.second = pa.first;
         *(ids + i) = id;

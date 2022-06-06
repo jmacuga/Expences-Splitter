@@ -1,6 +1,5 @@
 #include <cmath>
 #include <sstream>
-#include "Person.h"
 #include "Transactions.h"
 
 Person::Person(unsigned int pid, std::string nm) : id(pid), name(nm)

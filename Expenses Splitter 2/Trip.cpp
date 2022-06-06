@@ -1,10 +1,9 @@
-#include "Trip.h"
-#include "Transactions.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <typeinfo>
 #include <ctime>
+#include "Trip.h"
 
 void Trip::add_person(Person const& p)
 {
@@ -187,7 +186,9 @@ std::map<std::pair<int, int>, float> Trip::calc_transfers()
 	//lambda to compare pair by balance
 	auto greater_pair = [](std::pair<int, float> const& p1,
 		std::pair<int, float> const& p2)
-	{return std::abs(p2.second) > std::abs(p1.second); };
+	{
+		return std::abs(p2.second) > std::abs(p1.second); 
+	};
 	//bufors of balances wich we will be zero at the end of func
 	std::vector<std::pair<int, float>> pos_buffer;
 	std::vector<std::pair<int, float>> neg_buffer;
@@ -195,8 +196,9 @@ std::map<std::pair<int, int>, float> Trip::calc_transfers()
 	{
 		if (!p.get_balance())
 			continue;
-		float rounded_balance = round(p.get_balance() * 100.0f) / 100.0f;
-		auto pers_p = std::make_pair(p.get_id(), rounded_balance);
+		float p_balance = p.get_balance();
+
+		auto pers_p = std::make_pair(p.get_id(), p_balance);
 		if (pers_p.second > 0)
 			pos_buffer.push_back(pers_p);
 		else
@@ -240,52 +242,53 @@ std::ostream& Trip::print_people(std::ostream &os)
 	for (Person& per: people)
 	{
 		os << per.get_id() << ". " << per.get_name() << '\n';
-		os << "Balance: " << per.get_balance() << '\n';
+		float rounded_money = round(per.get_balance() * 100.0f) / 100.0f;
+		os << "Balance: " << rounded_money << '\n';
 	}
 	os << '\n';
 	return os;
 }
 
-//std::ostream& Trip::print_trans(std::ostream &os)
-//{
-//	os << "Transactions history:\n\n";
-//	std::stringstream trstr;
-//	std::string line = "";
-//	std::string tst = std::string();
-//	for (std::shared_ptr<Transaction>& trans: ptransactions)
-//	{
-//		std::stringstream trstr;
-//		trstr.str(std::string());
-//		trstr << trans -> file_input();
-//		getline(trstr, line);
-//		if (line == "COL")
-//			os << "Type: Collective\n";
-//		else if (line == "SPE")
-//			os << "Type: Specific\n";
-//		char *dt = ctime(trans->get_time());
-//		os << "Date: " << dt;
-//		getline(trstr, line);
-//		os << "Paid: " << people.at(stoi(line) - 1).get_name() << '\n';
-//		getline(trstr, line);
-//		os << "Amount: " << line << '\n';
-//		getline(trstr, line);
-//		os << "Category: " << Person::Cat_to_str(trans->get_category()) << '\n';
-//		getline(trstr, line);
-//		if (line != "")
-//		{
-//			os << "For: ";
-//			int i = 1;
-//			for (char const& c: line)
-//			{
-//				os << people.at((int)c - '0' - 1).get_name();
-//				if (i < line.length())
-//					os << ", ";
-//				i++;
-//			}
-//			os << "\n\n";
-//		}
-//		else
-//			os << "\n";
-//	}
-//	return os;
-//}	
+std::ostream& Trip::print_trans(std::ostream &os)
+{
+	os << "Transactions history:\n\n";
+	std::stringstream trstr;
+	std::string line = "";
+	std::string tst = std::string();
+	for (std::shared_ptr<Transaction>& trans: ptransactions)
+	{
+		std::stringstream trstr;
+		trstr.str(std::string());
+		trstr << trans -> file_input();
+		getline(trstr, line);
+		if (line == "COL")
+			os << "Type: Collective\n";
+		else if (line == "SPE")
+			os << "Type: Specific\n";
+		char *dt = ctime(trans->get_time());
+		os << "Date: " << dt;
+		getline(trstr, line);
+		os << "Paid: " << people.at(stoi(line) - 1).get_name() << '\n';
+		getline(trstr, line);
+		os << "Amount: " << line << '\n';
+		getline(trstr, line);
+		os << "Category: " << Person::Cat_to_str(trans->get_category()) << '\n';
+		getline(trstr, line);
+		if (line != "")
+		{
+			os << "For: ";
+			int i = 1;
+			for (char const& c: line)
+			{
+				os << people.at((int)c - '0' - 1).get_name();
+				if (i < line.length())
+					os << ", ";
+				i++;
+			}
+			os << "\n\n";
+		}
+		else
+			os << "\n";
+	}
+	return os;
+}	
