@@ -15,6 +15,7 @@ Person::Person(unsigned int pid, std::string nm) : id(pid), name(nm)
     atts[Category::other] = true;
 }
 
+//set attributes based on given attribute code
 void Person::atts_setter(std::string att_code)
 {
     std::string::const_iterator code_iter = att_code.cbegin();
@@ -40,7 +41,6 @@ bool Person::operator!=(const Person& other) const
 {
     return !(*this == other);
 }
-
 
 void Person::add_to_balace(float amount)
 {

@@ -17,3 +17,4 @@ void press_to_continue();
 template<typename T>
 T numerical_input(std::string message, T min, T max);
 std::vector<int> get_included(std::string message, int size);
+bool is_input_positive();

@@ -14,7 +14,8 @@ void Trip::add_person(Person const& p)
 	people.push_back(p);
 	app_seq.push_back(true);
 }
-//adds transaction to p_trans, changes payer balance and other people balances
+
+//adds transaction to p_trans, changes payer's balance and other people balances
 void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 {
 	if (p_trans == nullptr)
@@ -25,6 +26,7 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 	float moneypp = 0;
 	size_t incl_number = p_trans->get_included().size();
 	std::vector<Person*> included;
+	//if onl_numebr is 0, the transaction type is collective_transaction 
 	if (!incl_number)
 	{
 		for (Person& p : people)
@@ -39,7 +41,7 @@ void Trip::add_transaction(std::shared_ptr<Transaction> p_trans)
 		for (int &idx: p_trans->get_included())
 			included.push_back(&people[idx - 1]);
 	}
-	//in case if no one has certain category as true
+	//in case if no one has certain attribue set as true
 	if (!incl_number)
 		throw WrongCategory;
 	moneypp = money/(incl_number);
@@ -178,6 +180,7 @@ void Trip::load_from_file(std::ifstream &myfile)
 	}
 }
 
+// calculate transfers between participants based on their balances
 std::map<std::pair<int, int>, float> Trip::calc_transfers()
 {
 	std::map<std::pair<int, int>, float> result;
@@ -186,8 +189,8 @@ std::map<std::pair<int, int>, float> Trip::calc_transfers()
 		std::pair<int, float> const& p2)
 	{return std::abs(p2.second) > std::abs(p1.second); };
 	//bufors of balances wich we will be zero at the end of func
-	std::vector<std::pair<int, float>> pos_bufor;
-	std::vector<std::pair<int, float>> neg_bufor;
+	std::vector<std::pair<int, float>> pos_buffer;
+	std::vector<std::pair<int, float>> neg_buffer;
 	for (Person p : people)
 	{
 		if (!p.get_balance())
@@ -195,27 +198,28 @@ std::map<std::pair<int, int>, float> Trip::calc_transfers()
 		float rounded_balance = round(p.get_balance() * 100.0f) / 100.0f;
 		auto pers_p = std::make_pair(p.get_id(), rounded_balance);
 		if (pers_p.second > 0)
-			pos_bufor.push_back(pers_p);
+			pos_buffer.push_back(pers_p);
 		else
-			neg_bufor.push_back(pers_p);
+			neg_buffer.push_back(pers_p);
 	}
-	std::sort(pos_bufor.begin(), pos_bufor.end(), greater_pair);
-	std::sort(neg_bufor.begin(), neg_bufor.end(), greater_pair);
-	split_money(pos_bufor, neg_bufor, result);
-	split_money(neg_bufor, pos_bufor, result, true);
+	std::sort(pos_buffer.begin(), pos_buffer.end(), greater_pair);
+	std::sort(neg_buffer.begin(), neg_buffer.end(), greater_pair);
+	//loop firstly through positive balances, than through negative
+	split_money(pos_buffer, neg_buffer, result);
+	split_money(neg_buffer, pos_buffer, result, true);
 	return result;
 }
 
 //helper func to calc_transfers()
-void Trip::split_money(std::vector<std::pair<int, float>>& first_bufor,
-	std::vector<std::pair<int, float>>& second_bufor,
+void Trip::split_money(std::vector<std::pair<int, float>>& first_buffer,
+	std::vector<std::pair<int, float>>& second_buffer,
 	std::map<std::pair<int, int>, float>& result, bool is_first_negative)
 {
-	for (auto fit = first_bufor.begin(); fit != first_bufor.end(); fit++)
+	for (auto fit = first_buffer.begin(); fit != first_buffer.end(); fit++)
 	{
 		if (!fit->second)
 			continue;
-		for (auto sit = second_bufor.begin(); sit != second_bufor.end(); sit++)
+		for (auto sit = second_buffer.begin(); sit != second_buffer.end(); sit++)
 		{
 			if (std::abs(sit->second) && std::abs(sit->second) <= std::abs(fit->second))
 			{
@@ -242,46 +246,46 @@ std::ostream& Trip::print_people(std::ostream &os)
 	return os;
 }
 
-std::ostream& Trip::print_trans(std::ostream &os)
-{
-	os << "Transactions history:\n\n";
-	std::stringstream trstr;
-	std::string line = "";
-	std::string tst = std::string();
-	for (std::shared_ptr<Transaction>& trans: ptransactions)
-	{
-		std::stringstream trstr;
-		trstr.str(std::string());
-		trstr << trans -> file_input();
-		getline(trstr, line);
-		if (line == "COL")
-			os << "Type: Collective\n";
-		else if (line == "SPE")
-			os << "Type: Specific\n";
-		char *dt = ctime(trans->get_time());
-		os << "Date: " << dt;
-		getline(trstr, line);
-		os << "Paid: " << people.at(stoi(line) - 1).get_name() << '\n';
-		getline(trstr, line);
-		os << "Amount: " << line << '\n';
-		getline(trstr, line);
-		os << "Category: " << Person::Cat_to_str(trans->get_category()) << '\n';
-		getline(trstr, line);
-		if (line != "")
-		{
-			os << "For: ";
-			int i = 1;
-			for (char const& c: line)
-			{
-				os << people.at((int)c - '0' - 1).get_name();
-				if (i < line.length())
-					os << ", ";
-				i++;
-			}
-			os << "\n\n";
-		}
-		else
-			os << "\n";
-	}
-	return os;
-}
+//std::ostream& Trip::print_trans(std::ostream &os)
+//{
+//	os << "Transactions history:\n\n";
+//	std::stringstream trstr;
+//	std::string line = "";
+//	std::string tst = std::string();
+//	for (std::shared_ptr<Transaction>& trans: ptransactions)
+//	{
+//		std::stringstream trstr;
+//		trstr.str(std::string());
+//		trstr << trans -> file_input();
+//		getline(trstr, line);
+//		if (line == "COL")
+//			os << "Type: Collective\n";
+//		else if (line == "SPE")
+//			os << "Type: Specific\n";
+//		char *dt = ctime(trans->get_time());
+//		os << "Date: " << dt;
+//		getline(trstr, line);
+//		os << "Paid: " << people.at(stoi(line) - 1).get_name() << '\n';
+//		getline(trstr, line);
+//		os << "Amount: " << line << '\n';
+//		getline(trstr, line);
+//		os << "Category: " << Person::Cat_to_str(trans->get_category()) << '\n';
+//		getline(trstr, line);
+//		if (line != "")
+//		{
+//			os << "For: ";
+//			int i = 1;
+//			for (char const& c: line)
+//			{
+//				os << people.at((int)c - '0' - 1).get_name();
+//				if (i < line.length())
+//					os << ", ";
+//				i++;
+//			}
+//			os << "\n\n";
+//		}
+//		else
+//			os << "\n";
+//	}
+//	return os;
+//}	

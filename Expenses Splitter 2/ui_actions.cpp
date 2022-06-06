@@ -8,7 +8,6 @@
 #include "Person.h"
 #include "Transactions.h"
 #include "ui_actions.h"
-#include "ui_checks.h"
 #include "Trip.h"
 
 void launch_app(Trip& trip)
@@ -82,6 +81,7 @@ void interface(Trip &trip)
     }
 }
 
+//exit and save trip to file
 void exit_app(Trip& trip)
 {
     std::string saveline = trip.get_name() + "&./." + trip.get_name() + ".txt";
@@ -200,11 +200,12 @@ void show_people(Trip& trip)
 
 void show_trans(Trip& trip)
 {
-    trip.print_trans(std::cout);
+    //trip.print_trans(std::cout);
     press_to_continue();
     interface(trip);
 }
 
+// check if user input is a number in given range
 template<typename T>
 T numerical_input(std::string message, T min, T max)
 {
@@ -225,6 +226,7 @@ T numerical_input(std::string message, T min, T max)
     return input_val;
 }
 
+// check if float input is a number in given range
 template<>
 float numerical_input(std::string message, float min, float max)
 {
@@ -245,7 +247,7 @@ float numerical_input(std::string message, float min, float max)
     return input_val;
 }
 
-
+// set selected attribute to opposite value
 void set_attributes(Trip &trip_to_init, int person_id)
 {
     system("clear");
@@ -263,6 +265,7 @@ void set_attributes(Trip &trip_to_init, int person_id)
         interface(trip_to_init);
 }
 
+// select collective or specific transaction
 void add_transactions_menu(Trip &trip)
 {
     system("clear");
@@ -297,10 +300,9 @@ std::string print_categories()
     return output;
 }
 
-
+// add specific r collective transaction
 void add_transaction(Trip& trip , bool is_specific)
 {
-    //TODO if there is only one person in trip, dont ask for more people to include
     system("clear");
     std::cout << "\nAdd collective transaction:\n";
     std::cout << "Select payer id: \n ";
@@ -340,7 +342,7 @@ void add_transaction(Trip& trip , bool is_specific)
     }
 }
 
-
+// get from user people included in the transaction
 std::vector<int> get_included(std::string message, int size)
 {
     std::vector<int> included_ids;  // vector of included participants
@@ -373,6 +375,7 @@ std::vector<int> get_included(std::string message, int size)
     }
     return included_ids;
 }
+
 
 void settle(Trip& trip)
 {
@@ -421,10 +424,25 @@ void settle(Trip& trip)
     interface(trip);
 }
 
-
+//hlper function to close displayed info
 void press_to_continue()
 {
     std::cout << "\nPress Enter to continue...";
     std::cin.ignore(10, '\n');
     std::cin.get();
+}
+
+//checks if input is valid and returns value of the input
+bool is_input_positive()
+{
+    std::string input;
+    while (true)
+    {
+        std::cin >> input;
+        for (auto& c : input) c = toupper(c);
+        if (input == "N" || input == "NO" || input == "Y" || input == "YES")
+            break;
+        std::cout << "Invalid input. (enter Y or N): ";
+    }
+    return (input == "Y" || input == "YES");
 }
