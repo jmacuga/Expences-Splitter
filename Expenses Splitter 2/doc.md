@@ -45,7 +45,25 @@ ui_checks.cpp: ui_checks.h
 
 # Testy
 
-TODO
+file_operations_tests.cpp:
+
+Testy dotyczą obsługi plików tj. zapisywania i odczytywania z nich w określonym formacie, który kolejno zawiera nazwę wyjazdu, uczestników oraz transkacje zapisywane według założonej składni. Wyjazd kończy się znakami "&&&".
+W związku z takimi założeniami wśród testów znajdują się sprawdzenia określonej składni plików w tym między innymi weryfikacja wzajemnego położenia określonych części tekstu.
+Testy początkowo sprawdzają poprawność zmiennych tekstowych z plików za pomocą funkcji z biblioteki std::stringstream.
+Następnie weryfikowana jest składnia zawierająca informacje o kategorii, ID płatnika oraz kwocie transkacji, co również wykonywane jest za pomocą funkcji z biblioteki std::stringstream.
+Odczytywanie z plików sprawdzane jest za pomocą funkcji z klasy Trip poprzez weryfikację konkretnych atrybutów tworzonych obiektów.
+
+logic_tests.cpp:
+
+Testy w tym pliku dotyczą logiki (importowany jest plik Trip.h).
+Do testów używane są między innymi funkcje szablonowe zamieszczone w pliku, które służa do porówwnywania wartości liczbowych.
+Na początku sprawdzanie jest działanie funkcji dodających uczestników do wektora ich przechowujących.
+Następnie weryfikowane są takie funkcje jak zmiana balansu użytkownika a także funkcje inicjujące transakcje kolektywne poprzez sprawdzenie konkretnych wartości balansów poprzez przyrównanie ich do wartości oczekiwanych.
+Później zaś analogiczne testy przeprowadzane są z dodawanie transkacji typu SpecificTransactions.
+Kolejne testy dotyczą m.in. funkcji z klasy Person, które ustawiają atrybuty kategorii konkretnym użytkownikom oraz przeprowadzona jest weryfikacja inicjalizacji transkacji danej kategorii w grupie, w której występują uczestnicy nie spożywający/korzystający z danej kategorii.
+Później zaś sprawdzane są funkcje wykonująće transfery pieniężne mięzy użytkownikami poprzez przyrównywanie konkretnych balansów do wartości oczekiwanych.
+Kolejne testy dotyczą weryfikacji przydzielanych automatycznie ID użytkownikom poprzez przyrwnywanie ich do wartości oczekiwanych (deterministycznych).
+
 
 # Instrukcja uruchomienia (skompilowania)
 
@@ -54,7 +72,9 @@ TODO
 
 # Podsumowanie projektu
 
-Program wykonuje zamierzone cele, począwszy od tego fundamentalnego tj. sprawnego analizowania transakcji i obliczania końcowych transferów pieniężnych między uczestnikami. Jednocześnie też pozwala zapisywać pliki, które stanowią historię wyjazdów a także odczytywanie ich i dalsze modyfikowanie. Ponadto program jest odporny na błędne wpisywanie danych ze względu na zaimplementowaną walidację. Interfejs konsolowy jest maksymalnie uproszczony w taki sposób, aby użytkownik nie musiał wpisywać długich nazw, co wydatnie zwiększa komfort użytkowania. W kolejnej wersji projektu planujemy dostosowanie aplikacji do interfejsu graficznego a także poszerzenie oferowanej gamy funckjonalności tak, aby aplikacja była jeszcze przyjaźniejsza.
+Program wykonuje zamierzone cele, począwszy od tego fundamentalnego tj. sprawnego analizowania transakcji i obliczania końcowych transferów pieniężnych między uczestnikami. Jednocześnie też pozwala zapisywać pliki, które stanowią historię wyjazdów a także odczytywanie ich i dalsze modyfikowanie.
+Ponadto program jest odporny na błędne wpisywanie danych ze względu na zaimplementowaną walidację. Interfejs konsolowy jest maksymalnie uproszczony w taki sposób, aby użytkownik nie musiał wpisywać długich nazw, co wydatnie zwiększa komfort użytkowania.
+W kolejnej wersji projektu planujemy dostosowanie aplikacji do interfejsu graficznego a także poszerzenie oferowanej gamy funckjonalności tak, aby aplikacja była jeszcze przyjaźniejsza.
 
 
 
