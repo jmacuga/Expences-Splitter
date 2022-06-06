@@ -1,8 +1,8 @@
-#include "Trip.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <cassert>
+#include "Trip.h"
 
 int main()
 {
