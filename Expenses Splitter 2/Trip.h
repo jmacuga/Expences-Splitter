@@ -16,12 +16,10 @@ public:
 	Trip(std::string nm, std::ifstream &myfile): name(nm) { load_from_file(myfile); };
 	void add_person(Person const& p); //adds  person
 	void add_transaction(std::shared_ptr<Transaction> p_trans); //adds pointer to transaction, settles peoples balances
-
 	Person& get_person(int id) { return people[id]; }
 	size_t get_people_size() { return people.size(); }
 	float get_person_balance(int id) { return people[id].get_balance(); };
 	std::string get_name() { return name; };
-
 	void save_to_file(std::ofstream &myfile) const;
 	void load_from_file(std::ifstream &myfile);
 	std::map<std::pair<int, int>, float> calc_transfers();

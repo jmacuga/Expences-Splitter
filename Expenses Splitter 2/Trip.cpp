@@ -192,7 +192,8 @@ std::map<std::pair<int, int>, float> Trip::calc_transfers()
 	{
 		if (!p.get_balance())
 			continue;
-		auto pers_p = std::make_pair(p.get_id(), p.get_balance());
+		float rounded_balance = round(p.get_balance() * 100.0f) / 100.0f;
+		auto pers_p = std::make_pair(p.get_id(), rounded_balance);
 		if (pers_p.second > 0)
 			pos_bufor.push_back(pers_p);
 		else

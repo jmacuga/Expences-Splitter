@@ -51,7 +51,7 @@ void interface(Trip &trip)
     system("clear");
     std::cout << "Choose option:\n";
     std::cout << "1. Add new participant. (Type '1')\n";
-    std::cout << "2. Start adding new transactions. (Type '2')\n";
+    std::cout << "2. Add transaction. (Type '2')\n";
     std::cout << "3. Show people. (Type '3')\n";
     std::cout << "4. Show transaction history. (Type '4')\n";
     std::cout << "5. Show settlement. (Type '5')\n";
@@ -201,18 +201,8 @@ void show_people(Trip& trip)
 void show_trans(Trip& trip)
 {
     trip.print_trans(std::cout);
-    std::cout << "Press Enter to continue...";
-    std::cin.ignore(10, '\n');
-    std::cin.get();
+    press_to_continue();
     interface(trip);
-}
-
-void set_atts_action(Trip &trip_to_init, int id)
-{
-    if (is_input_positive())
-        set_attributes(trip_to_init, id);
-    else
-        interface(trip_to_init);
 }
 
 template<typename T>
@@ -323,7 +313,7 @@ void add_transaction(Trip& trip , bool is_specific)
     int category_number = numerical_input("Invalid input.  Try again (Type number from 1 to 7): ", 1, 7);
     Person::Category category = static_cast<Person::Category>(category_number - 1);
     std::cout << "\nPlease enter payed amount\n";
-    float money = numerical_input("Invalid input.  Try again (Type the amount): ", 0, 99999);
+    float money = numerical_input("Invalid input.  Try again (Type a positive amount greater than 0.01): ", 0.01f, 9999999.0f);
     if (is_specific)
     {
         std::vector<int> included_ids = get_included(message, size);  // vector of included participants
@@ -370,8 +360,16 @@ std::vector<int> get_included(std::string message, int size)
             std::cin.clear();
         }
         included_ids.push_back(person_id_cast);
-        std::cout << "Do you want to add another person? [Y/N]\n";
-        flag = is_input_positive();
+        if (included_ids.size() != size)
+        { 
+            std::cout << "Do you want to add another person? [Y/N]\n";
+            flag = is_input_positive();
+        }
+        else
+        {
+            std::cout << "No more participants to add";
+            break;
+        }
     }
     return included_ids;
 }
