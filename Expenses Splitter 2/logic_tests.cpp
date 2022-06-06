@@ -172,28 +172,28 @@ int main()
             compare_to_test<float>(transfers2.find({ 3, 1 })->second, 20.0f, 31);
             compare_to_test<float>(transfers2.find({ 3, 2 })->second, 5.0f, 32);
         }
-//transfers test2 - 4 people
+        //transfers test2 - 4 people
         {
-        Trip trip("testtrip");
-        Person Milosz(1, "Milosz");
-        Person Janek(2, "Janek");
-        Person Jula(3, "Julka");
-        Person Mati(4, "Mati");
-        trip.add_person(Milosz);
-        trip.add_person(Janek);
-        trip.add_person(Jula);
-        trip.add_person(Mati);
-        trip.get_person(3).set_att(Person::Category::nicotine, true);
-        std::shared_ptr<Transaction> trans1 = std::make_shared<CollectiveTransaction>(40.0f, 1, Person::Category::food);
-        std::shared_ptr<Transaction> trans2 = std::make_shared<CollectiveTransaction>(20.0f, 2, Person::Category::nicotine);
-        std::shared_ptr<Transaction> trans3 = std::make_shared<CollectiveTransaction>(80.0f, 1, Person::Category::alcohol);
-        trip.add_transaction(trans1);
-        trip.add_transaction(trans2);
-        trip.add_transaction(trans3);
-        std::map<std::pair<int, int>, float> transfers = trip.calc_transfers();
-        compare_to_test<float>(transfers.find({ 2, 1 })->second, 10.0f, 33);
-        compare_to_test<float>(transfers.find({ 3, 1 })->second, 30.0f, 34);
-        compare_to_test<float>(transfers.find({ 4, 1 })->second, 50.0f, 35);
+            Trip trip("testtrip");
+            Person Milosz(1, "Milosz");
+            Person Janek(2, "Janek");
+            Person Jula(3, "Julka");
+            Person Mati(4, "Mati");
+            trip.add_person(Milosz);
+            trip.add_person(Janek);
+            trip.add_person(Jula);
+            trip.add_person(Mati);
+            trip.get_person(3).set_att(Person::Category::nicotine, true);
+            std::shared_ptr<Transaction> trans1 = std::make_shared<CollectiveTransaction>(40.0f, 1, Person::Category::food);
+            std::shared_ptr<Transaction> trans2 = std::make_shared<CollectiveTransaction>(20.0f, 2, Person::Category::nicotine);
+            std::shared_ptr<Transaction> trans3 = std::make_shared<CollectiveTransaction>(80.0f, 1, Person::Category::alcohol);
+            trip.add_transaction(trans1);
+            trip.add_transaction(trans2);
+            trip.add_transaction(trans3);
+            std::map<std::pair<int, int>, float> transfers = trip.calc_transfers();
+            compare_to_test<float>(transfers.find({ 2, 1 })->second, 10.0f, 33);
+            compare_to_test<float>(transfers.find({ 3, 1 })->second, 30.0f, 34);
+            compare_to_test<float>(transfers.find({ 4, 1 })->second, 50.0f, 35);
         }
         //transfers test 3
         {
@@ -225,8 +225,8 @@ int main()
             Person Janek(2, "Janek");
             Person Jula(3, "Julka");
             Person Mati(4, "Mati");
-            Person Krzychu(5, "Mati");
-            Person Mikolaj(6, "Mati");
+            Person Krzychu(5, "Krzychu");
+            Person Mikolaj(6, "Mikolaj");
             trip.add_person(Milosz);
             trip.add_person(Janek);
             trip.add_person(Jula);
@@ -244,32 +244,11 @@ int main()
             trip.add_transaction(trans3);
             trip.add_transaction(trans4);
             std::map<std::pair<int, int>, float> transfers = trip.calc_transfers();
-            compare_to_test<float>(transfers.find({ 3, 2 })->second, 0.833f, 39);
-            compare_to_test<float>(transfers.find({ 5, 1 })->second, 24.1667f, 40);
-            compare_to_test<float>(transfers.find({ 5, 2 })->second, 8.333f, 41);
-            compare_to_test<float>(transfers.find({ 5, 4 })->second, 18.333f, 42);
-            compare_to_test<float>(transfers.find({ 6, 4 })->second, 30.833f, 43);
-        }
-        {
-            Trip trip("200_osob_w_kawalerce");
-            Person Milosz(1, "Milosz");
-            Person Janek(2, "Janek");
-            Person Jula(3, "Julka");
-            Person Mati(4, "Mati");
-            Person Krzychu(5, "Mati");
-            Person Mikolaj(6, "Mati");
-            trip.add_person(Milosz);
-            trip.add_person(Janek);
-            trip.add_person(Jula);
-            trip.add_person(Mati);
-            trip.add_person(Krzychu);
-            trip.add_person(Mikolaj);
-            Person p1 = trip.get_person(0);
-            Person p2 = trip.get_person(4);
-            Person p3 = trip.get_person(5);
-            compare_to_test<int>(p1.get_id(), 1, 44);
-            compare_to_test<int>(p2.get_id(), 5, 45);
-            compare_to_test<int>(p3.get_id(), 6, 46);
+            compare_to_test<float>(transfers.find({ 3, 2 })->second, 0.83f, 39);
+            compare_to_test<float>(transfers.find({ 5, 1 })->second, 24.17f, 40);
+            compare_to_test<float>(transfers.find({ 5, 2 })->second, 8.34f, 41);
+            compare_to_test<float>(transfers.find({ 5, 4 })->second, 18.34f, 42);
+            compare_to_test<float>(transfers.find({ 6, 4 })->second, 30.83f, 43);
         }
     }
     std::cout << "\nEnd of logic tests\n";

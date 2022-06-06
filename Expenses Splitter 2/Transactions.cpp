@@ -1,7 +1,5 @@
-#include "Transactions.h"
+#include <sstream>
 #include "Trip.h"
-#include "sstream"
-
 
 std::string CollectiveTransaction::file_input() const
 {
