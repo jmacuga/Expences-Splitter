@@ -26,7 +26,7 @@ You can choose whether to create a new Trip or open one from a file in the main 
 
 ![](img/second.png)
 
-You can __add people__ to your Trip and set the categories of payments they will be included in, for example, food, alcohol.
+You can __add people__ to your Trip and set the categories of payments they will be included in, for example, food and alcohol.
 
 ![](img/categories_set.png)
 
