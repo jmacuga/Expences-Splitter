@@ -5,7 +5,7 @@
 Trip current_trip("curr_trip");
 
 int main() {
-  std::cout << "\nSplitonator 3000\n";
+  std::cout << "\nExpenses Splitter\n";
   launch_app(current_trip);
   return 0;
 }
